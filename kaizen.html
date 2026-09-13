@@ -101,15 +101,17 @@ body {
 .grid {
   position: absolute;
   inset: 0;
-  z-index: 40;
+  z-index: auto;
   pointer-events: none;
 }
 .grid .v {
+  z-index: 40;
   position: absolute; top: 0; bottom: 0;
   width: var(--hair); background: var(--line);
 }
 .grid .v1 { left: 25%; }  .grid .v2 { left: 50%; }  .grid .v3 { left: 75%; }
 .grid .rows {
+  z-index: 40;
   position: absolute; inset: 0;
   background-image: repeating-linear-gradient(
     to bottom,
@@ -118,6 +120,7 @@ body {
   );
 }
 .grid .nodes {
+  z-index: 43;
   position: absolute; top: 0; bottom: 0;
   width: var(--node);
   margin-left: calc(var(--node) / -2);
@@ -278,10 +281,17 @@ a:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
    UNDER midtstreken. Rute 5–6: claim · rute 7: note · rute 8:
    kaizenstudio-lenka topp/høyre (rute-8-CTA-mekanikken).        */
 .intro .cols {
+  position: relative;
   height: var(--box);
   grid-template-rows: repeat(2, minmax(0, 1fr));
 }
+.intro { z-index: auto; }
+.intro::before { z-index: 0; }
 .intro__h { grid-column: 1 / 3; grid-row: 2 / 3; align-self: start; }
+.intro__kai { position: absolute; inset: 0; z-index: 41; width: 100%; min-height: 0; margin: 0; padding-top: 80px; display: flex; align-items: center; justify-content: center; pointer-events: none; }
+.intro__kai img { display: block; width: min(820px, 85vw); height: auto; max-height: 100%; object-fit: contain; }
+.intro__h, .intro__body, .intro__cta { position: relative; z-index: 42; }
+.intro__body { background: linear-gradient(135deg, rgba(5,5,5,.94), rgba(5,5,5,.82)); }
 .intro__h h1 {
   margin: 0;
   font-size: var(--t-h1);
@@ -289,7 +299,7 @@ a:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
   letter-spacing: -.032em;
   font-weight: 500;
 }
-.intro__body { grid-column: 3 / 4; grid-row: 2 / 3; align-self: start; }
+.intro__body { grid-column: 3 / 4; grid-row: 2 / 3; align-self: stretch; min-height: 0; }
 .intro__body p { margin: 0 0 14px; font-size: var(--t-body); line-height: 1.5; color: var(--ink-2); max-width: 38ch; }
 .intro__body p + p { font-size: var(--t-base); line-height: 1.6; }
 .intro__cta { grid-column: 4 / 5; grid-row: 2 / 3; align-self: start; text-align: right; }
@@ -301,6 +311,13 @@ a:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
 }
 .intro__cta .arrow { display: inline-block; letter-spacing: 0; transition: transform .35s var(--ez); }
 .intro__cta a:hover .arrow { transform: translateX(.5ch); }
+/* Keep both original paragraphs inside row two on short desktop windows. */
+@media (min-width: 1024px) and (max-height: 900px) {
+  .intro__body p, .intro__body p + p {
+    font-size: clamp(12px, min(1.1vw, calc((100svh - 73px) / 40)), var(--t-body));
+    line-height: 1.4;
+  }
+}
 
 /* ══ 02 · APP — én modul (2 rader) ═══════════════════════════
    Tre ekte skjermopptak i kolonne 1–3, hver i sin rute over
@@ -696,11 +713,12 @@ a:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
   position: relative; overflow: hidden;
   box-shadow: 0 30px 80px rgba(0, 0, 0, .55);
 }
-.footer__reel video {
+.footer__reel img {
   position: absolute; inset: 0;
   width: 100%; height: 100%;
-  object-fit: cover; display: block;
+  object-fit: cover; object-position: center bottom; display: block;
 }
+@media(max-width:1023px) { .footer__reel picture { display: block; } .footer__reel img { position: relative; height: auto; } }
 .footer__colophon {
   grid-column: 4 / 5; grid-row: 1 / 2; align-self: stretch;
   display: grid; grid-template-rows: repeat(2, 1fr);
@@ -840,6 +858,8 @@ a:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
     height: auto !important;
   }
   .intro .cols { padding-top: calc(var(--cell) * 8); }
+  .intro__kai { height: 100%; padding-top: 0; margin-bottom: 0; }
+  .intro__kai img { width: 112vw; max-width: none; flex-shrink: 0; }
 
   /* App-raden blir snap-spor — ett klipp i fokus, neste stikker
      inn fra kanten (mekanikken fra forrige versjon, bevart).   */
@@ -990,6 +1010,38 @@ a:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
 </style>
 <link rel="stylesheet" href="nav-system.css">
 <link rel="stylesheet" href="cta-system.css">
+<link rel="stylesheet" href="assets/kai/method.css">
+<style>
+/* KAIZEN-only: replace the previously white NAV states, never the clear hero. */
+:root {
+  --nav-foreground: #FFFFFF;
+  --nav-paper-foreground: #FFFFFF;
+  --nav-mobile-foreground: #FFFFFF;
+  --nav-paper-divider: rgba(255,255,255,.2);
+}
+.nav.is-paper {
+  background: linear-gradient(180deg,rgba(255,255,255,.09),rgba(255,255,255,.04)),rgba(0,0,0,.86);
+  box-shadow: inset 0 var(--hair) 0 rgba(255,255,255,.10),0 24px 60px rgba(0,0,0,.5);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  border-bottom: 0;
+}
+.nav.is-paper .nav__links a[aria-current="page"],
+.nav.is-paper .nav__jumps button.is-here { color: color-mix(in srgb,var(--accent) 65%,white); }
+.nav.is-paper::before { content: ""; position: absolute; left: 0; right: 0; top: calc(var(--pad) * -1); height: var(--pad); background: inherit; backdrop-filter: inherit; -webkit-backdrop-filter: inherit; pointer-events: none; }
+@media(max-width:1023px) {
+  /* The original mobile NAV had a white background even without is-paper. */
+  .nav {
+    background: linear-gradient(180deg,rgba(255,255,255,.09),rgba(255,255,255,.04)),rgba(0,0,0,.86);
+    box-shadow: inset 0 var(--hair) 0 rgba(255,255,255,.10),0 24px 60px rgba(0,0,0,.5);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border-bottom: 0;
+  }
+  .nav .nav__links a[aria-current="page"] { color: color-mix(in srgb,var(--accent) 65%,white); }
+  .nav::before { content: ""; position: absolute; left: 0; right: 0; top: calc(var(--pad) * -1); height: var(--pad); background: inherit; backdrop-filter: inherit; -webkit-backdrop-filter: inherit; pointer-events: none; }
+}
+</style>
 </head>
 <body>
 
@@ -1021,6 +1073,7 @@ a:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
   <!-- ══ 01 · INTRO — én modul ══════════════════════════════ -->
   <section class="intro" id="intro">
     <div class="cols">
+      <figure class="intro__kai"><img src="assets/kai/kai-poster.webp" alt="Kai, KAIZEN's cyan-eyed robot on two wheels" width="1280" height="1280" fetchpriority="high"></figure>
       <!-- H1 = forsidens KAIZEN-kort ordrett (card__say, CEO-
            godkjent 08-14). Linjeknekken er satt, ikke tilfeldig. -->
       <div class="cell intro__h iv" style="--d:80ms">
@@ -1037,9 +1090,7 @@ a:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
     </div>
   </section>
 
-  <!-- ══ 02 · MEDIA — én modul, casens eget materiale ═══════
-       Filmen er den samme som bærer KAIZEN-kortet på forsiden;
-       ingen ny ressurs innført på denne flaten.               -->
+  <!-- ══ 02 · MEDIA — original case film, separate from Kai hero. -->
   <section class="app app--wide" id="app" aria-label="KAIZEN in use">
     <i class="mline" aria-hidden="true"></i>
     <div class="cols">
@@ -1063,21 +1114,23 @@ a:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
     </div>
   </section>
 
-  <!-- ══ 03 · METODE — to rader, sporet på v2 ═══════════════
-       Samme motor som NYMEs kjede: sporet fylles av scroll,
-       hvert trinn kvitteres. Fire trinn, ingen leveransevifte.
-       CEO-copy 08-16 (samlet tekstversjon, STATUS: Review). -->
-  <section class="pipe pipe--method" id="pipeline">
+  <!-- 03 · METODE — approved Kai stack motion with real HTML cards.
+       The complete method stays available without animation. -->
+  <section class="pipe pipe--method kai-method" id="pipeline" data-kai-method aria-labelledby="method-title">
     <i class="mline" aria-hidden="true"></i>
-    <div class="pipe__stage">
-      <p class="pipe__cap"><span>One workflow</span><span>Four moves</span><span>Built to keep running</span></p>
-      <ol class="pipe__list" id="pipe">
-        <li class="pipe__step"><b>Map the work</b><svg width="22" height="22" viewBox="0 0 17 17" aria-hidden="true"><circle class="ring" cx="8.5" cy="8.5" r="7.5"/><path class="tick" d="M5.2 8.7l2.2 2.2 4.2-4.6"/></svg><span>Find what repeats and where time disappears.</span></li>
-        <li class="pipe__step"><b>Set the boundary</b><svg width="22" height="22" viewBox="0 0 17 17" aria-hidden="true"><circle class="ring" cx="8.5" cy="8.5" r="7.5"/><path class="tick" d="M5.2 8.7l2.2 2.2 4.2-4.6"/></svg><span>Decide what runs and what stays human.</span></li>
-        <li class="pipe__step"><b>Build the system</b><svg width="22" height="22" viewBox="0 0 17 17" aria-hidden="true"><circle class="ring" cx="8.5" cy="8.5" r="7.5"/><path class="tick" d="M5.2 8.7l2.2 2.2 4.2-4.6"/></svg><span>From scratch or inside the tools.</span></li>
-        <li class="pipe__step"><b>Run and improve</b><svg width="22" height="22" viewBox="0 0 17 17" aria-hidden="true"><circle class="ring" cx="8.5" cy="8.5" r="7.5"/><path class="tick" d="M5.2 8.7l2.2 2.2 4.2-4.6"/></svg><span>Watch the exceptions and refine the flow.</span></li>
-      </ol>
-      <p class="pipe__new">Nothing goes live until you have seen it work.</p>
+    <div class="method-pin">
+      <div class="method-grid" aria-hidden="true"><i class="method-grid-lines"></i><i class="method-grid-nodes"></i></div>
+      <header class="method-intro"><h2 id="method-title">One workflow. Four moves.</h2></header>
+      <div class="method-stage">
+        <div class="method-back back-three" aria-hidden="true"></div><div class="method-back back-two" aria-hidden="true"></div><div class="method-back back-one" aria-hidden="true"></div>
+        <div class="method-deck" role="group" aria-label="Four method steps">
+        <article class="method-card" tabindex="-1"><p class="method-number">01 / Method</p><h3>Map the work</h3><p class="method-copy">Find what repeats and where time disappears.</p><p class="method-count">01 — 04</p></article>
+        <article class="method-card" tabindex="-1"><p class="method-number">02 / Method</p><h3>Set the boundary</h3><p class="method-copy">Decide what runs and what stays human.</p><p class="method-count">02 — 04</p></article>
+        <article class="method-card" tabindex="-1"><p class="method-number">03 / Method</p><h3>Build the system</h3><p class="method-copy">From scratch or inside the tools.</p><p class="method-count">03 — 04</p></article>
+        <article class="method-card" tabindex="-1"><p class="method-number">04 / Method</p><h3>Run and improve</h3><p class="method-copy">Watch the exceptions and refine the flow.</p><p class="method-count">04 — 04</p></article>
+        </div>
+        <span class="method-rail" aria-hidden="true"></span><div class="method-canvas" aria-hidden="true"></div>
+      </div>
     </div>
   </section>
 
@@ -1117,7 +1170,7 @@ a:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
     <i class="mline" aria-hidden="true"></i>
     <div class="cols">
       <div class="footer__reel" aria-hidden="true">
-        <video src="assets/opt/rune-flyr-m1.mp4" poster="assets/opt/rune-flyr-m1-poster.jpg" muted loop playsinline preload="none"></video>
+        <picture><source srcset="assets/opt/contact-fog.webp" type="image/webp"><img src="assets/opt/contact-fog.jpg" alt="" loading="lazy" decoding="async"></picture>
       </div>
       <div class="cell footer__colophon">
         <div class="footer__name">Rune &Oslash;verland</div>
@@ -1394,5 +1447,6 @@ a:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
 <!-- Cloudflare Web Analytics (CEO 09-04) -->
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "111e05e03c3f411fa8ebbbd04b820e76"}'></script>
 <script defer src="assets/js/analytics.js"></script>
+<script type="module" src="assets/kai/runtime/stack-entry.js"></script>
 </body>
 </html>

@@ -1,0 +1,36 @@
+/* Portfolio rules: whole modules, full cells, --cell spacing and type tokens. */
+#pipeline.kai-method { height: auto; min-height: 0; z-index: auto; overflow: clip; }
+#pipeline.kai-method::before { z-index: 0; }
+.method-pin { position: relative; z-index: 44; padding: var(--cell); background: var(--ground); isolation: isolate; }
+.method-intro { position: relative; z-index: 2; margin: 0 0 var(--cell); }
+.method-intro h2 { margin: 0; font-size: var(--t-h1); font-weight: 500; letter-spacing: -.025em; line-height: 1.1; }
+.method-stage { position: relative; z-index: 2; }
+.method-deck { position: relative; display: grid; gap: var(--cell); }
+.method-card { position: relative; margin: 0; min-height: var(--row); padding: var(--cell); border: 0; box-shadow: inset var(--hair) 0 var(--line), inset 0 var(--hair) var(--line); background: var(--ground); display: flex; flex-direction: column; color: var(--ink); }
+.method-card .method-number { margin: 0 0 var(--cell); font-size: var(--t-meta); color: var(--ink-2); }
+.method-card h3 { margin: 0 0 var(--cell); font-weight: 500; font-size: var(--t-h3); line-height: 1.1; letter-spacing: -.025em; }
+.method-card .method-copy { margin: 0; font-size: var(--t-body); line-height: 1.5; }
+.method-card .method-count { margin: auto 0 0; padding-top: var(--cell); border-top: var(--hair) solid var(--line); color: var(--ink-2); font-size: var(--t-meta); }
+.method-canvas, .method-rail, .method-back, .method-grid { display: none; }
+.method-card:focus-visible { outline: var(--hair) solid var(--ink); outline-offset: var(--hair); }
+@media(min-width:1024px) and (prefers-reduced-motion:no-preference) {
+  #pipeline.kai-method.is-animated { height: var(--method-track-height, calc(var(--box) * 5)); }
+  .is-animated .method-pin { position: sticky; top: 0; height: var(--box); padding: 0; }
+  .is-animated .method-pin::after { content: ""; position: absolute; left: 0; right: 0; top: 100%; height: calc(var(--pad) * 2); background: var(--ground); pointer-events: none; }
+  .is-animated .method-intro { position: absolute; inset: 0; margin: 0; padding: var(--cell); display: flex; align-items: center; justify-content: center; text-align: center; pointer-events: none; }
+  .is-animated .method-stage { position: absolute; inset: 0; overflow: hidden; }
+  .is-animated .method-deck, .is-animated .method-back { position: absolute; left: 0; top: 0; min-height: 0; transform-origin: 0 0; will-change: transform; }
+  .is-animated .method-deck { display: block; z-index: 2; }
+  .is-animated .method-card { position: absolute; inset: 0; min-height: 0; transform-origin: 0 0; }
+  .is-animated .method-card[aria-hidden=true] { visibility: hidden; pointer-events: none; }
+  .is-animated .method-back { display: block; border: var(--hair) solid var(--line); background: var(--ground); z-index: 0; }
+  .is-animated .back-one { z-index: 1; }
+  .is-animated .method-stage[data-landed] .method-back { visibility: hidden; }
+  .is-animated .method-canvas { display: block; position: absolute; inset: 0; z-index: 4; pointer-events: none; }
+  .method-canvas canvas { display: block; width: 100%; height: 100%; }
+  .is-animated .method-rail { display: block; position: absolute; left: 0; top: 0; height: var(--node); background: var(--ink); z-index: 3; transform-origin: 0 50%; pointer-events: none; }
+  /* The opaque pin masks the page grid. These lines/nodes move with the pin. */
+  .is-animated .method-grid { display: block; position: absolute; inset: 0; pointer-events: none; }
+  .method-grid-lines { position: absolute; inset: 0; z-index: 0; background-image: linear-gradient(var(--line),var(--line)),linear-gradient(var(--line),var(--line)),linear-gradient(var(--line),var(--line)),linear-gradient(var(--line),var(--line)),linear-gradient(var(--line),var(--line)),linear-gradient(var(--line),var(--line)); background-size: var(--hair) 100%,var(--hair) 100%,var(--hair) 100%,100% var(--hair),100% var(--hair),100% var(--hair); background-position: 25% 0,50% 0,75% 0,0 0,0 50%,0 100%; background-repeat: no-repeat; }
+  .method-grid-nodes { position: absolute; inset: 0; z-index: 5; background-image: linear-gradient(var(--paper),var(--paper)),linear-gradient(var(--paper),var(--paper)),linear-gradient(var(--paper),var(--paper)); background-size: var(--node) var(--node); background-position: calc(25% - var(--node) / 4) 50%,50% 50%,calc(75% + var(--node) / 4) 50%; background-repeat: no-repeat; }
+}
