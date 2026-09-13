@@ -531,6 +531,7 @@ body.ready .rl { opacity: 1; transform: none; }
    som på de andre work-seksjonene.                             */
 .card--nyme .card__body { margin-top: auto; }
 .card--nyme .card__link { margin-top: 6px; border-bottom: none; padding-bottom: 0; }
+.card--kzai .card__link { margin-top: 6px; border-bottom: none; padding-bottom: 0; }
 /* CEO 08-12: placeholder-bildet tilbake — KUN i rute 7. */
 .card--nyme .nyme__ph {
   grid-column: 3 / 4; grid-row: 2 / 3;
@@ -1857,24 +1858,9 @@ body.ready .rl { opacity: 1; transform: none; }
       </div>
     </article>
 
-    <article class="card card--bleed card--kzai" id="work-kzai" style="--bc:3;--br:2">
+    <article class="card card--nyme card--kzai" id="work-kzai" style="--bc:3;--br:2">
       <i class="mline" aria-hidden="true"></i>
-      <div class="card__col">
-        <video src="assets/opt/morfar.mp4" poster="assets/opt/morfar-poster.jpg" muted loop playsinline preload="none"></video>
-      </div>
-      <!-- Testvariant 08-14: hierarkiet snudd — gevinsten i XXL,
-           arbeidet som støttelinje under; KAIZEN Studio er avsender
-           (AI kun i metalinjen). Årsakskjede: bygger det arbeidet
-           krever → arbeidet blir gjort → tiden tilbake. -->
-      <div class="cell kz__claim">
-        <p class="captrim">You get your<br>time back.</p>
-        <p class="kz__sub captrim">The work still gets done.</p>
-      </div>
-      <div class="cell kz__cta iv" style="--d:240ms">
-        <a href="kaizen.html">How KAIZEN works&nbsp;&rarr;</a>
-      </div>
-      <div class="card__box">
-
+      <div class="card__box iv" style="--d:120ms">
         <div class="card__lead">
           <div class="card__top">
             <span class="card__no">04</span>
@@ -1885,13 +1871,8 @@ body.ready .rl { opacity: 1; transform: none; }
           </div>
           <p class="card__say">We build systems that do the routine work for you.</p>
         </div>
-
-        <div class="card__facts"><ul>
-          <li>New systems or existing tools</li>
-          <li>Routine work runs automatically</li>
-          <li>You make the decisions that matter</li>
-        </ul></div>
-
+        <p class="card__body">New systems or existing tools. Routine work runs automatically, while you make the decisions that matter.</p>
+        <a class="card__link" href="https://kaizenstudio.no" target="_blank" rel="noopener">kaizenstudio.no&nbsp;&rarr;</a>
       </div>
     </article>
 
