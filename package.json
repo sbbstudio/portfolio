@@ -4,7 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "node tools/build-studio.mjs"
+    "build": "node tools/build-studio.mjs && node tools/build-kai.mjs",
+    "build:kai": "node tools/build-kai.mjs"
   },
   "dependencies": {
     "react": "19.2.8",
