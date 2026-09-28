@@ -4,7 +4,7 @@ import AtelierCanvas from '../../components/atelier-canvas'
 import { useReducedMotion } from '../../lib/motion'
 import { scrollState } from '../../lib/scroll'
 import { ATELIER_INVALIDATE, type LoadState } from '../../lib/atelier'
-import { cameraAt, holds, introAt, textAt } from './story-timeline'
+import { cameraAt, holds, introAt, introHold, textAt } from './story-timeline'
 
 type Chapter = { id: string; html: string }
 function Story({ host, intro, chapters }: { host: HTMLElement; intro: Chapter; chapters: Chapter[] }) {
@@ -60,7 +60,10 @@ function Story({ host, intro, chapters }: { host: HTMLElement; intro: Chapter; c
     const jump = (id: string) => {
       if (id === intro.id) {
         if (staticMode) opening.current?.scrollIntoView({ behavior: 'instant' })
-        else section.current?.scrollIntoView({ behavior: 'instant' })
+        else {
+          const el = section.current!
+          scrollTo({ top: el.getBoundingClientRect().top + scrollY + (el.offsetHeight - innerHeight) * (introHold.start + introHold.end) / 2, behavior: 'instant' })
+        }
         requestAnimationFrame(() => opening.current?.focus({ preventScroll: true }))
         return
       }
