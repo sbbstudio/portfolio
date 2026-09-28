@@ -47,3 +47,9 @@
   .story-chapter { background: linear-gradient(transparent 15%,#000c 32%,#000f 55%); }
   .story-chapter--4 { background: #000; }
 }
+/* The opening sits at the center of the frame; later chapters retain their layout. */
+.story-chapter.story-intro { align-items: center; justify-content: center; text-align: center; padding-block: 0; background: radial-gradient(ellipse at center, #0009, #0005 55%, transparent 85%); }
+.story-chapter.story-intro > * { width: 100%; max-width: 620px; margin-inline: 0; }
+.story-chapter.story-intro p { max-width: 40ch; }
+.story-chapter.story-intro > :last-child { margin-bottom: 0; }
+.story-fallback .story-intro, .is-reading .story-intro { padding-block: 80px; background: #000; }
