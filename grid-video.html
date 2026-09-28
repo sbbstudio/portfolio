@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en" data-nav-theme="light">
 <head>
-<script src="studio/entry-boot.js?v=2"></script>
+
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Rune Øverland — Creative Fullstack Engineer</title>
@@ -1648,15 +1648,9 @@ body.ready .rl { opacity: 1; transform: none; }
 </style>
 <link rel="stylesheet" href="nav-system.css">
 <link rel="stylesheet" href="cta-system.css">
-<link rel="stylesheet" href="studio/integration.css?v=3"></head>
+<link rel="stylesheet" href="studio/integration.css?v=3">
+<link rel="stylesheet" href="assets/css/build.css"></head>
 <body class="ready" id="top">
-<div class="entry-loader">
-  <div class="entry-loader__panel" role="progressbar" aria-label="Loading portfolio" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
-    <div class="entry-loader__percent" aria-hidden="true">0%</div>
-    <div class="entry-loader__track" aria-hidden="true"><i class="entry-loader__signal"></i></div>
-  </div>
-</div>
-
 <div class="page">
 
   <!-- Grid — ruller med innholdet, repeterer hver halve modul -->
@@ -1666,11 +1660,12 @@ body.ready .rl { opacity: 1; transform: none; }
       <a href="nyme.html">Nyme</a>
     <a href="kaizen.html">Kaizen</a>
       <a href="how-i-work.html">How I work</a>
+      <a href="/build/">Technical</a>
     </div>
     <div class="cell nav__jumps" aria-label="Sections on this page">
       <a href="#approach"><span class="jno">01</span><span class="jt">Approach</span></a>
-      <a href="#work" data-studio-exit><span class="jno">02</span><span class="jt">Work</span></a>
-      <a href="#contact" data-studio-exit><span class="jno">03</span><span class="jt">Contact</span></a>
+      <a href="#work"><span class="jno">02</span><span class="jt">Work</span></a>
+      <a href="#contact"><span class="jno">03</span><span class="jt">Contact</span></a>
     </div>
     <div class="cell nav__cta"><a href="contact.html">Contact</a></div>
   </nav>
@@ -1710,20 +1705,19 @@ body.ready .rl { opacity: 1; transform: none; }
   </section>
 
   <!-- ══ 02 · APPROACH — 100vh, ingen sticky ════════════════ -->
-<div id="approach" aria-label="Approach">
-  <template id="studio-copy-template"><h2>The system comes with me.</h2><p>I don’t start from zero. Every project leaves behind a better way to work&nbsp;— clearer decisions, reusable components and stronger checks. The next one starts from there.</p></template>
-  <div id="studio-root">
-    <section class="studio-journey studio-placeholder"><div class="studio-stage">
-      <a class="studio-skip" href="#approach-copy" data-studio-exit>Skip animation ↘</a>
-      <div class="studio-loading"><p role="status">Scroll to step inside the studio.</p></div>
-      <span class="studio-explore">Explore with scroll ↓</span>
-      <div id="approach-copy" class="studio-endcopy" tabindex="-1"><h2>The system comes with me.</h2><p>I don’t start from zero. Every project leaves behind a better way to work&nbsp;— clearer decisions, reusable components and stronger checks. The next one starts from there.</p></div>
-      <button class="studio-restart" data-studio-restart>Replay animation ↻</button>
-    </div></section>
+<section id="approach" class="system-section" aria-labelledby="system-title" tabindex="-1">
+  <i class="mline" aria-hidden="true"></i>
+  <div class="grid" aria-hidden="true"><i class="v v1"></i><i class="v v2"></i><i class="v v3"></i><div class="rows"></div><div class="nodes n1"></div><div class="nodes n2"></div><div class="nodes n3"></div></div>
+  <div class="system-grid">
+    <div class="cell system-label">01 / Approach</div>
+    <div class="cell system-title"><h2 id="system-title">The whole system<br>is the work.</h2></div>
+    <div class="cell system-copy">
+      <p>I connect product thinking, design, code and data to build working systems. AI is part of how I work.</p>
+      <p>I make the decisions, evaluate the output and take responsibility for what ships.</p>
+    </div>
+    <div class="cell system-link"><a href="/build/">How I build <span aria-hidden="true">↗</span></a></div>
   </div>
-</div>
-
-
+</section>
 
   <!-- ══ 03 · WORK — én komponent per prosjekt ══════════════ -->
   <section class="work" id="work" tabindex="-1">
@@ -1979,8 +1973,9 @@ body.ready .rl { opacity: 1; transform: none; }
         <div class="colo__mid">
           <nav class="footer__nav" aria-label="Footer">
             <a href="#approach">Approach</a>
-            <a href="#work" data-studio-exit>Work</a>
+            <a href="#work">Work</a>
             <a href="how-i-work.html">How I work</a>
+      <a href="/build/">Technical</a>
             <a href="contact.html">Contact</a>
           </nav>
         </div>
@@ -2428,7 +2423,7 @@ body.ready .rl { opacity: 1; transform: none; }
     syncSbbControls();
   }
 
-  // Navigation is driven by the studio module.
+  // Navigation is driven by portfolio-shell.js.
 
   /* ── TERRENGPLATE-TUNER ──────────────────────────────────────
      Bare på ?tune. Den rene adressen viser flaten slik den blir,
@@ -2520,7 +2515,7 @@ body.ready .rl { opacity: 1; transform: none; }
 
 })();
 
-  // Contact reveal is driven by the studio module.
+  // Contact reveal is driven by portfolio-shell.js.
 </script>
 
 <script>
@@ -2599,5 +2594,5 @@ body.ready .rl { opacity: 1; transform: none; }
 <script type="module" src="assets/kai/runtime/index.js"></script>
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "111e05e03c3f411fa8ebbbd04b820e76"}'></script>
 <script defer src="assets/js/analytics.js"></script>
-<script type="module" src="studio/runtime/index.js?v=2"></script><noscript><style>.studio-journey {height:100svh}.studio-endcopy {opacity:1;visibility:visible}.studio-loading,.studio-skip,.studio-explore {display:none}</style></noscript></body>
+<script src="assets/js/portfolio-shell.js" defer></script></body>
 </html>
