@@ -57,11 +57,16 @@ function Story({ host, intro, chapters }: { host: HTMLElement; intro: Chapter; c
     return () => { cancelAnimationFrame(frame); removeEventListener('scroll', schedule); removeEventListener('resize', schedule) }
   }, [host, staticMode])
   useEffect(() => {
+    // Scroll schedules the presentation update in the next frame. Wait until
+    // that update has removed inert before moving keyboard focus to the panel.
+    const focusPanel = (panel: HTMLElement | null) => {
+      requestAnimationFrame(() => requestAnimationFrame(() => panel?.focus({ preventScroll: true })))
+    }
     const jump = (id: string) => {
       if (id === intro.id) {
         if (staticMode) opening.current?.scrollIntoView({ behavior: 'instant' })
         else section.current?.scrollIntoView({ behavior: 'instant' })
-        requestAnimationFrame(() => opening.current?.focus({ preventScroll: true }))
+        focusPanel(opening.current)
         return
       }
       const i = holds.findIndex(h => h.id === id)
@@ -71,7 +76,7 @@ function Story({ host, intro, chapters }: { host: HTMLElement; intro: Chapter; c
         const el = section.current!, h = holds[i]
         scrollTo({ top: el.getBoundingClientRect().top + scrollY + (el.offsetHeight - innerHeight) * (h.start + h.end) / 2, behavior: 'instant' })
       }
-      requestAnimationFrame(() => panels.current[i]?.focus({ preventScroll: true }))
+      focusPanel(panels.current[i])
     }
     const onClick = (event: MouseEvent) => {
       if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return
