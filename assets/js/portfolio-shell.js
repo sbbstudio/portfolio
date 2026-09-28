@@ -2,11 +2,25 @@
 (() => {
   const nav = document.querySelector('.nav');
   const hero = document.querySelector('#hero');
+  const sharedIntro = document.querySelector('.home-intro');
+  if (sharedIntro) {
+    const title = sharedIntro.querySelector('.system-title');
+    // Mobile stacks the grid: end the shared photo at the end of Section 1's title.
+    const sizeIntroPhoto = () => {
+      if (innerWidth < 1024) sharedIntro.style.setProperty('--intro-photo-height', `${title.getBoundingClientRect().bottom - sharedIntro.getBoundingClientRect().top}px`);
+      else sharedIntro.style.removeProperty('--intro-photo-height');
+    };
+    const observer = new ResizeObserver(sizeIntroPhoto);
+    observer.observe(hero);
+    observer.observe(title);
+    sizeIntroPhoto();
+  }
   let lastScroll = scrollY, upwardScroll = 0, frame = 0, initialized = false;
   const updateNav = () => {
     frame = 0;
     if (!nav || !hero) return;
-    const released = hero.getBoundingClientRect().bottom <= 12;
+    // Let the navigation move away before it overlaps text on the shared photograph.
+    const released = sharedIntro ? scrollY > 120 : hero.getBoundingClientRect().bottom <= 12;
     const delta = scrollY - lastScroll;
     upwardScroll = delta < 0 ? upwardScroll - delta : 0;
     if (!released || upwardScroll >= 120) nav.classList.remove('is-hidden');
