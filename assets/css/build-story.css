@@ -1,0 +1,49 @@
+/* Four reading holds on the portfolio grid, over the complete original camera path. */
+.story-journey { height: 650svh; position: relative; }
+.story-stage { position: sticky; top: 0; height: 100svh; overflow: hidden; isolation: isolate; background: #0b0b0d; }
+.story-canvas { position: absolute; inset: 0; opacity: calc(1 - var(--story-end, 0)); }
+.story-canvas > div { height: 100% !important; }
+.story-grid { position: absolute; inset: 0; pointer-events: none; opacity: .55; }
+.story-grid i { position: absolute; top: 0; bottom: 0; width: 1px; background: #ffffff18; }
+.story-grid i:nth-child(1) { left: 25%; } .story-grid i:nth-child(2) { left: 50%; } .story-grid i:nth-child(3) { left: 75%; }
+.story-grid b { position: absolute; left: 0; right: 0; top: 50%; height: 1px; background: #ffffff18; }
+.story-chapter { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; padding: 150px var(--cell) 95px; opacity: var(--chapter-opacity, 0); pointer-events: none; background: linear-gradient(90deg,#000f 0%,#000e 31%,#000a 47%,transparent 78%); }
+.build-page .story-chapter:focus { outline: none; }
+.story-chapter > * { width: calc(50% - var(--cell)); max-width: 620px; }
+.story-chapter .story-label { font-size: var(--t-meta); color: #a6a6a6; margin: 0 0 32px; }
+.story-chapter h1, .story-chapter h2 { margin: 0 0 32px; font-size: clamp(40px,4.5vw,68px); font-weight: 500; line-height: 1.06; letter-spacing: -.035em; text-wrap: balance; }
+.story-chapter p { margin: 0 0 20px; font-size: var(--t-h4); line-height: 1.4; max-width: 40ch; }
+.story-chapter--4 { background: #000; }
+.story-chapter.story-chapter--4 > * { margin-left: calc(25% + var(--cell) / 2); }
+.story-controls { position: absolute; bottom: var(--cell); left: var(--cell); right: var(--cell); display: flex; justify-content: space-between; gap: 20px; font-size: var(--t-meta); }
+.story-controls button { border: 0; background: none; padding: 0; color: #fff; font: inherit; cursor: pointer; }
+.story-controls .arrow { display: inline-block; transition: transform .35s var(--ez); }
+.story-controls button:hover .arrow { transform: translateX(.5ch); }
+.story-fallback, .story-journey.is-reading { height: auto; }
+.story-fallback { padding-top: 160px; }
+.is-reading .story-stage { height: auto; position: relative; overflow: visible; }
+.is-reading .story-grid { display: none; }
+.story-fallback .story-chapter, .is-reading .story-chapter { position: relative; opacity: 1; padding: 80px var(--cell); background: #000; border-bottom: 1px solid var(--line); pointer-events: auto; }
+.is-reading .story-chapters { padding-top: 160px; }
+.story-fallback .story-chapter > *, .is-reading .story-chapter > * { margin-left: calc(25% + var(--cell) / 2); }
+.is-reading .story-controls { position: relative; padding: var(--cell); left: auto; right: auto; bottom: auto; }
+.build-page .nav:not(.is-paper) { background: linear-gradient(#0b0b0d, #0b0b0d00); }
+@media (max-width:1023px) {
+  .story-grid { display: none; }
+  .story-chapter { justify-content: flex-end; padding: 140px var(--cell) 95px; background: linear-gradient(transparent 35%,#0005 45%,#000e 56%,#000f 65%); }
+  .story-chapter > * { width: 100%; max-width: 36ch; }
+  .story-chapter .story-label { margin-bottom: 20px; font-size: 13px; }
+  .story-chapter h1, .story-chapter h2 { font-size: clamp(30px,8vw,52px); margin-bottom: 24px; }
+  .story-chapter p { font-size: clamp(16px,4.3vw,21px); margin-bottom: 16px; }
+  .story-chapter--4 { background: #000; }
+  .story-chapter.story-chapter--4 > *, .story-fallback .story-chapter > *, .is-reading .story-chapter > * { margin-left: 0; }
+  .story-controls { font-size: 12px; flex-wrap: wrap; gap: 12px; }
+  .story-controls button { min-height: 44px; }
+  .story-controls > span { align-self: center; }
+  .story-fallback .story-chapter, .is-reading .story-chapter { padding: 48px var(--cell); }
+}
+@media (prefers-reduced-motion:reduce) { .story-controls .arrow { transition: none; } }
+@media (max-width:1023px) and (max-height:650px) {
+  .story-chapter { background: linear-gradient(transparent 15%,#000c 32%,#000f 55%); }
+  .story-chapter--4 { background: #000; }
+}

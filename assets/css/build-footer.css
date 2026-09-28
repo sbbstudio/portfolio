@@ -1,0 +1,131 @@
+/* Footer ported from nyme.html. */
+.footer .cols { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); }
+.footer { position: relative; z-index: 1; overflow: hidden; }
+.footer .cols {
+  height: var(--box);
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+}
+.footer__reel {
+  grid-column: 1 / 3; grid-row: 1 / 2;
+  position: relative; overflow: hidden;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, .55);
+}
+.footer__reel img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: center bottom; display: block;
+}
+@media(max-width:1023px) { .footer__reel picture { display: block; } .footer__reel img { position: relative; height: auto; } }
+.footer__colophon {
+  grid-column: 4 / 5; grid-row: 1 / 2; align-self: stretch;
+  display: grid; grid-template-rows: repeat(2, 1fr);
+  font-size: var(--t-fine); line-height: 1.4;
+}
+.footer__colophon .footer__name { grid-area: 1 / 1; align-self: start; }
+.colo__mid {
+  grid-area: 1 / 1; align-self: end;
+  display: flex; flex-direction: column; gap: 10px;
+}
+.colo__bottom {
+  grid-area: 2 / 1; align-self: end;
+  display: flex; flex-direction: column; gap: 10px;
+}
+.footer__name { letter-spacing: .14em; text-transform: uppercase; color: var(--ink-2); }
+/* Bevisst 2 × 2-grid — forsidens kanon; ingen tilfeldig knekk. */
+.footer__nav { display: grid; grid-template-columns: repeat(2, max-content); gap: 6px 2.5ch; }
+.footer__nav a, .footer__mail {
+  color: var(--ink-2);
+  text-decoration: none;
+  letter-spacing: .14em; text-transform: uppercase;
+  transition: color .3s var(--ez);
+}
+.footer__nav a:hover, .footer__mail:hover { color: var(--ink); }
+.footer__mail { text-transform: none; letter-spacing: 0; }
+.footer__cta {
+  color: var(--ink);
+  text-decoration: none;
+  letter-spacing: .14em; text-transform: uppercase;
+  font-weight: 500;
+}
+.footer__cta .arrow { display: inline-block; transition: transform .35s var(--ez); }
+.footer__cta:hover .arrow { transform: translateX(.5ch); }
+.footer__c {
+  grid-column: 4 / 5; grid-row: 2 / 3; align-self: end;
+  font-size: var(--t-fine); line-height: 1.4;
+  color: var(--ink-3); letter-spacing: .14em;
+}
+/* TICKER — portert fra forsiden. Lineær tid: på en ticker er
+   farten konstant per definisjon.                              */
+.footer__ticker {
+  grid-column: 1 / 3; grid-row: 2 / 3;
+  align-self: stretch;
+  padding: 0;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+}
+.ticker__track {
+  display: flex;
+  flex: none;
+  animation: tick 40s linear infinite;
+}
+.ticker__seq {
+  display: flex; flex: none;
+  white-space: nowrap;
+  gap: .8ch;            /* CEO 08-16 (3): mindre gap mellom ordene */
+  padding-right: .8ch;
+  /* Ordene uten bindestrek, store nok til å dekke halve ruta —
+     størrelsen er geometri (row/2), ikke et skalatrinn.        */
+  font-size: calc(var(--row) / 2);
+  line-height: 1;
+  letter-spacing: -.02em;
+  font-weight: 500;
+  color: var(--ink-2);
+}
+.ticker__seq i { font-style: normal; }
+@keyframes tick {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+@media(max-width:1023px) {
+  .footer { overflow: visible; }
+  .footer .cols {
+    position: static;
+    display: flex; flex-direction: column; gap: 2.5rem;
+    height: auto;
+    padding: calc(var(--cell) * 5) 0 calc(var(--cell) * 2);
+  }
+  .footer__colophon { display: flex; flex-direction: column; gap: 1.5rem; }
+  .footer__colophon .footer__name,
+  .footer__colophon .colo__mid,
+  .footer__colophon .colo__bottom { align-self: flex-start; }
+  .footer__nav { grid-template-columns: 1fr; gap: .65rem; }
+  .footer__ticker { align-self: stretch; overflow: hidden; }
+  .ticker__seq { font-size: var(--t-h1); }
+  .footer__nav a {
+    font-size: var(--t-h4); line-height: 1.3;
+    letter-spacing: -.012em; font-weight: 500;
+    text-transform: none;
+    color: var(--ink);
+  }
+  .footer__mail {
+    font-size: var(--t-h4); line-height: 1.3;
+    letter-spacing: -.012em; font-weight: 500;
+    color: var(--ink-2);
+  }
+  .footer__mail, .footer__c { text-align: left; }
+  .footer__c { align-self: flex-start; }
+}
+
+.footer__top {
+  color: var(--ink);
+  text-decoration: none;
+  letter-spacing: .14em; text-transform: uppercase;
+  font-weight: 500;
+}
+.footer__top .arrow { display: inline-block; transition: transform .35s var(--ez); }
+.footer__top:hover .arrow { transform: translateY(-.35ch); }
+
+.footer__c { display:flex; flex-direction:column; align-items:flex-start; gap:10px; }
+@media(prefers-reduced-motion:reduce) { .ticker__track { animation:none; } }
