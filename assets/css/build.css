@@ -1,7 +1,7 @@
 /* The portfolio's four columns / two rows, 10px frame and 20px cell inset. */
 .system-section { position: relative; border-top: var(--hair) solid var(--line); isolation: isolate; }
 .system-section:focus, .build-page .build-module:focus { outline: none; }
-.nav.is-hidden:focus-within { transform: translateY(0); }
+.nav.is-hidden:has(:focus-visible) { transform: translateY(0); }
 /* One image spans all four opening grid rows in columns 1–3; column 4 stays black. */
 .home-intro { position: relative; isolation: isolate; background: #000; --intro-photo-height: 100%; --intro-photo-width: 75%; }
 .home-intro-photo { position: absolute; inset: 0 auto auto 0; width: var(--intro-photo-width); height: var(--intro-photo-height); object-fit: cover; object-position: 48% center; z-index: -2; }

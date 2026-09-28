@@ -18,3 +18,7 @@ export function textAt(raw: number, index: number) {
   const h = holds[index]
   return Math.max(0, Math.min(1, (raw - h.start) / .025, index === 3 ? 1 : (h.end - raw) / .025))
 }
+// A brief opening over the untouched first camera movement, before chapter one.
+export function introAt(raw: number) {
+  return Math.max(0, Math.min(1, (.085 - raw) / .045))
+}

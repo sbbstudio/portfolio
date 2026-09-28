@@ -1,6 +1,6 @@
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
-import { cameraAt, holds, textAt } from '../studio-src/integration/rune-system/story-timeline.ts'
+import { cameraAt, holds, introAt, textAt } from '../studio-src/integration/rune-system/story-timeline.ts'
 
 test('the full original track is continuous, forward and reaches both endpoints', () => {
   assert.equal(cameraAt(-1), 0)
@@ -27,4 +27,17 @@ test('each reading window freezes the camera and only shows its own text', () =>
   }
   assert.equal(textAt(0, 0), 0)
   assert.equal(textAt(1, 3), 1, 'ending remains visible until the footer')
+})
+test('the opening is readable on arrival and clears before the first chapter', () => {
+  assert.equal(introAt(0), 1)
+  assert.equal(introAt(.04), 1)
+  let previous = 1
+  for (let i = 0; i <= 1000; i++) {
+    const raw = i / 1000
+    const opacity = introAt(raw)
+    assert.ok(opacity >= 0 && opacity <= previous)
+    if (textAt(raw, 0) > 0) assert.equal(opacity, 0)
+    previous = opacity
+  }
+  assert.equal(introAt(1), 0)
 })

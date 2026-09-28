@@ -4,15 +4,16 @@ import AtelierCanvas from '../../components/atelier-canvas'
 import { useReducedMotion } from '../../lib/motion'
 import { scrollState } from '../../lib/scroll'
 import { ATELIER_INVALIDATE, type LoadState } from '../../lib/atelier'
-import { cameraAt, holds, textAt } from './story-timeline'
+import { cameraAt, holds, introAt, textAt } from './story-timeline'
 
 type Chapter = { id: string; html: string }
-function Story({ host, chapters }: { host: HTMLElement; chapters: Chapter[] }) {
+function Story({ host, intro, chapters }: { host: HTMLElement; intro: Chapter; chapters: Chapter[] }) {
   const reduced = useReducedMotion()
   const [reading, setReading] = useState(host.dataset.skipped === 'true')
   const [load, setLoad] = useState<LoadState>({ phase: 'loading', loaded: 0, total: 0 })
   const [attempt, setAttempt] = useState(0)
   const section = useRef<HTMLElement>(null)
+  const opening = useRef<HTMLElement>(null)
   const panels = useRef<(HTMLElement | null)[]>([])
   const staticMode = reading || reduced || load.phase === 'error'
   const onLoad = useCallback((state: LoadState) => setLoad(state), [])
@@ -33,6 +34,12 @@ function Story({ host, chapters }: { host: HTMLElement; chapters: Chapter[] }) {
       host.dataset.progress = String(p)
       host.dataset.raw = String(raw)
       host.style.setProperty('--story-end', String(textAt(raw, 3)))
+      if (opening.current) {
+        const opacity = staticMode ? 1 : introAt(raw)
+        opening.current.style.setProperty('--chapter-opacity', String(opacity))
+        opening.current.inert = opacity === 0
+        opening.current.setAttribute('aria-hidden', String(opacity === 0))
+      }
       panels.current.forEach((panel, i) => {
         if (!panel) return
         const opacity = staticMode ? 1 : textAt(raw, i)
@@ -51,6 +58,12 @@ function Story({ host, chapters }: { host: HTMLElement; chapters: Chapter[] }) {
   }, [host, staticMode])
   useEffect(() => {
     const jump = (id: string) => {
+      if (id === intro.id) {
+        if (staticMode) opening.current?.scrollIntoView({ behavior: 'instant' })
+        else section.current?.scrollIntoView({ behavior: 'instant' })
+        requestAnimationFrame(() => opening.current?.focus({ preventScroll: true }))
+        return
+      }
       const i = holds.findIndex(h => h.id === id)
       if (i < 0) return
       if (staticMode) panels.current[i]?.scrollIntoView({ behavior: 'instant' })
@@ -71,14 +84,14 @@ function Story({ host, chapters }: { host: HTMLElement; chapters: Chapter[] }) {
     const onHash = () => jump(location.hash.slice(1))
     document.addEventListener('click', onClick)
     addEventListener('hashchange', onHash)
-    if (holds.some(h => `#${h.id}` === location.hash)) requestAnimationFrame(onHash)
+    if (location.hash === `#${intro.id}` || holds.some(h => `#${h.id}` === location.hash)) requestAnimationFrame(onHash)
     return () => { document.removeEventListener('click', onClick); removeEventListener('hashchange', onHash) }
-  }, [staticMode])
+  }, [staticMode, intro.id])
   const read = () => {
     host.dataset.skipped = 'true'
-    history.replaceState(null, '', '#thinking')
+    history.replaceState(null, '', `#${intro.id}`)
     setReading(true)
-    requestAnimationFrame(() => { panels.current[0]?.scrollIntoView({ behavior: 'instant' }); panels.current[0]?.focus({ preventScroll: true }) })
+    requestAnimationFrame(() => { opening.current?.scrollIntoView({ behavior: 'instant' }); opening.current?.focus({ preventScroll: true }) })
   }
   const replay = () => {
     host.dataset.skipped = 'false'
@@ -94,7 +107,10 @@ function Story({ host, chapters }: { host: HTMLElement; chapters: Chapter[] }) {
       {!staticMode && <div className="story-canvas" aria-hidden="true"><AtelierCanvas key={attempt} still={false} onLoad={onLoad} /></div>}
       {!staticMode && load.phase !== 'ready' && <div className="studio-loading" role="status"><p>Opening the studio…</p></div>}
       <div className="story-grid" aria-hidden="true"><i/><i/><i/><b/></div>
-      <div className="story-chapters">{chapters.map((chapter, i) => <article key={chapter.id} id={chapter.id} ref={el => { panels.current[i] = el }} className={`story-chapter story-chapter--${i + 1}`} tabIndex={-1} dangerouslySetInnerHTML={{ __html: chapter.html }} />)}</div>
+      <div className="story-chapters">
+        <article id={intro.id} ref={opening} className="story-chapter story-intro" tabIndex={-1} dangerouslySetInnerHTML={{ __html: intro.html }} />
+        {chapters.map((chapter, i) => <article key={chapter.id} id={chapter.id} ref={el => { panels.current[i] = el }} className={`story-chapter story-chapter--${i + 1}`} tabIndex={-1} dangerouslySetInnerHTML={{ __html: chapter.html }} />)}
+      </div>
       <div className="story-controls">
         {!staticMode ? <><span>Scroll to explore ↓</span><button onClick={read}>Read without animation <span className="arrow" aria-hidden="true">→</span></button></> : !reduced && <button onClick={replay}>Replay animation <span aria-hidden="true">↻</span></button>}
       </div>
@@ -102,7 +118,9 @@ function Story({ host, chapters }: { host: HTMLElement; chapters: Chapter[] }) {
   </section>
 }
 export function mountStory(host: HTMLElement) {
-  const chapters = [...host.querySelectorAll<HTMLElement>('.story-chapter')].map(el => ({ id: el.id, html: el.innerHTML }))
-  createRoot(host).render(<Story host={host} chapters={chapters} />)
+  const opening = host.querySelector<HTMLElement>('.story-intro')!
+  const intro = { id: opening.id, html: opening.innerHTML }
+  const chapters = [...host.querySelectorAll<HTMLElement>('.story-chapter:not(.story-intro)')].map(el => ({ id: el.id, html: el.innerHTML }))
+  createRoot(host).render(<Story host={host} intro={intro} chapters={chapters} />)
   host.dataset.mounted = 'true'
 }

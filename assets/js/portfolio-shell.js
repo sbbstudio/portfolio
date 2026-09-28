@@ -7,20 +7,25 @@
   const updateNav = () => {
     frame = 0;
     if (!nav || !hero) return;
-    // Let the navigation move away before it overlaps text on the shared photograph.
-    const released = sharedIntro ? scrollY > 120 : hero.getBoundingClientRect().bottom <= 12;
-    const delta = scrollY - lastScroll;
-    upwardScroll = delta < 0 ? upwardScroll - delta : 0;
-    if (!released || upwardScroll >= 120) nav.classList.remove('is-hidden');
+    // Keep the shared photograph clear; direction-based return starts below it.
+    const released = (sharedIntro || hero).getBoundingClientRect().bottom <= 12;
+    const position = Math.max(0, scrollY);
+    const delta = position - lastScroll;
+    if (delta !== 0) upwardScroll = delta < 0 ? upwardScroll - delta : 0;
+    if (sharedIntro && !released) nav.classList.toggle('is-hidden', position > 120);
+    else if (!released || upwardScroll >= 120) nav.classList.remove('is-hidden');
     else if (delta > 0 || !initialized) nav.classList.add('is-hidden');
-    nav.classList.toggle('is-paper', released);
+    const keyboardFocus = nav.querySelector(':focus-visible');
+    nav.classList.toggle('is-paper', released || (position > 120 && Boolean(keyboardFocus)));
     document.documentElement.dataset.navTheme = 'light';
-    lastScroll = scrollY;
+    lastScroll = position;
     initialized = true;
   };
   const scheduleNav = () => { if (!frame) frame = requestAnimationFrame(updateNav); };
   addEventListener('scroll', scheduleNav, { passive: true });
   addEventListener('resize', scheduleNav);
+  nav?.addEventListener('focusin', scheduleNav);
+  nav?.addEventListener('focusout', scheduleNav);
   updateNav();
 
   const wrap = document.querySelector('.contact-reveal');
