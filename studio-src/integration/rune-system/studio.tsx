@@ -85,7 +85,7 @@ function Studio({ host }: { host: HTMLElement }) {
         {load.phase === 'error' ? <><img src="/models/atelier/poster.webp" alt="Rune’s studio with agents delivering a website." /><div role="alert"><p>The studio couldn’t load.</p><button onClick={retry}>Try again ↻</button></div></>
           : <div role="status"><p>Opening the studio</p><span>{load.phase === 'preparing' ? 'Almost there.' : percent ? `${percent}%` : 'Loading…'}</span></div>}
       </div>}
-      {!skipped && <a className="studio-skip" href="#approach-copy" data-studio-exit>Skip animation <span aria-hidden="true">↘</span></a>}
+      {!skipped && <a className="studio-skip" href="#approach-copy" data-studio-exit>Skip animation <span aria-hidden="true">→</span></a>}
       {!still && (skipped ? <button className="studio-replay" onClick={restart}>Replay animation <span aria-hidden="true">↻</span></button> : <span className="studio-explore">Explore with scroll <span aria-hidden="true">↓</span></span>)}
       <div ref={copy} id="approach-copy" className="studio-endcopy" tabIndex={-1} aria-labelledby="studio-copy-title">
         <h2 id="studio-copy-title">{source.querySelector('h2')!.textContent}</h2>

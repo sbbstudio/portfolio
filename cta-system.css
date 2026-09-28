@@ -5,6 +5,7 @@
   --cta-weight: 400;
 }
 
+.proof-story > a,
 .system-link,
 .build-action a,
 .proof-cell > a,
@@ -22,14 +23,14 @@
 }
 
 /* New surfaces reuse the existing horizontal arrow treatment. */
-.system-link .arrow, .build-action .arrow, .proof-cell > a .arrow {
+.proof-story > a .arrow, .system-link .arrow, .build-action .arrow, .proof-cell > a .arrow {
   display: inline-block;
   letter-spacing: 0;
   transition: transform .35s var(--ez);
 }
-.system-link:hover .arrow, .build-action a:hover .arrow, .proof-cell > a:hover .arrow {
+.proof-story > a:hover .arrow, .system-link:hover .arrow, .build-action a:hover .arrow, .proof-cell > a:hover .arrow {
   transform: translateX(.5ch);
 }
 @media (prefers-reduced-motion: reduce) {
-  .system-link .arrow, .build-action .arrow, .proof-cell > a .arrow { transition: none; }
+  .proof-story > a .arrow, .system-link .arrow, .build-action .arrow, .proof-cell > a .arrow { transition: none; }
 }

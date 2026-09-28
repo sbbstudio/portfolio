@@ -6,60 +6,72 @@
 <meta name="description" content="Product thinking, design, code and data. How Rune Øverland builds systems, works with AI and takes responsibility for what ships.">
 <link rel="canonical" href="https://runeoverland.no/build/">
 <link rel="icon" href="/favicon.ico?v=r1" sizes="16x16 32x32 48x48">
-<link rel="stylesheet" href="/assets/css/build.css?v=20260928-photo">
+<link rel="stylesheet" href="/assets/css/build.css?v=20260928-hero">
 <link rel="stylesheet" href="/nav-system.css"><link rel="stylesheet" href="/cta-system.css">
-<link rel="preload" as="image" href="/models/atelier/poster.webp" fetchpriority="high">
-</head><body class="build-page" id="top"><div class="page">
+<link rel="stylesheet" href="/studio/integration.css?v=3">
+<link rel="stylesheet" href="/assets/css/build-editorial.css">
+<script src="/studio/entry-boot.js?v=2"></script>
+</head><body class="build-page" id="top">
+<div class="entry-loader"><div class="entry-loader__panel" role="progressbar" aria-label="Loading portfolio" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="entry-loader__percent" aria-hidden="true">0%</div><div class="entry-loader__track" aria-hidden="true"><i class="entry-loader__signal"></i></div></div></div>
+<div class="page">
 <nav class="nav" aria-label="Main">
 <div class="cell nav__name"><a href="/grid-video.html">Rune Øverland</a></div>
 <div class="cell nav__links"><a href="/nyme.html">Nyme</a><a href="/kaizen.html">Kaizen</a><a href="/how-i-work.html">How I work</a><a href="/build/" aria-current="page">Technical</a></div>
-<div class="cell nav__jumps" aria-label="Sections on this page"><a href="#thinking"><span>01</span>Thinking</a><a href="#method"><span>04</span>Method</a><a href="#proof"><span>06</span>Proof</a></div>
+<div class="cell nav__jumps" aria-label="Sections on this page"><a href="#thinking" data-studio-exit><span>01</span>Thinking</a><a href="#method" data-studio-exit><span>04</span>Method</a><a href="#proof" data-studio-exit><span>06</span>Proof</a></div>
 <div class="cell nav__cta"><a href="/contact.html">Contact</a></div></nav>
 <main>
-<section class="build-hero" id="hero" aria-labelledby="build-title">
-<div class="build-hero__stage">
-<img class="build-hero__poster" src="/models/atelier/poster.webp" alt="A miniature studio with agents working together to deliver a website." fetchpriority="high" width="1536" height="1024">
-<div id="build-scene" aria-hidden="true"></div>
-<p class="build-scene-status" id="build-scene-status" role="status"></p>
-<div class="grid" aria-hidden="true"><i class="v v1"></i><i class="v v2"></i><i class="v v3"></i><div class="rows"></div><div class="nodes n1"></div><div class="nodes n2"></div><div class="nodes n3"></div></div><div class="build-grid">
-<div class="cell build-title"><h1 id="build-title">I build understanding<br>horizontally.</h1></div>
-<div class="cell build-copy"><p>Design, product, code, data and AI. I build enough understanding across the layers to connect them into a working system.</p><p>Fullstack engineer.<br>Problem first. Tool second.</p></div>
-<div class="cell build-action"><a href="#thinking">Explore how I build <span class="arrow" aria-hidden="true">&rarr;</span></a></div>
-</div></div></section><section class="build-module" id="thinking" aria-labelledby="thinking-title" tabindex="-1"><div class="grid" aria-hidden="true"><i class="v v1"></i><i class="v v2"></i><i class="v v3"></i><div class="rows"></div><div class="nodes n1"></div><div class="nodes n2"></div><div class="nodes n3"></div></div><div class="build-grid">
+<section id="hero" aria-label="Technical — interactive studio">
+<div id="approach" aria-label="Approach">
+<template id="studio-copy-template"><h2>The system comes with me.</h2><p>I don’t start from zero. Every project leaves behind a better way to work — clearer decisions, reusable components and stronger checks. The next one starts from there.</p></template>
+<div id="studio-root"><section class="studio-journey studio-placeholder"><div class="studio-stage">
+<a class="studio-skip" href="#approach-copy" data-studio-exit>Skip animation <span class="arrow" aria-hidden="true">→</span></a>
+<div class="studio-loading"><p role="status">Scroll to step inside the studio.</p></div>
+<span class="studio-explore">Explore with scroll ↓</span>
+<div id="approach-copy" class="studio-endcopy" tabindex="-1"><h2>The system comes with me.</h2><p>I don’t start from zero. Every project leaves behind a better way to work — clearer decisions, reusable components and stronger checks. The next one starts from there.</p></div>
+<button class="studio-restart" data-studio-restart>Replay animation ↻</button>
+</div></section></div></div></section>
+<section class="build-module" id="thinking" aria-labelledby="thinking-title" tabindex="-1"><div class="grid" aria-hidden="true"><i class="v v1"></i><i class="v v2"></i><i class="v v3"></i><div class="rows"></div><div class="nodes n1"></div><div class="nodes n2"></div><div class="nodes n3"></div></div><div class="build-grid">
 <p class="cell build-label">01 / How I think</p><div class="build-sequence"><p>Explore → Decompose → Understand<br>Build → Evaluate → Iterate</p></div>
-<div class="cell build-title"><h2 id="thinking-title">Understanding comes<br>before implementation.</h2></div>
-<div class="cell build-copy"><p>I start with the problem, the person using the system and the outcome that matters. Then I break the problem into parts I can investigate.</p><p>I make assumptions explicit, test them and change direction when the evidence asks me to.</p></div>
-<div class="cell build-action"></div></div></section><section class="build-module build-range" id="range" aria-labelledby="range-title"><div class="grid" aria-hidden="true"><i class="v v1"></i><i class="v v2"></i><i class="v v3"></i><div class="rows"></div><div class="nodes n1"></div><div class="nodes n2"></div><div class="nodes n3"></div></div><div class="build-grid">
-<h2 class="cell build-label" id="range-title">02 / Operating range</h2>
-<div class="cell range-cell"><p class="range-caption">01 → Understand</p><h3>Product &amp; business</h3><p>Who needs this? What should change? I connect the user’s problem to a useful outcome and a scope we can actually build.</p></div>
-<div class="cell range-cell"><p class="range-caption">02 → Shape</p><h3>Design &amp; experience</h3><p>Turn that understanding into a clear flow, a usable interface and a visual language that belongs to the work.</p></div>
-<div class="cell range-cell"><p class="range-caption">03 → Build</p><h3>Code, data &amp; AI</h3><p>Connect interfaces, APIs, data and automation. Understand the boundaries, evaluate the output and check the complete flow.</p></div>
-<div class="cell range-cell"><p class="range-caption">04 → Learn ↺</p><h3>Systems &amp; growth</h3><p>Put the work in front of people. Look at what happens, find the friction and bring that learning into the next iteration.</p></div>
-</div></section><section class="build-module" id="ai" aria-labelledby="ai-title" tabindex="-1"><div class="grid" aria-hidden="true"><i class="v v1"></i><i class="v v2"></i><i class="v v3"></i><div class="rows"></div><div class="nodes n1"></div><div class="nodes n2"></div><div class="nodes n3"></div></div><div class="build-grid">
-<p class="cell build-label">03 / AI changed the equation</p><div class="build-sequence"><p>Ask → Generate → Inspect → Understand<br>Test → Challenge → Refine</p></div>
-<div class="cell build-title"><h2 id="ai-title">More reach.<br>The same responsibility.</h2></div>
-<div class="cell build-copy"><p>AI helps me research, challenge ideas, implement, debug and test. It lets me take a wider understanding further into a working product.</p><p>I still need to inspect the output, understand the important parts and decide what is ready to ship.</p></div>
-<div class="cell build-action"></div></div></section><section class="build-module" id="method" aria-labelledby="method-title" tabindex="-1"><div class="grid" aria-hidden="true"><i class="v v1"></i><i class="v v2"></i><i class="v v3"></i><div class="rows"></div><div class="nodes n1"></div><div class="nodes n2"></div><div class="nodes n3"></div></div><div class="build-grid">
-<p class="cell build-label">04 / How I build</p><div class="build-sequence"><p>Problem → Research → Architecture → Modules<br>Implementation → Evaluation → System log → Iteration</p></div>
-<div class="cell build-title"><h2 id="method-title">The system<br>comes with me.</h2></div>
-<div class="cell build-copy"><p>I don’t start from zero. Every project leaves behind a better way to work — clearer decisions, reusable components and stronger checks. The next one starts from there.</p><p>I break the work into modules, record the important decisions and get a complete flow working early. Then I test the weak points and iterate.</p></div>
-<div class="cell build-action"></div></div></section><section class="build-module" id="taste" aria-labelledby="taste-title" tabindex="-1"><div class="grid" aria-hidden="true"><i class="v v1"></i><i class="v v2"></i><i class="v v3"></i><div class="rows"></div><div class="nodes n1"></div><div class="nodes n2"></div><div class="nodes n3"></div></div><div class="build-grid">
-<p class="cell build-label">05 / Taste</p><div class="cell build-note"><p>A decision from this site.<br>Placement is part of the design.</p></div>
-<div class="cell build-title"><h2 id="taste-title">The first solution<br>is rarely the solution.</h2></div>
-<div class="cell build-copy"><p>This portfolio is one example. The 3D studio began between the introduction and the projects. I moved it here to give the working method its own space.</p><p>The homepage returned to its grid: a clear statement, an explanation and a path into the work. The decision was about where the experience helps the story.</p></div>
-<div class="cell build-action"><a href="/grid-video.html#approach">See the homepage <span class="arrow" aria-hidden="true">&rarr;</span></a></div></div></section><section class="build-module build-proof" id="proof" aria-labelledby="proof-title" tabindex="-1"><div class="grid" aria-hidden="true"><i class="v v1"></i><i class="v v2"></i><i class="v v3"></i><div class="rows"></div><div class="nodes n1"></div><div class="nodes n2"></div><div class="nodes n3"></div></div><div class="build-grid">
-<p class="cell build-label">06 / Proof</p><div class="cell build-title"><h2 id="proof-title">Look at the decisions.<br>Then look at the work.</h2></div>
-<div class="cell proof-cell"><h3>NYME</h3><p><strong>Problem.</strong> A job application needs to make a relevant argument for a specific role.</p><p><strong>System &amp; decisions.</strong> Company research feeds a tailored CV, letter and website. Needs are framed as hypotheses; the applicant keeps the final decision.</p><p><strong>AI’s role.</strong> Research and tailored application material are part of the product itself.</p><a href="/nyme.html">Explore NYME <span class="arrow" aria-hidden="true">&rarr;</span></a></div>
-<div class="cell proof-cell"><h3>KAIZEN</h3><p><strong>Problem.</strong> Routine work takes time away from decisions that need a person.</p><p><strong>System &amp; decisions.</strong> Start with the workflow, then connect existing tools or build what is missing. Keep meaningful decisions with the user.</p><p><strong>Result.</strong> A practice focused on custom systems and automation around the actual work.</p><a href="/kaizen.html">Explore KAIZEN <span class="arrow" aria-hidden="true">&rarr;</span></a></div>
-<div class="cell proof-cell"><h3>This portfolio</h3><p><strong>System.</strong> Static pages, a shared visual grid and an optional React / Three.js studio.</p><p><strong>Decision.</strong> The message remains readable while 3D loads. A still image supports browsers where the scene cannot run.</p><p><strong>Iteration.</strong> Separate the studio from the homepage so each has a clear job.</p><a href="https://github.com/sbbstudio/portfolio" target="_blank" rel="noopener">Inspect the source <span class="arrow" aria-hidden="true">&rarr;</span></a></div>
-<div class="cell proof-cell"><h3>What I own</h3><p>The framing, decomposition, design direction and decisions about what ships.</p><p>AI participates in implementation and critique. I remain responsible for evaluating the result and understanding the system.</p><p>There is always more to learn. Part of the work is recognizing where deeper expertise is needed.</p></div>
+<div class="cell build-title"><h1 id="thinking-title">I build understanding<br>horizontally.</h1></div>
+<div class="cell build-copy"><p>My depth is in connecting disciplines, understanding systems and solving problems across boundaries.</p><p>I start with the problem, the person using the system and the outcome that matters. Then I break it into parts I can investigate, build and evaluate.</p></div>
+<div class="cell build-action"></div></div></section><section class="build-module build-range" id="range" aria-labelledby="range-title"><div class="grid" aria-hidden="true"><i class="v v1"></i><i class="v v2"></i><i class="v v3"></i><div class="rows"></div><div class="nodes n1"></div><div class="nodes n2"></div><div class="nodes n3"></div></div><div class="range-grid"><div class="cell range-intro"><p>02 / Operating range</p><h2 id="range-title">Across<br>the stack.</h2></div><div class="cell range-cell"><span class="range-index">01</span><h3>Product</h3><p>Understand the person, the problem and the outcome.</p></div><div class="cell range-cell"><span class="range-index">02</span><h3>Design</h3><p>Give the idea a clear form and a usable flow.</p></div><div class="cell range-cell"><span class="range-index">03</span><h3>Code</h3><p>Connect the interface to the behaviour behind it.</p></div><div class="cell range-cell"><span class="range-index">04</span><h3>Data</h3><p>Know what the system stores, needs and produces.</p></div><div class="cell range-cell"><span class="range-index">05</span><h3>AI</h3><p>Use it to research, implement and challenge the work.</p></div><div class="cell range-cell"><span class="range-index">06</span><h3>Systems</h3><p>Understand how the parts depend on each other.</p></div><div class="cell range-cell"><span class="range-index">07</span><h3>Growth</h3><p>Learn how the work reaches people and earns a place in their lives.</p></div></div></section><section class="build-module build-ai" id="ai" aria-labelledby="ai-title"><div class="grid" aria-hidden="true"><i class="v v1"></i><i class="v v2"></i><i class="v v3"></i><div class="rows"></div><div class="nodes n1"></div><div class="nodes n2"></div><div class="nodes n3"></div></div><div class="ai-grid">
+<div class="cell"><p class="build-kicker">03 / AI</p><h2 id="ai-title">AI changed<br>the equation.</h2></div>
+<blockquote class="cell">AI didn’t replace my need to understand technology. It changed how far that understanding can take me.</blockquote>
+<div class="cell ai-ownership"><p>I use AI for research, implementation, critique and testing.</p><p>I inspect the output, understand the important parts and decide what is ready to ship.</p></div>
+</div></section><section class="build-module build-method" id="method" aria-labelledby="method-title" tabindex="-1"><div class="grid" aria-hidden="true"><i class="v v1"></i><i class="v v2"></i><i class="v v3"></i><div class="rows"></div><div class="nodes n1"></div><div class="nodes n2"></div><div class="nodes n3"></div></div><div class="method-layout">
+<div class="cell method-heading"><p class="build-kicker">04 / How I build</p><h2 id="method-title">Problem first.<br>Tool second.</h2></div>
+<div class="cell method-context"><p>I don’t need to know the answer. I need to know how to systematically get to the answer.</p><p>I make assumptions explicit, keep decisions traceable and evaluate the whole flow. Every project leaves behind something I can use in the next one.</p></div>
+<ol class="method-steps"><li><span class="method-step-number">01</span><h3>Problem</h3><p>Who is this for, and what needs to change?</p></li><li><span class="method-step-number">02</span><h3>Research</h3><p>Understand the constraints and test the assumptions.</p></li><li><span class="method-step-number">03</span><h3>Architecture</h3><p>Choose the simplest structure that solves the problem.</p></li><li><span class="method-step-number">04</span><h3>Modules</h3><p>Break the system into parts with clear responsibilities.</p></li><li><span class="method-step-number">05</span><h3>Implementation</h3><p>Get the complete flow working early.</p></li><li><span class="method-step-number">06</span><h3>Evaluation</h3><p>Check the output, edge cases and failure paths.</p></li><li><span class="method-step-number">07</span><h3>System log</h3><p>Record the decisions and what changed.</p></li><li><span class="method-step-number">08</span><h3>Iteration</h3><p>Use what I learn to improve the next version.</p></li></ol></div></section><section class="build-module build-taste" id="taste" aria-labelledby="taste-title"><div class="grid" aria-hidden="true"><i class="v v1"></i><i class="v v2"></i><i class="v v3"></i><div class="rows"></div><div class="nodes n1"></div><div class="nodes n2"></div><div class="nodes n3"></div></div><div class="taste-layout">
+<p class="cell build-kicker">05 / Taste</p><div class="cell taste-heading"><h2 id="taste-title">The first solution<br>is rarely the solution.</h2></div>
+<div class="cell taste-copy"><p>I look at the complete experience: the flow, the language, the visual hierarchy and what happens when something goes wrong.</p><p>Then I change what isn’t working. Running code is a starting point. The result still has to make sense to the person using it.</p></div>
+</div></section><section class="build-module build-proof" id="proof" aria-labelledby="proof-title" tabindex="-1">
+<header class="proof-heading"><h2 id="proof-title">06 / Proof in the work</h2></header>
+<div class="proof-layout"><div class="grid" aria-hidden="true"><i class="v v1"></i><i class="v v2"></i><i class="v v3"></i><div class="rows"></div><div class="nodes n1"></div><div class="nodes n2"></div><div class="nodes n3"></div></div>
+<figure class="proof-media proof-media--nyme"><video controls playsinline preload="none" poster="/assets/opt/nyme/07-ops-poster.jpg" aria-label="NYME operations view"><source src="/assets/opt/nyme/07-ops.mp4" type="video/mp4"></video></figure>
+<figure class="proof-source"><figcaption>Portfolio / camera sampling</figcaption><pre><code><span class="code-comment">// Sample the complete camera track.</span>
+const time = p * asset.track.duration
+const cameraTime = still ? STATIC_CAMERA_TIME : time
+const sample = Math.min(
+  asset.track.keys.length - 1,
+  cameraTime * asset.track.fps
+)
+const index = Math.floor(sample)
+const alpha = sample - index
+
+<span class="code-comment">// Interpolate between the recorded frames.</span>
+const a = asset.track.keys[index]
+const b = asset.track.keys[
+  Math.min(index + 1, asset.track.keys.length - 1)
+]</code></pre></figure>
+<article class="cell proof-story"><h3>NYME</h3><p class="proof-lede">One argument. Built three ways.</p><p>Company research feeds a tailored CV, cover letter and website. The applicant keeps the final decision; company needs are framed as hypotheses.</p><p>The system connects research, writing, verification and delivery. The operations view above makes the work visible.</p><a href="/nyme.html">How NYME works <span class="arrow" aria-hidden="true">→</span></a></article>
+<article class="cell proof-story"><h3>This portfolio</h3><p class="proof-lede">One model. The complete camera track.</p><p>The studio uses a recorded camera path. Scroll sets the position in that path; interpolation carries the camera between frames.</p><p>The scene prepares before it appears. Reduced motion has a static view, and Skip keeps the content accessible without completing the journey.</p><a href="https://github.com/sbbstudio/portfolio" target="_blank" rel="noopener">Inspect the source <span class="arrow" aria-hidden="true">→</span></a></article>
 </div></section><section class="build-module" id="next" aria-labelledby="next-title" tabindex="-1"><div class="grid" aria-hidden="true"><i class="v v1"></i><i class="v v2"></i><i class="v v3"></i><div class="rows"></div><div class="nodes n1"></div><div class="nodes n2"></div><div class="nodes n3"></div></div><div class="build-grid">
 <p class="cell build-label">07 / What I’m learning next</p><div class="build-sequence"><p>Built → Used → Paid → Repeated → Scaled</p></div>
-<div class="cell build-title"><h2 id="next-title">From built<br>to used.</h2></div>
+<div class="cell build-title"><h2 id="next-title">Built is a beginning.</h2></div>
 <div class="cell build-copy"><p>Building a working system is one part of the job. I’m learning how to get it into the hands of the right people, understand why they return and turn usefulness into a sustainable business.</p><p>The next loop is distribution: built, used, paid, repeated, scaled.</p></div>
 <div class="cell build-action"><a href="/contact.html">Let’s build <span class="arrow" aria-hidden="true">&rarr;</span></a></div></div></section></main><footer class="build-footer"><p>Rune Øverland<br>© 2026</p><a href="/grid-video.html#work">Selected work <span class="arrow" aria-hidden="true">&rarr;</span></a><a href="mailto:rune@kaizenstudio.no">rune@kaizenstudio.no</a><a href="#top">Back to top ↑</a></footer></div>
-<script src="/assets/js/portfolio-shell.js" defer></script>
+
 <script type="module" src="/studio/runtime/build-hero.js"></script>
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "111e05e03c3f411fa8ebbbd04b820e76"}'></script>
 <script defer src="/assets/js/analytics.js"></script>
-</body></html>
+<noscript><style>.studio-placeholder {height:100svh}.studio-endcopy {opacity:1;visibility:visible}.studio-loading,.studio-skip,.studio-explore {display:none}</style></noscript></body></html>
