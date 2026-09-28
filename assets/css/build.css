@@ -5,7 +5,7 @@
 /* One full-width photograph spans Hero + Approach. Crop from the right to
    place Rune in the left third, leaving landscape behind the copy and CTAs. */
 .home-intro { position: relative; isolation: isolate; overflow: clip; background: #000; --intro-photo-height: 100%; --intro-photo-width: 100%; }
-.home-intro-photo { position: absolute; inset: 0 0 auto auto; width: 140%; max-width: none; height: var(--intro-photo-height); object-fit: cover; object-position: right center; z-index: -2; }
+.home-intro-photo { position: absolute; inset: 0 0 auto auto; width: 140%; max-width: none; height: var(--intro-photo-height); object-fit: cover; object-position: right center; filter: brightness(.84); z-index: -2; }
 .home-intro::before { content: ''; position: absolute; inset: 0 auto auto 0; width: var(--intro-photo-width); height: var(--intro-photo-height); z-index: -1; pointer-events: none; background: linear-gradient(transparent 8%,#000a 25%,#0009 40%,#0004 65%,#000a); }
 .home-photo .hero, .home-photo #approach.system-section { position: relative; background: transparent; color: #fff; }
 .home-photo .hero::before { content: none; }
@@ -25,6 +25,10 @@
 .system-cta { grid-column: 4; grid-row: 2; align-self: start; text-align: right; }
 .system-link { font-size: var(--cta-type-size); text-decoration: none; }
 .system-link:hover { text-decoration: none; }
+/* Two black grid cells frame the actions; the upper right cells retain the photo. */
+@media (min-width: 1024px) {
+  .home-intro .hero__cta { align-self: stretch; background: #000; }
+}
 @media (min-width: 1024px) and (max-width: 1279px), (min-width: 1024px) and (max-height: 760px) {
   .system-copy p { font-size: var(--t-meta); }
 }
