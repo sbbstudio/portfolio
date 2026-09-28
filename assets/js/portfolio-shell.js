@@ -3,18 +3,6 @@
   const nav = document.querySelector('.nav');
   const hero = document.querySelector('#hero');
   const sharedIntro = document.querySelector('.home-intro');
-  if (sharedIntro) {
-    const title = sharedIntro.querySelector('.system-title');
-    // Mobile stacks the grid: end the shared photo at the end of Section 1's title.
-    const sizeIntroPhoto = () => {
-      if (innerWidth < 1024) sharedIntro.style.setProperty('--intro-photo-height', `${title.getBoundingClientRect().bottom - sharedIntro.getBoundingClientRect().top}px`);
-      else sharedIntro.style.removeProperty('--intro-photo-height');
-    };
-    const observer = new ResizeObserver(sizeIntroPhoto);
-    observer.observe(hero);
-    observer.observe(title);
-    sizeIntroPhoto();
-  }
   let lastScroll = scrollY, upwardScroll = 0, frame = 0, initialized = false;
   const updateNav = () => {
     frame = 0;
