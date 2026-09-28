@@ -15,7 +15,7 @@
 .home-photo .nav:not(.is-paper) .cell + .cell::before { background: #11181340; }
 .home-photo .hero__aside dd { color: #d2d2d2; }
 .system-grid { position: relative; display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); grid-template-rows: repeat(2,minmax(0,1fr)); height: var(--box); }
-.system-title { grid-column: 1 / 3; grid-row: 1; color: #fff; }
+.system-title { grid-column: 1 / 3; grid-row: 2; color: #fff; }
 .system-title h2 { margin: 0; font-size: min(var(--t-xxl), calc(var(--row) / 3.4)); font-weight: 500; line-height: 1; letter-spacing: -.04em; }
 .system-label { grid-column: 1; grid-row: 2; align-self: end; font-size: var(--t-meta); }
 .system-copy { grid-column: 3; grid-row: 2; display: flex; flex-direction: column; gap: var(--cell); }
