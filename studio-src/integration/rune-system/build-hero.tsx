@@ -2,15 +2,17 @@ export {}
 const host = document.getElementById('studio-root')!
 const nav = document.querySelector<HTMLElement>('.nav')!
 const hero = document.getElementById('hero')!
-let lastScroll = scrollY, upwardScroll = 0
+let lastScroll = scrollY, upwardScroll = 0, initialized = false
 function updateNav() {
   const released = hero.getBoundingClientRect().bottom <= 12
   const delta = scrollY - lastScroll
-  upwardScroll = delta < 0 ? upwardScroll - delta : 0
+  if (delta !== 0) upwardScroll = delta < 0 ? upwardScroll - delta : 0
   nav.classList.toggle('is-paper', released)
-  nav.classList.toggle('is-hidden', released && delta > 0 && upwardScroll < 120)
+  if (!released || upwardScroll >= 120) nav.classList.remove('is-hidden')
+  else if (delta > 0 || !initialized) nav.classList.add('is-hidden')
   nav.inert = false
   lastScroll = scrollY
+  initialized = true
 }
 addEventListener('scroll', updateNav, { passive: true })
 addEventListener('resize', updateNav)

@@ -53,3 +53,17 @@
 .story-chapter.story-intro p { max-width: 40ch; }
 .story-chapter.story-intro > :last-child { margin-bottom: 0; }
 .story-fallback .story-intro, .is-reading .story-intro { padding-block: 80px; background: #000; }
+
+/* Closing invitation: the homepage contact grid and shared content-action style. */
+.build-page .build-contact:focus { outline: none; }
+.build-page .nav.is-hidden:has(:focus-visible) { transform: translateY(0); }
+.build-contact .contact__h { grid-column: 2 / 4; grid-row: 1; align-self: center; justify-self: center; text-align: center; }
+.build-contact .contact__h h2 { margin: 0 auto; max-width: 20ch; font-size: var(--t-h1); font-weight: 500; line-height: 1.1; letter-spacing: -.032em; }
+.build-contact .contact__lede { grid-column: 2 / 4; grid-row: 2; align-self: center; justify-self: center; text-align: center; }
+.build-contact .contact__lede p { margin: 0 auto; max-width: 44ch; font-size: var(--t-h4); font-weight: 500; line-height: 1.4; letter-spacing: -.012em; }
+@media (max-width:1023px) {
+  .build-contact .system-grid { padding-block: calc(var(--cell) * 4); gap: var(--cell); }
+  .build-contact .contact__h, .build-contact .contact__lede, .build-contact .contact__cta { grid-column: 1 / -1; }
+  .build-contact .contact__h h2 { font-size: clamp(36px,9vw,60px); }
+  .build-contact .contact__cta { grid-row: 3; }
+}
