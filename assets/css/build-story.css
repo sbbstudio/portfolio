@@ -54,6 +54,26 @@
 .story-chapter.story-intro > :last-child { margin-bottom: 0; }
 .story-fallback .story-intro, .is-reading .story-intro { padding-block: 80px; background: #000; }
 
+/* One grid row recaps the four chapters before the closing invitation. */
+.build-summary__grid { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); min-height: var(--row); }
+.build-summary h2 { margin: 0 0 var(--cell); font-size: var(--t-h3); font-weight: 500; line-height: 1.2; letter-spacing: -.025em; }
+.build-summary p { margin: 0; max-width: 32ch; font-size: var(--t-body); line-height: 1.4; }
+.build-summary .build-summary__number { margin-bottom: calc(var(--cell) * 2); font-size: var(--t-meta); color: var(--ink-2); }
+@media (max-width:1023px) {
+  .build-summary__grid { grid-template-columns: repeat(2,minmax(0,1fr)); min-height: 0; }
+  .build-summary__grid > .cell { padding-block: calc(var(--cell) * 2); }
+  .build-summary__grid > .cell:nth-child(even) { border-left: 1px solid var(--line); }
+  .build-summary__grid > .cell:nth-child(n+3) { border-top: 1px solid var(--line); }
+  .build-summary h2 { font-size: 24px; }
+  .build-summary p { font-size: 16px; }
+}
+@media (max-width:479px) {
+  .build-summary__grid { grid-template-columns: 1fr; }
+  .build-summary__grid > .cell:nth-child(even) { border-left: 0; }
+  .build-summary__grid > .cell + .cell { border-top: 1px solid var(--line); }
+  .build-summary .build-summary__number { margin-bottom: var(--cell); }
+}
+
 /* Closing invitation: the homepage contact grid and shared content-action style. */
 .build-page .build-contact:focus { outline: none; }
 .build-page .nav.is-hidden:has(:focus-visible) { transform: translateY(0); }
