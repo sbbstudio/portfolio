@@ -41,7 +41,8 @@ function Story({ host, intro, chapters }: { host: HTMLElement; intro: Chapter; c
       scrollState.p = p
       host.dataset.progress = String(p)
       host.dataset.raw = String(raw)
-      host.style.setProperty('--story-end', String(textAt(raw, 3)))
+      // The scene fades out with the ending's text, so only the last hold turns the stage black.
+      host.style.setProperty('--story-end', String(textAt(raw, holds.length - 1)))
       // Opacity is visual only: chapters hold no focusable content, so every chapter
       // stays in the accessibility tree and screen readers can read the whole story.
       opening.current?.style.setProperty('--chapter-opacity', String(staticMode ? 1 : introAt(raw)))

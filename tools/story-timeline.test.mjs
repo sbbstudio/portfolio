@@ -26,7 +26,22 @@ test('each reading window freezes the camera and only shows its own text', () =>
     }
   }
   assert.equal(textAt(0, 0), 0)
-  assert.equal(textAt(1, 3), 1, 'ending remains visible until the footer')
+})
+test('five holds in film order: four stops, then the recap on the final view', () => {
+  assert.deepEqual(holds.map(h => h.id), ['thinking', 'method', 'ai', 'system', 'recap'])
+  assert.deepEqual(holds.map(h => [h.start, h.end, h.camera]), [
+    [.10, .20, .18], [.30, .40, .29], [.50, .60, .44], [.70, .80, .70], [.90, 1, 1],
+  ])
+  for (let i = 1; i < holds.length; i++) {
+    assert.ok(holds[i].start > holds[i - 1].end, 'holds do not overlap')
+    assert.ok(holds[i].camera > holds[i - 1].camera, 'each stop is further along the camera track')
+  }
+})
+test('only the last hold stays visible to the end; earlier holds fade out', () => {
+  const last = holds.length - 1
+  assert.equal(textAt(1, last), 1, 'ending remains visible until the footer')
+  for (let i = 0; i < last; i++) assert.equal(textAt(holds[i].end, i), 0)
+  for (let i = 0; i < last; i++) assert.equal(textAt(1, i), 0)
 })
 test('the opening is readable on arrival and clears before the first chapter', () => {
   assert.equal(introAt(0), 1)
