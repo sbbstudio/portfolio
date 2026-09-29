@@ -52,6 +52,8 @@ Config:
 - `tsconfig.json` — type checking for `studio-src/` (`npx tsc --noEmit`).
 - `.gitignore` — ignored files (`node_modules/`, `docs/` except `docs/decisions/`).
 - `.gitattributes` — marks `studio/runtime/*.js` as generated and keeps its whitespace.
+- `.prettierrc` — formatter settings matching the existing code (no semicolons, single quotes, 100 columns).
+- `.editorconfig` — editor defaults: UTF-8, LF, two spaces, trimmed trailing whitespace, final newline.
 
 Deploy:
 
