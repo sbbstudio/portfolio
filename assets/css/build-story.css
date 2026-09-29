@@ -2,6 +2,8 @@
 .story-journey { height: 650svh; position: relative; }
 .story-stage { position: sticky; top: 0; height: 100svh; overflow: hidden; isolation: isolate; background: #0b0b0d; }
 .story-canvas { position: absolute; inset: 0; opacity: calc(1 - var(--story-end, 0)); }
+/* The stage stays dark until the first frame is ready; the status text sits in .story-controls. */
+#studio-root:not([data-load-phase="ready"]) .story-canvas { visibility: hidden; }
 .story-canvas > div { height: 100% !important; }
 .story-grid { position: absolute; inset: 0; pointer-events: none; opacity: .55; }
 .story-grid i { position: absolute; top: 0; bottom: 0; width: 1px; background: #ffffff18; }

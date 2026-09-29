@@ -110,14 +110,14 @@ function Story({ host, intro, chapters }: { host: HTMLElement; intro: Chapter; c
   return <section ref={section} className={`story-journey ${staticMode ? 'is-reading' : ''}`} aria-label="How I build">
     <div className="story-stage">
       {!staticMode && <div className="story-canvas" aria-hidden="true"><AtelierCanvas key={attempt} still={false} onLoad={onLoad} /></div>}
-      {!staticMode && load.phase !== 'ready' && <div className="studio-loading" role="status"><p>Opening the studio…</p></div>}
       <div className="story-grid" aria-hidden="true"><i/><i/><i/><b/></div>
       <div className="story-chapters">
         <article id={intro.id} ref={opening} className="story-chapter story-intro" tabIndex={-1} dangerouslySetInnerHTML={{ __html: intro.html }} />
         {chapters.map((chapter, i) => <article key={chapter.id} id={chapter.id} ref={el => { panels.current[i] = el }} className={`story-chapter story-chapter--${i + 1}`} tabIndex={-1} dangerouslySetInnerHTML={{ __html: chapter.html }} />)}
       </div>
       <div className="story-controls">
-        {!staticMode ? <><span>Scroll to explore ↓</span><button onClick={read}>Read without animation <span className="arrow" aria-hidden="true">→</span></button></> : !reduced && <button onClick={replay}>Replay animation <span aria-hidden="true">↻</span></button>}
+        {/* Load status lives in the controls row, never over the centered intro title. */}
+        {!staticMode ? <><span role="status">{load.phase === 'ready' ? 'Scroll to explore ↓' : 'Opening the studio…'}</span><button onClick={read}>Read without animation <span className="arrow" aria-hidden="true">→</span></button></> : !reduced && <button onClick={replay}>Replay animation <span aria-hidden="true">↻</span></button>}
       </div>
     </div>
   </section>
