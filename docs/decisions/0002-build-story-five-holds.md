@@ -14,9 +14,9 @@ The scroll story on `/build/` has five reading holds on the camera track, in thi
 | 02 Method | .30–.40 | .29 | straight down from above |
 | 03 AI | .50–.60 | .44 | angled, the named stations |
 | 04 System | .70–.80 | .70 | front |
-| Recap | .90–1 | 1 | scene fades to black, the four headlines listed |
+| Recap | .90–1 | 1 | scene fades to black, the four headlines lit word by word (0003) |
 
-The recap comes last, not first. It is the only hold that fades the scene to black. Text size steps down from the opening title to the four stops to the recap list.
+The recap comes last, not first. It is the only hold that fades the scene to black. Text size steps down from the opening title to the four stops; the recap uses the stops' size.
 
 ## Why
 

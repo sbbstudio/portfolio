@@ -57,17 +57,21 @@
 .story-chapter.story-intro > :last-child { margin-bottom: 0; }
 .story-fallback .story-intro, .is-reading .story-intro { padding-block: 80px; background: #000; }
 
-/* Closing recap: the four stop headlines as a centered list on black, in every mode.
+/* Closing recap: the four stop headlines as one centered paragraph on black, in every mode.
    The id selector outranks the shared chapter rules (layout, background, reading-mode indent);
    reading mode and the fallback keep their own chapter padding, so the recap scrolls like the others. */
 #recap { align-items: center; justify-content: center; text-align: center; background: #000; }
 .story-journey:not(.is-reading) #recap { padding-block: 0; }
 #recap > * { width: 100%; max-width: 620px; margin-inline: 0; }
 #recap .story-label { font-size: var(--t-meta); font-weight: 400; }
-/* Smaller than the stops so it reads as a list of what came before, not a fifth headline. */
-.story-recap { margin: 0; padding: 0; list-style: none; }
-.story-recap li { font-size: var(--t-h3); font-weight: 500; line-height: 1.2; letter-spacing: -.025em; text-wrap: balance; }
-.story-recap li + li { margin-top: 12px; }
+/* The headlines light word by word as the recap hold is scrolled. --p (0–1) is set on #recap by the
+   story timeline (recapProgress); --n is the word count on the paragraph, --i each word's index.
+   Word i ramps from dim (.22) to full over its own 1/n slice of --p. The ramp is linear on purpose:
+   scroll speed is the easing. Without --p (no script) every word is lit. */
+#recap .story-recap { margin: 0; font-size: clamp(34px,3.75vw,56px); font-weight: 500; line-height: 1.1; letter-spacing: -.025em; text-wrap: balance; }
+.story-recap span { opacity: clamp(.22, calc(.22 + .78 * (var(--p, 1) * var(--n) - var(--i))), 1); }
+/* Reading mode, the no-script fallback and reduced motion (which renders reading mode) show plain text. */
+.story-fallback .story-recap span, .is-reading .story-recap span { opacity: 1; }
 
 /* One grid row recaps the four chapters before the closing invitation. */
 .build-summary__grid { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); min-height: var(--row); }
@@ -114,5 +118,5 @@
     --t-meta: calc(var(--closing-base) * .9375);
   }
   .build-contact .system-link { font-size: var(--t-meta); }
-  .story-recap li { font-size: clamp(20px,5.4vw,30px); }
+  #recap .story-recap { font-size: clamp(26px,6.75vw,44px); }
 }

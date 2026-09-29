@@ -27,3 +27,12 @@ export function textAt(raw: number, index: number) {
 export function introAt(raw: number) {
   return Math.max(0, Math.min(1, (.085 - raw) / .045))
 }
+// Raw scroll at which the last recap word is fully lit. It sits before the hold ends at 1,
+// so the whole recap reads lit for the last stretch of the hold instead of finishing on arrival.
+export const recapLitAt = .98
+// Word-reveal progress for the recap: 0 up to the recap hold's start, linear to 1 at recapLitAt, then 1.
+// Linear on purpose: the reader's scroll is the easing.
+export function recapProgress(raw: number) {
+  const start = holds[holds.length - 1].start
+  return Math.max(0, Math.min(1, (raw - start) / (recapLitAt - start)))
+}
