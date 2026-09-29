@@ -34,19 +34,10 @@ function Story({ host, intro, chapters }: { host: HTMLElement; intro: Chapter; c
       host.dataset.progress = String(p)
       host.dataset.raw = String(raw)
       host.style.setProperty('--story-end', String(textAt(raw, 3)))
-      if (opening.current) {
-        const opacity = staticMode ? 1 : introAt(raw)
-        opening.current.style.setProperty('--chapter-opacity', String(opacity))
-        opening.current.inert = opacity === 0
-        opening.current.setAttribute('aria-hidden', String(opacity === 0))
-      }
-      panels.current.forEach((panel, i) => {
-        if (!panel) return
-        const opacity = staticMode ? 1 : textAt(raw, i)
-        panel.style.setProperty('--chapter-opacity', String(opacity))
-        panel.inert = opacity === 0
-        panel.setAttribute('aria-hidden', String(opacity === 0))
-      })
+      // Opacity is visual only: chapters hold no focusable content, so every chapter
+      // stays in the accessibility tree and screen readers can read the whole story.
+      opening.current?.style.setProperty('--chapter-opacity', String(staticMode ? 1 : introAt(raw)))
+      panels.current.forEach((panel, i) => panel?.style.setProperty('--chapter-opacity', String(staticMode ? 1 : textAt(raw, i))))
       host.dispatchEvent(new Event('studio:presentation'))
       window.dispatchEvent(new Event(ATELIER_INVALIDATE))
     }
@@ -58,7 +49,7 @@ function Story({ host, intro, chapters }: { host: HTMLElement; intro: Chapter; c
   }, [host, staticMode])
   useEffect(() => {
     // Scroll schedules the presentation update in the next frame. Wait until
-    // that update has removed inert before moving keyboard focus to the panel.
+    // that update has run before moving keyboard focus to the panel.
     const focusPanel = (panel: HTMLElement | null) => {
       requestAnimationFrame(() => requestAnimationFrame(() => panel?.focus({ preventScroll: true })))
     }
