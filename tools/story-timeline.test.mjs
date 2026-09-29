@@ -1,6 +1,6 @@
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
-import { cameraAt, holds, introAt, recapLitAt, recapProgress, storyEndAt, textAt } from '../studio-src/integration/rune-system/story-timeline.ts'
+import { cameraAt, holds, introAt, recapLitAt, recapProgress, storyEndAt, textAt, textFade } from '../studio-src/integration/rune-system/story-timeline.ts'
 
 test('the full original track is continuous, forward and reaches both endpoints', () => {
   assert.equal(cameraAt(-1), 0)
@@ -63,14 +63,17 @@ test('the scene fades to black with the last hold only', () => {
   assert.equal(storyEndAt(holds[last].start), 0)
   assert.equal(storyEndAt(1), 1)
 })
-test('recap words light linearly from the recap start to recapLitAt, then stay lit', () => {
-  const recap = holds[holds.length - 1]
+test('recap words light linearly once the recap text is fully in, until recapLitAt, then stay lit', () => {
+  const last = holds.length - 1, recap = holds[last]
+  const start = recap.start + textFade
   assert.equal(recap.id, 'recap')
-  assert.ok(recapLitAt > recap.start && recapLitAt < recap.end, 'fully lit before the hold ends')
+  assert.ok(Math.abs(start - .925) < 1e-9 && recapLitAt === .98)
+  assert.ok(recapLitAt > start && recapLitAt < recap.end, 'fully lit before the hold ends')
+  assert.equal(textAt(start, last), 1, 'the reveal starts when the paragraph is fully visible')
   assert.equal(recapProgress(0), 0)
-  assert.equal(recapProgress(recap.start - .001), 0)
   assert.equal(recapProgress(recap.start), 0)
-  assert.ok(Math.abs(recapProgress((recap.start + recapLitAt) / 2) - .5) < 1e-9, 'linear: midpoint is one half')
+  assert.equal(recapProgress(start), 0)
+  assert.ok(Math.abs(recapProgress((start + recapLitAt) / 2) - .5) < 1e-9, 'linear: midpoint is one half')
   assert.equal(recapProgress(recapLitAt), 1)
   assert.equal(recapProgress(recap.end), 1)
   assert.equal(recapProgress(2), 1)

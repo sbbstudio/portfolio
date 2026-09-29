@@ -9,7 +9,7 @@
 The recap hold on `/build/` (raw scroll .90–1, see 0002) shows the four stop headlines as one paragraph, word for word as on the stops: "Several disciplines. One build. Problem first. Tool second. AI output is a proposal. One core. Three apps."
 
 - Every word starts dim (white at .22 opacity) and turns full white, one after another, as the reader scrolls through the hold.
-- The reveal is driven by a progress value `--p` on `#recap`: 0 at raw .90, linear to 1 at raw .98 (`recapLitAt`), then 1. The whole paragraph is lit for the last .02 of the hold.
+- The reveal is driven by a progress value `--p` on `#recap`: 0 until raw .925, when the recap text has fully faded in (hold start .90 plus the .025 text fade), linear to 1 at raw .98 (`recapLitAt`), then 1. No word lights while the paragraph is still appearing, and the whole paragraph is lit for the last .02 of the hold.
 - The curve is linear. Scroll is the easing; nothing is layered on top.
 - Per-word opacity is plain CSS from `--p`, the word count `--n` and each word's index `--i`.
 - Reading mode, the no-script fallback and reduced motion show every word lit, as ordinary text.
