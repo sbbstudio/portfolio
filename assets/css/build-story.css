@@ -65,14 +65,19 @@
 .story-journey:not(.is-reading) #recap { padding-block: 0; }
 #recap > * { width: 100%; max-width: 620px; margin-inline: 0; }
 #recap .story-label { font-size: var(--t-meta); font-weight: 400; }
-/* The headlines light word by word as the recap hold is scrolled. --p (0–1) is set on #recap by the
+/* One line per headline: each .story-recap__line is a block, so a headline never shares a line with
+   the next. The paragraph drops the 620px column cap so the longest headline fits on one line on
+   desktop; on narrow screens a headline wraps inside its own line.
+   The headlines light word by word as the recap hold is scrolled. --p (0–1) is set on #recap by the
    story timeline (recapProgress); --n is the word count on the paragraph, --i each word's index.
    Word i ramps from dim (.22) to full over its own 1/n slice of --p. The ramp is linear on purpose:
    scroll speed is the easing. Without --p (no script) every word is lit. */
-#recap .story-recap { margin: 0; font-size: clamp(34px,3.75vw,56px); font-weight: 500; line-height: 1.1; letter-spacing: -.025em; text-wrap: balance; }
-.story-recap span { opacity: clamp(.22, calc(.22 + .78 * (var(--p, 1) * var(--n) - var(--i))), 1); }
+#recap .story-recap { max-width: none; margin: 0; font-size: clamp(34px,3.75vw,56px); font-weight: 500; line-height: 1.1; letter-spacing: -.025em; }
+/* Balance applies per headline, so a wrapped headline splits evenly instead of leaving one word alone. */
+.story-recap__line { display: block; text-wrap: balance; }
+.story-recap__line > span { opacity: clamp(.22, calc(.22 + .78 * (var(--p, 1) * var(--n) - var(--i))), 1); }
 /* Reading mode, the no-script fallback and reduced motion (which renders reading mode) show plain text. */
-.story-fallback .story-recap span, .is-reading .story-recap span { opacity: 1; }
+.story-fallback .story-recap__line > span, .is-reading .story-recap__line > span { opacity: 1; }
 
 /* One grid row recaps the four chapters before the closing invitation. */
 .build-summary__grid { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); min-height: var(--row); }

@@ -13,7 +13,8 @@ The recap hold on `/build/` (raw scroll .90–1, see 0002) shows the four stop h
 - The curve is linear. Scroll is the easing; nothing is layered on top.
 - Per-word opacity is plain CSS from `--p`, the word count `--n` and each word's index `--i`.
 - Reading mode, the no-script fallback and reduced motion show every word lit, as ordinary text.
-- Type follows the stops: weight 500, tracking -.025em, the stops' size, centered, at most 620px wide.
+- Type follows the stops: weight 500, tracking -.025em, the stops' size, centered.
+- Each headline sits on its own line, four lines in all. The paragraph is wider than the 620px column so no headline breaks on desktop; on a phone a headline wraps within its own line. The word reveal runs across the lines unchanged.
 
 ## Why
 
