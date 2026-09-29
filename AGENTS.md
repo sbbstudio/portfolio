@@ -64,6 +64,7 @@ Docs:
 - `AGENTS.md` — this file.
 - `CLAUDE.md` — imports this file.
 - `ANALYTICS.md` — what the site measures and what it does not.
+- `CHANGELOG.md` — notable changes, newest first.
 
 ## Large files
 
