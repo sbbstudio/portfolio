@@ -1,7 +1,14 @@
 import { lazy, Suspense, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { createRoot } from 'react-dom/client'
 // three.js and the canvas load only when the animation actually runs, never in reading/reduced mode.
-const AtelierCanvas = lazy(() => import('../../components/atelier-canvas'))
+// A failed chunk download must not throw out of Suspense: that would unmount the whole root
+// and leave the page empty. It reports the same error as a failed model load instead, which
+// sends the story to reading mode. The lazy result is cached, so Replay after this falls back again.
+const AtelierCanvas = lazy(() => import('../../components/atelier-canvas').catch(() => ({ default: CanvasUnavailable })))
+function CanvasUnavailable({ onLoad }: { still: boolean; onLoad: (state: LoadState) => void }) {
+  useEffect(() => onLoad({ phase: 'error', loaded: 0, total: 0 }), [onLoad])
+  return null
+}
 import { useReducedMotion } from '../../lib/motion'
 import { scrollState } from '../../lib/scroll'
 import { ATELIER_INVALIDATE, type LoadState } from '../../lib/atelier'
