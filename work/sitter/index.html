@@ -1,0 +1,687 @@
+<!doctype html>
+<html lang="en" data-nav-theme="ink">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rune Øverland — Sitter, a work sample for the technical reader</title>
+<meta name="description" content="Sitter is a local-first spaced-repetition app for children. This page is for the technical reader: what it is, whether it is real, which file to read first, how to run the tests in the browser, and what it does not do.">
+<link rel="icon" href="/favicon.ico?v=r1" sizes="16x16 32x32 48x48">
+<link rel="stylesheet" href="/nav-system.css">
+<style>
+/* ============================================================
+   WORK SAMPLE — Sitter. Hvit tech lead-flate.
+   Én side å videresende: en rekrutterer sender den til teknisk
+   ansvarlig, som skal kunne sjekke alt på fem minutter.
+   Fem blokker: 01 hva det er · 02 er det ekte · 03 les denne
+   fila først · 04 kjør det · 05 hva den ikke gjør.
+
+   SYSTEMET (how-i-work.html, forsidens kanon på hvitt)
+   BG-div          hvit #FFF, padding 10 — rammen hele siden ligger i
+   Grid-div        2 rader × 4 kolonner per 100vh, 6px noder i kryss
+   Innhold         20px padding innenfor gridlinjene (--cell)
+   Tekst bor i rutene. Vekt 500/400. Ingen grå flater, ingen
+   rammer rundt kort. Hver påstand har en kilde ett klikk unna.
+   ============================================================ */
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+body { margin: 0; }
+
+:root {
+  --paper:  #FFFFFF;
+  --ground: #000000;
+  --ink:    #050505;
+  --ink-2:  rgba(5, 5, 5, .55);
+  --ink-3:  rgba(5, 5, 5, .34);
+  --line:   rgba(5, 5, 5, .14);
+  --accent: #3D6FC4;
+
+  --pad:  10px;
+  --cell: 20px;
+  --hair: 1px;
+  --node: 6px;
+  --ez: cubic-bezier(.22, .61, .36, 1);
+
+  --t-xxl:     min(6.875rem, 7.3vw);
+  --t-xl:      5rem;
+  --t-h1:      3.75rem;
+  --t-h2:      2.8125rem;
+  --t-h3:      1.875rem;
+  --t-h4:      1.31rem;
+  --t-caption: .9375rem;
+  --t-meta:    .9375rem;
+  --t-fine:    .75rem;
+  --t-body:    1.125rem;
+  --t-base:    1rem;
+
+  --box:  calc(100vh - (var(--pad) * 2));
+  --row:  calc(var(--box) / 2);
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: ui-sans-serif, -apple-system, "Helvetica Neue", Arial, sans-serif;
+  font-size: var(--t-base);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ─── BG-DIV ────────────────────────────────────────────────── */
+.page { position: relative; margin: var(--pad); background: var(--paper); }
+
+/* ─── GRID-DIV — nettet bor i hver modul ────────────────────── */
+.grid { position: absolute; inset: 0; z-index: 40; pointer-events: none; }
+.grid .v { position: absolute; top: 0; bottom: 0; width: var(--hair); background: var(--line); }
+.grid .v1 { left: 25%; }  .grid .v2 { left: 50%; }  .grid .v3 { left: 75%; }
+.grid .rows {
+  position: absolute; inset: 0;
+  background-image: repeating-linear-gradient(to bottom,
+    var(--line) 0, var(--line) var(--hair),
+    transparent var(--hair), transparent var(--row));
+}
+.grid .nodes {
+  position: absolute; top: 0; bottom: 0;
+  width: var(--node); margin-left: calc(var(--node) / -2);
+  background-image: repeating-linear-gradient(to bottom,
+    #050505 0, #050505 var(--node),
+    transparent var(--node), transparent var(--row));
+  background-position: 0 calc(var(--node) / -2);
+}
+.grid .n1 { left: 25%; }  .grid .n2 { left: 50%; }  .grid .n3 { left: 75%; }
+.grid--footer { --line: rgba(255, 255, 255, .16); }
+.grid--footer .nodes {
+  background-image: repeating-linear-gradient(to bottom,
+    var(--paper) 0, var(--paper) var(--node),
+    transparent var(--node), transparent var(--row));
+}
+
+/* ─── FELLES ────────────────────────────────────────────────── */
+.cols { display: grid; grid-template-columns: repeat(4, 1fr); }
+.cell { min-width: 0; padding: var(--cell); }
+.mline { display: none; }
+.label {
+  font-size: var(--t-meta); line-height: 1.4;
+  letter-spacing: .14em; text-transform: uppercase;
+  color: var(--ink-2);
+}
+a { color: inherit; }
+a:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
+p { margin: 0; }
+p + p { margin-top: 1em; }
+
+/* ═══ NAV — ren tekst, hvit rygg, scroll-down-hide ═══════════ */
+.nav {
+  position: fixed;
+  top: var(--pad); left: var(--pad); right: var(--pad);
+  z-index: 50;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  background: var(--paper);
+  box-shadow: 0 calc(var(--pad) * -1) 0 0 var(--paper);
+  border-bottom: var(--hair) solid var(--line);
+  transition: transform .45s var(--ez);
+}
+.nav.is-hidden { transform: translateY(calc(-100% - var(--pad) - 2px)); }
+.nav .cell { line-height: 1.3; letter-spacing: -.012em; font-weight: 400; }
+.nav a { text-decoration: none; color: #000; }
+.nav__name { grid-column: 1 / 2; }
+.nav__links { grid-column: 2 / 3; display: flex; flex-wrap: wrap; gap: 6px 1.25ch; }
+.nav__links a[aria-current="page"] { color: var(--accent); }
+.nav .nav__jumps {
+  grid-column: 3 / 4;
+  display: flex; flex-direction: column; align-items: flex-start; gap: 0;
+  line-height: 1.5; font-weight: 400; letter-spacing: 0;
+}
+.nav__jumps a { white-space: nowrap; }
+.nav__jumps a span { padding-right: .75ch; font-variant-numeric: tabular-nums; }
+.nav__jumps a.is-here { color: var(--accent); }
+.nav__cta { grid-column: 4 / 5; text-align: right; display: flex; justify-content: flex-end; gap: 1.25ch; }
+
+/* ═══ MODULENE ═══════════════════════════════════════════════
+   Hver blokk er én modul på minst én --box, nettet inni.
+   Rute 1: nummer og tittel. Rute 2–3: teksten. Rute 4: «Check»
+   — kildene, én per påstand. Rad 2 bærer bevisbildet der det
+   finnes (telefon i 01, terminal i 04).                       */
+.mod { position: relative; min-height: var(--box); }
+.mod .cols { min-height: var(--box); grid-template-rows: repeat(2, minmax(var(--row), auto)); }
+.mod .cell { position: relative; z-index: 1; }
+
+.mod__head { grid-column: 1 / 2; grid-row: 1 / 2; }
+.mod__head .label { display: block; margin-bottom: 14px; }
+.mod__head h2 {
+  margin: 0;
+  font-size: var(--t-h2); line-height: 1.1;
+  letter-spacing: -.012em; font-weight: 500;
+}
+.mod__body { grid-column: 2 / 4; grid-row: 1 / 2; font-size: var(--t-body); line-height: 1.4; }
+.mod__body strong { font-weight: 500; }
+.mod__check { grid-column: 4 / 5; grid-row: 1 / 2; }
+.check { margin: 0; padding: 0; list-style: none; }
+.check .label { display: block; margin-bottom: 14px; }
+.check li { font-size: var(--t-meta); line-height: 1.4; margin-bottom: 10px; }
+.check a { text-decoration: none; }
+.check a:hover, .check a:focus-visible { color: var(--accent); }
+.check .arrow { display: inline-block; transition: transform .35s var(--ez); }
+.check a:hover .arrow { transform: translateX(.5ch); }
+.check small { display: block; color: var(--ink-3); letter-spacing: 0; text-transform: none; }
+
+/* Rad 2 — bevisruter */
+.mod__proof { grid-row: 2 / 3; }
+.mod__proof figure { margin: 0; }
+.mod__proof figcaption {
+  margin-top: 10px;
+  font-size: var(--t-fine); line-height: 1.4;
+  letter-spacing: .14em; text-transform: uppercase; color: var(--ink-2);
+}
+.mod__proof img { display: block; width: 100%; height: auto; }
+
+/* ═══ HERO — modul 0 ═════════════════════════════════════════ */
+/* Rad 1: tittel og «hvem er dette for» hviler på midtstreken
+   (align-self end), så den faste naven aldri dekker dem. Rad 2:
+   innholdsfortegnelsen henger under streken.                  */
+.hero .cols { grid-template-rows: repeat(2, minmax(var(--row), auto)); }
+.hero__title { grid-column: 1 / 3; grid-row: 1 / 2; align-self: end; }
+.hero__title .label { display: block; margin-bottom: 18px; }
+.hero__title h1 {
+  margin: 0 0 18px;
+  font-size: var(--t-xxl); line-height: 1.02;
+  letter-spacing: -.012em; font-weight: 500;
+}
+.hero__title p { font-size: var(--t-h4); line-height: 1.3; letter-spacing: -.012em; max-width: 30ch; }
+.hero__why { grid-column: 3 / 5; grid-row: 1 / 2; align-self: end; font-size: var(--t-body); line-height: 1.4; }
+.hero__why .label { display: block; margin-bottom: 14px; }
+.hero__why p { max-width: 44ch; }
+.hero__index { grid-column: 1 / 5; grid-row: 2 / 3; align-self: start; padding: 0; }
+.index { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(4, 1fr); }
+.index li { padding: var(--cell); }
+.index li:nth-child(5) { grid-column: 1 / 2; }
+.index a { text-decoration: none; display: block; font-size: var(--t-h4); line-height: 1.3; letter-spacing: -.012em; }
+.index a span { display: block; font-size: var(--t-meta); letter-spacing: .14em; color: var(--ink-2); margin-bottom: 4px; }
+.index a:hover, .index a:focus-visible { color: var(--accent); }
+
+/* ═══ 01 — telefonen i rute 4, rad 1–2 ═══════════════════════ */
+.phone { grid-column: 4 / 5; grid-row: 1 / 3; align-self: start; }
+.phone figure { max-width: 300px; }
+
+/* ═══ 02 — levende badges ════════════════════════════════════ */
+.badges { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 18px; padding: 0; list-style: none; }
+.badges img { display: block; height: 20px; }
+
+/* ═══ 03 — filkart ═══════════════════════════════════════════ */
+.tree {
+  margin: 18px 0 0;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: var(--t-caption); line-height: 1.6;
+  white-space: pre; overflow-x: auto;
+}
+.tree b { font-weight: 500; }
+
+/* ═══ 04 — kjør det ══════════════════════════════════════════ */
+.run { margin: 0 0 18px; padding: 0; list-style: none; }
+.run li { margin-bottom: 10px; }
+.run a {
+  text-decoration: none;
+  font-weight: 500; letter-spacing: -.012em;
+}
+.run a .arrow { display: inline-block; transition: transform .35s var(--ez); }
+.run a:hover { color: var(--accent); }
+.run a:hover .arrow { transform: translateX(.5ch); }
+.run small { display: block; font-size: var(--t-meta); color: var(--ink-2); font-weight: 400; }
+.cmd {
+  margin: 0;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: var(--t-caption); line-height: 1.6;
+  white-space: pre; overflow-x: auto;
+}
+.terminal { grid-column: 2 / 4; }
+.terminal figure { max-width: 670px; }
+
+/* ═══ 05 — forbehold og beslutninger ═════════════════════════ */
+.limits { margin: 0; padding: 0; list-style: none; }
+.limits li { margin-bottom: 14px; }
+.limits b { font-weight: 500; }
+.mod--limits .mod__body { grid-column: 2 / 3; }
+.mod__decisions { grid-column: 3 / 4; grid-row: 1 / 2; font-size: var(--t-body); line-height: 1.4; }
+.mod__decisions .label { display: block; margin-bottom: 14px; }
+.mod__decisions p + .label { margin-top: 28px; }
+
+/* ═══ IN VIEW — tidsbasert, ikke scrub ═══════════════════════ */
+.js .iv { opacity: 0; transform: translateY(8px);
+  transition: opacity .4s var(--ez) calc(var(--d, 0ms) * .5), transform .4s var(--ez) calc(var(--d, 0ms) * .5); }
+.js .iv.is-in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) { .iv { opacity: 1; transform: none; transition: none; } }
+
+/* ═══ FOOTER — forsidens siste modul ═════════════════════════ */
+.footer {
+  background: var(--ground);
+  position: relative; z-index: 2; overflow: hidden;
+  --ink: #FFFFFF; --ink-2: rgba(255, 255, 255, .52); --ink-3: rgba(255, 255, 255, .30);
+  color: var(--ink);
+}
+.footer .cols { height: var(--box); grid-template-rows: repeat(2, minmax(0, 1fr)); }
+.footer__reel { grid-column: 1 / 3; grid-row: 1 / 2; position: relative; overflow: hidden; }
+.footer__reel video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+.footer__colophon {
+  grid-column: 4 / 5; grid-row: 1 / 2; align-self: stretch;
+  display: grid; grid-template-rows: repeat(2, 1fr);
+  font-size: var(--t-fine); line-height: 1.4;
+}
+.footer__colophon .footer__name { grid-area: 1 / 1; align-self: start; }
+.colo__mid { grid-area: 1 / 1; align-self: end; display: flex; flex-direction: column; gap: 10px; }
+.colo__bottom { grid-area: 2 / 1; align-self: end; display: flex; flex-direction: column; gap: 10px; }
+.footer__name { letter-spacing: .14em; text-transform: uppercase; color: var(--ink-2); }
+.footer__nav { display: grid; grid-template-columns: repeat(2, max-content); gap: 6px 2.5ch; }
+.footer__nav a, .footer__mail {
+  color: var(--ink-2); text-decoration: none;
+  letter-spacing: .14em; text-transform: uppercase;
+  transition: color .3s var(--ez);
+}
+.footer__nav a:hover, .footer__mail:hover { color: var(--ink); }
+.footer__mail { text-transform: none; letter-spacing: 0; }
+.footer__top { color: var(--ink); text-decoration: none; letter-spacing: .14em; text-transform: uppercase; font-weight: 500; }
+.footer__top .arrow { display: inline-block; transition: transform .35s var(--ez); }
+.footer__top:hover .arrow { transform: translateY(-.35ch); }
+.footer__c { grid-column: 4 / 5; grid-row: 2 / 3; align-self: end; font-size: var(--t-fine); line-height: 1.4; color: var(--ink-3); letter-spacing: .14em; }
+.copytip {
+  position: fixed; top: 0; left: 0; z-index: 60; pointer-events: none;
+  font-size: var(--t-fine); letter-spacing: .14em; text-transform: uppercase;
+  color: #FFF; background: #000; padding: 6px 10px;
+  opacity: 0; transition: opacity .2s var(--ez);
+}
+.copytip.is-on { opacity: 1; }
+
+/* ═══ MOBIL ══════════════════════════════════════════════════ */
+@media (max-width: 1023px) {
+  html { font-size: clamp(13px, calc(100vw / 24.375), 18px); }
+  :root {
+    --pad: 8px;
+    --cell: 1rem;
+    --box: calc(100svh - (var(--pad) * 2));
+    --line: rgba(5, 5, 5, .24);
+    --t-xxl: 2.8125rem;
+    --t-h2: 1.875rem;
+  }
+  .grid { display: none; }
+  .page::before, .page::after {
+    content: ''; position: absolute; top: 0; bottom: 0;
+    width: var(--hair); background: var(--line); z-index: 40; pointer-events: none;
+  }
+  .page::before { left: 0; }
+  .page::after  { right: 0; }
+  .mline {
+    display: block; position: absolute; top: 0; left: 0; right: 0;
+    height: var(--hair); background: var(--line); z-index: 40; pointer-events: none;
+  }
+  .mline::before, .mline::after {
+    content: ''; position: absolute;
+    top: calc(var(--node) / -2 + var(--hair) / 2);
+    width: var(--node); height: var(--node); background: #050505;
+  }
+  .mline::before { left: calc(var(--node) / -2); }
+  .mline::after  { right: calc(var(--node) / -2); }
+  .footer .mline { background: rgba(255, 255, 255, .34); }
+  .footer .mline::before, .footer .mline::after { background: #FFFFFF; }
+
+  .nav { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .nav .cell { line-height: 1.4; padding: var(--cell); }
+  .nav__name  { grid-column: 1 / 2; grid-row: 1; }
+  .nav__cta   { grid-column: 2 / 3; grid-row: 1; }
+  .nav__links { grid-column: 1 / 3; grid-row: 2; padding-top: 0; }
+  .nav .nav__jumps { display: none; }
+
+  .cols, .mod .cols, .hero .cols { display: flex; flex-direction: column; min-height: 0; }
+  .mod { min-height: 0; padding-top: var(--cell); padding-bottom: var(--cell); }
+  .hero__title { padding-top: calc(var(--cell) * 6); }
+  .index { grid-template-columns: 1fr; }
+  .index li { padding: .5rem var(--cell); }
+  .phone { order: 3; }
+  .phone figure { max-width: 240px; }
+  .terminal figure { max-width: none; }
+
+  .footer .cols { height: auto; display: grid; grid-template-columns: 1fr; grid-template-rows: none; }
+  .footer__reel { grid-column: 1; grid-row: auto; aspect-ratio: 16 / 10; }
+  .footer__colophon { grid-column: 1; grid-row: auto; display: flex; flex-direction: column; gap: 1.5rem; }
+  .footer__c { grid-column: 1; grid-row: auto; }
+  .footer__nav { display: flex; flex-direction: column; gap: .65rem; }
+}
+</style>
+</head>
+<body>
+<script>document.documentElement.classList.add('js');</script>
+
+<div class="page">
+
+  <!-- ══ NAV — samme som resten av siden ═══════════════════════ -->
+  <nav class="nav" aria-label="Main">
+    <div class="cell nav__name"><a href="/grid-video.html">Rune &Oslash;verland</a></div>
+    <div class="cell nav__links"><a href="/nyme.html">Nyme</a><a href="/kaizen.html">Kaizen</a><a href="/how-i-work.html">How I work</a><a href="/build/">Technical</a></div>
+    <div class="cell nav__jumps" aria-label="Sections on this page">
+      <a href="#what"><span>01</span>What it is</a>
+      <a href="#real"><span>02</span>Is it real</a>
+      <a href="#read"><span>03</span>Read this first</a>
+      <a href="#run"><span>04</span>Run it</a>
+      <a href="#limits"><span>05</span>What it does not do</a>
+    </div>
+    <div class="cell nav__cta"><a href="https://github.com/sbbstudio/sitter-app">Repository</a><a href="/contact.html">Contact</a></div>
+  </nav>
+
+  <!-- ══ HERO — hvem siden er for ══════════════════════════════ -->
+  <section class="mod hero" id="top">
+    <i class="mline" aria-hidden="true"></i>
+    <div class="grid" aria-hidden="true">
+      <span class="v v1"></span><span class="v v2"></span><span class="v v3"></span>
+      <div class="rows"></div>
+      <span class="nodes n1"></span><span class="nodes n2"></span><span class="nodes n3"></span>
+    </div>
+    <div class="cols">
+      <div class="cell hero__title">
+        <span class="label iv">Work sample 01 &middot; For the technical reader</span>
+        <h1 class="iv" style="--d:80ms">Sitter</h1>
+        <p class="iv" style="--d:160ms">A spaced-repetition app for children. Local-first: no server, no database, no login, no tracking.</p>
+      </div>
+      <div class="cell hero__why">
+        <span class="label iv" style="--d:120ms">If someone forwarded you this link</span>
+        <p class="iv" style="--d:200ms">They are probably deciding whether to hire me and want a technical opinion. This page is built to be checked, not believed: every claim links to the file, the test run or the commit it comes from. Five minutes should be enough.</p>
+      </div>
+      <div class="cell hero__index">
+        <ol class="index">
+          <li><a href="#what"><span>01</span>What it is</a></li>
+          <li><a href="#real"><span>02</span>Is it real</a></li>
+          <li><a href="#read"><span>03</span>Read this file first</a></li>
+          <li><a href="#run"><span>04</span>Run it</a></li>
+          <li><a href="#limits"><span>05</span>What it does not do</a></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ 01 — WHAT IT IS ═══════════════════════════════════════ -->
+  <section class="mod" id="what">
+    <i class="mline" aria-hidden="true"></i>
+    <div class="grid" aria-hidden="true">
+      <span class="v v1"></span><span class="v v2"></span><span class="v v3"></span>
+      <div class="rows"></div>
+      <span class="nodes n1"></span><span class="nodes n2"></span><span class="nodes n3"></span>
+    </div>
+    <div class="cols">
+      <div class="cell mod__head">
+        <span class="label">01</span>
+        <h2>What it is</h2>
+      </div>
+      <div class="cell mod__body">
+        <p>Three small apps for a Norwegian fourth grader and the adults around them: a daily practice flow, a spoken two-player family game, and a parent-versus-child quiz. All three load the same scheduler core, one JavaScript file with no DOM dependency, so the logic that decides what to ask next is tested in Node without a browser.</p>
+        <p>Plain JavaScript, HTML and CSS. No framework, no build step, no dependencies. The files reviewed in a pull request are the files that ship.</p>
+        <p><strong>Status: alpha.</strong> In use with real children and parents. A more advanced engine exists in private use and stays private on purpose. This repository shows the product, not the platform.</p>
+      </div>
+      <div class="cell phone mod__proof">
+        <figure>
+          <img src="/assets/work/sitter-phone.jpg" width="780" height="1520" alt="Sitter on a phone: today's session, subject tabs, and the start button" loading="lazy">
+          <figcaption>Live demo, no login &middot; sitter-app-review.vercel.app</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ 02 — IS IT REAL ═══════════════════════════════════════ -->
+  <section class="mod" id="real">
+    <i class="mline" aria-hidden="true"></i>
+    <div class="grid" aria-hidden="true">
+      <span class="v v1"></span><span class="v v2"></span><span class="v v3"></span>
+      <div class="rows"></div>
+      <span class="nodes n1"></span><span class="nodes n2"></span><span class="nodes n3"></span>
+    </div>
+    <div class="cols">
+      <div class="cell mod__head">
+        <span class="label">02</span>
+        <h2>Is it real</h2>
+      </div>
+      <div class="cell mod__body">
+        <ul class="badges" aria-label="Live status from GitHub">
+          <li><a href="https://github.com/sbbstudio/sitter-app/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/sbbstudio/sitter-app/ci.yml?branch=main&amp;style=flat-square&amp;label=CI%20on%20main&amp;labelColor=000" alt="CI status on main"></a></li>
+          <li><a href="https://github.com/sbbstudio/sitter-app/commits/main"><img src="https://img.shields.io/github/last-commit/sbbstudio/sitter-app?style=flat-square&amp;label=last%20commit&amp;labelColor=000&amp;color=fff" alt="Date of last commit"></a></li>
+          <li><a href="https://github.com/sbbstudio/sitter-app/blob/main/LICENSE"><img src="https://img.shields.io/github/license/sbbstudio/sitter-app?style=flat-square&amp;labelColor=000&amp;color=fff" alt="License"></a></li>
+        </ul>
+        <p>The badges above are read live from GitHub, not typed by me. If the CI badge is red, the last commit broke something and this page is telling you so.</p>
+        <p>110 tests run on every pull request with Node's built-in test runner, together with a syntax check and a content validator. The main branch is protected: a pull request and a green check are required before anything is merged. The whole repository is under 100 kB.</p>
+      </div>
+      <div class="cell mod__check">
+        <ul class="check">
+          <li class="label">Check</li>
+          <li><a href="https://github.com/sbbstudio/sitter-app/actions">CI runs <span class="arrow">&rarr;</span></a><small>every run, with logs</small></li>
+          <li><a href="https://github.com/sbbstudio/sitter-app/commits/main">Commit history <span class="arrow">&rarr;</span></a><small>one change per commit</small></li>
+          <li><a href="https://github.com/sbbstudio/sitter-app/tree/main/tests">The tests <span class="arrow">&rarr;</span></a><small>eight files, plain node:test</small></li>
+          <li><a href="https://github.com/sbbstudio/sitter-app/blob/main/.github/workflows/ci.yml">The workflow <span class="arrow">&rarr;</span></a><small>three commands, Node 22</small></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ 03 — READ THIS FILE FIRST ═════════════════════════════ -->
+  <section class="mod" id="read">
+    <i class="mline" aria-hidden="true"></i>
+    <div class="grid" aria-hidden="true">
+      <span class="v v1"></span><span class="v v2"></span><span class="v v3"></span>
+      <div class="rows"></div>
+      <span class="nodes n1"></span><span class="nodes n2"></span><span class="nodes n3"></span>
+    </div>
+    <div class="cols">
+      <div class="cell mod__head">
+        <span class="label">03</span>
+        <h2>Read this file first</h2>
+      </div>
+      <div class="cell mod__body">
+        <p><strong>core/retention-core.js</strong> is the scheduler. It decides when a card comes back, using a model of retrievability, stability and difficulty in the FSRS family, with a 90 percent retention target. It stores review logs, response time and prompt type, so the scheduler can later be swapped for a library like ts-fsrs without throwing away a child's history.</p>
+        <p>Then open <strong>tests/retention-core.test.js</strong>. The tests describe the intended behaviour more honestly than a diagram would, and they are what a change has to get past.</p>
+<pre class="tree">sitter.html            entry page, stays in the root so the URL stays
+  app/sitter/          the student app: flow, mechanics, card packs
+    <b>core/retention-core.js</b>   scheduler, mastery score, capture gate
+      localStorage      one key per app, migration, backup
+family-game.html       two-player game, same core
+family-practice.html   parent-versus-child quiz, same core</pre>
+      </div>
+      <div class="cell mod__check">
+        <ul class="check">
+          <li class="label">Check</li>
+          <li><a href="https://github.com/sbbstudio/sitter-app/blob/main/core/retention-core.js">core/retention-core.js <span class="arrow">&rarr;</span></a><small>the file, on GitHub</small></li>
+          <li><a href="https://github.com/sbbstudio/sitter-app/blob/main/tests/retention-core.test.js">tests/retention-core.test.js <span class="arrow">&rarr;</span></a><small>what it must do</small></li>
+          <li><a href="https://github.com/sbbstudio/sitter-app/blob/main/AGENTS.md">AGENTS.md <span class="arrow">&rarr;</span></a><small>every folder and root file explained</small></li>
+          <li><a href="https://github.com/sbbstudio/sitter-app/tree/main/docs/decisions">docs/decisions <span class="arrow">&rarr;</span></a><small>one file per decision</small></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ 04 — RUN IT ═══════════════════════════════════════════ -->
+  <section class="mod" id="run">
+    <i class="mline" aria-hidden="true"></i>
+    <div class="grid" aria-hidden="true">
+      <span class="v v1"></span><span class="v v2"></span><span class="v v3"></span>
+      <div class="rows"></div>
+      <span class="nodes n1"></span><span class="nodes n2"></span><span class="nodes n3"></span>
+    </div>
+    <div class="cols">
+      <div class="cell mod__head">
+        <span class="label">04</span>
+        <h2>Run it</h2>
+      </div>
+      <div class="cell mod__body">
+        <ul class="run">
+          <li><a href="https://stackblitz.com/github/sbbstudio/sitter-app?startScript=test" rel="noopener">Run the tests in your browser <span class="arrow">&rarr;</span></a><small>StackBlitz clones the repository and runs npm test in a sandbox. About three seconds in Chrome, Edge or Firefox. Safari does not support the sandbox.</small></li>
+          <li><a href="https://codespaces.new/sbbstudio/sitter-app" rel="noopener">Open in GitHub Codespaces <span class="arrow">&rarr;</span></a><small>a full editor with a terminal, needs a GitHub account.</small></li>
+        </ul>
+        <p>On your own machine, with Node 22:</p>
+<pre class="cmd">git clone https://github.com/sbbstudio/sitter-app.git
+cd sitter-app
+npm test</pre>
+      </div>
+      <div class="cell mod__check">
+        <ul class="check">
+          <li class="label">What you should see</li>
+          <li>tests 110<br>pass 110<br>fail 0<br>duration under 3 s</li>
+          <li><a href="https://sitter-app-review.vercel.app/sitter.html">The app itself <span class="arrow">&rarr;</span></a><small>open on a phone, no login</small></li>
+        </ul>
+      </div>
+      <div class="cell terminal mod__proof">
+        <figure>
+          <img src="/assets/work/sitter-npm-test.jpg" width="670" height="250" alt="Terminal output from npm test in StackBlitz: tests 110, pass 110, fail 0, duration 2668 ms" loading="lazy">
+          <figcaption>Recorded 29 Sep 2026 &middot; StackBlitz in headless Chrome &middot; 110 pass, 0 fail, 2.7 s</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ 05 — WHAT IT DOES NOT DO ══════════════════════════════ -->
+  <section class="mod mod--limits" id="limits">
+    <i class="mline" aria-hidden="true"></i>
+    <div class="grid" aria-hidden="true">
+      <span class="v v1"></span><span class="v v2"></span><span class="v v3"></span>
+      <div class="rows"></div>
+      <span class="nodes n1"></span><span class="nodes n2"></span><span class="nodes n3"></span>
+    </div>
+    <div class="cols">
+      <div class="cell mod__head">
+        <span class="label">05</span>
+        <h2>What it does not do</h2>
+      </div>
+      <div class="cell mod__body">
+        <ul class="limits">
+          <li><b>No sync.</b> Progress lives in the browser's localStorage. Clearing site data deletes it. That is the price of zero tracking, and it is the first thing I would change for a paid product.</li>
+          <li><b>One grade.</b> The content is validated for fourth grade only. The validator is in scripts/ and runs in CI.</li>
+          <li><b>Reviewed, not certified.</b> Questions are based on the Norwegian curriculum and marked for review where they are tested with children.</li>
+          <li><b>No accounts, no analytics, no server.</b> Nothing to scale and nothing to breach, which also means nothing is learned from usage.</li>
+        </ul>
+      </div>
+      <div class="cell mod__decisions">
+        <span class="label">Decisions</span>
+        <p>Static, no build step: the reviewed files are the shipped files. Source in folders, entry pages in the root, so the public URLs never move. MIT licence. Each decision is one file in docs/decisions, with the date and the reason.</p>
+        <span class="label">AI and responsibility</span>
+        <p>The code is agent-assisted. That is the design, not a caveat. I decide what gets built, what is allowed to merge and what evidence a claim must carry. The tests, the CI gate and the decision log are how I keep that honest when the typing is fast.</p>
+      </div>
+      <div class="cell mod__check">
+        <ul class="check">
+          <li class="label">Check</li>
+          <li><a href="https://github.com/sbbstudio/sitter-app/tree/main/docs/decisions">docs/decisions <span class="arrow">&rarr;</span></a><small>the reasons, dated</small></li>
+          <li><a href="https://github.com/sbbstudio/sitter-app/blob/main/scripts/validate-sitter-content.mjs">The content validator <span class="arrow">&rarr;</span></a><small>what a question must satisfy</small></li>
+          <li><a href="https://github.com/sbbstudio/sitter-app/blob/main/CHANGELOG.md">CHANGELOG <span class="arrow">&rarr;</span></a><small>what changed, newest first</small></li>
+          <li><a href="/contact.html">Ask me anything <span class="arrow">&rarr;</span></a><small>the private work I can walk you through</small></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ FOOTER — forsidens siste modul ════════════════════════ -->
+  <footer class="footer">
+    <i class="mline" aria-hidden="true"></i>
+    <div class="grid grid--footer" aria-hidden="true">
+      <span class="v v1"></span><span class="v v2"></span><span class="v v3"></span>
+      <div class="rows"></div>
+      <span class="nodes n1"></span><span class="nodes n2"></span><span class="nodes n3"></span>
+    </div>
+    <div class="cols">
+      <div class="footer__reel" aria-hidden="true">
+        <video src="/assets/opt/rune-flyr-m1.mp4" poster="/assets/opt/rune-flyr-m1-poster.jpg" muted loop playsinline preload="none"></video>
+      </div>
+      <div class="cell footer__colophon">
+        <div class="footer__name">Rune &Oslash;verland</div>
+        <div class="colo__mid">
+          <nav class="footer__nav" aria-label="Footer">
+            <a href="/grid-video.html#approach">Approach</a>
+            <a href="/grid-video.html#work">Work</a>
+            <a href="/how-i-work.html">How I work</a>
+            <a href="/contact.html">Contact</a>
+          </nav>
+        </div>
+        <div class="colo__bottom">
+          <a class="footer__mail" href="tel:+4741167940">0047 411 67 940</a>
+          <a class="footer__mail" href="mailto:rune@kaizenstudio.no">rune@kaizenstudio.no</a>
+          <a class="footer__top" href="#top">Back to top <span class="arrow">&uarr;</span></a>
+        </div>
+      </div>
+      <div class="cell footer__c">&copy; 2026 Rune &Oslash;verland</div>
+    </div>
+  </footer>
+
+</div>
+
+<script>
+/* NAV — glir ut når du ruller ned, tilbake når du ruller opp. */
+(function () {
+  var nav = document.querySelector('.nav');
+  var last = window.scrollY, ticking = false;
+  function update() {
+    var y = window.scrollY;
+    if (y > last && y > 80) nav.classList.add('is-hidden');
+    else nav.classList.remove('is-hidden');
+    last = y; ticking = false;
+  }
+  window.addEventListener('scroll', function () {
+    if (!ticking) { requestAnimationFrame(update); ticking = true; }
+  }, { passive: true });
+})();
+
+/* Jump-lista i naven — aksent på blokken du står i. */
+(function () {
+  var links = Array.prototype.slice.call(document.querySelectorAll('.nav__jumps a'));
+  var ids = links.map(function (a) { return a.getAttribute('href').slice(1); });
+  if (!('IntersectionObserver' in window)) return;
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (!e.isIntersecting) return;
+      var i = ids.indexOf(e.target.id);
+      links.forEach(function (a, j) { a.classList.toggle('is-here', j === i); });
+    });
+  }, { rootMargin: '-40% 0px -55% 0px' });
+  ids.forEach(function (id) { var el = document.getElementById(id); if (el) io.observe(el); });
+})();
+
+/* In view — tidsbasert inntoning på heroen, aldri scrub. */
+(function () {
+  var els = document.querySelectorAll('.iv');
+  if (!('IntersectionObserver' in window)) { Array.prototype.forEach.call(els, function (e) { e.classList.add('is-in'); }); return; }
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); } });
+  }, { threshold: .2 });
+  Array.prototype.forEach.call(els, function (e) { io.observe(e); });
+})();
+
+/* Footer-reel spiller bare når den er synlig. */
+(function () {
+  var v = document.querySelector('.footer__reel video');
+  if (!v || !('IntersectionObserver' in window)) return;
+  new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) { if (e.isIntersecting) v.play().catch(function () {}); else v.pause(); });
+  }).observe(v);
+})();
+
+/* Kopier-CTA: mailto legger adressen på utklippstavlen (CEO 08-15). */
+(function () {
+  var tip = null;
+  if (window.matchMedia('(hover: hover)').matches) {
+    tip = document.createElement('div');
+    tip.className = 'copytip';
+    tip.textContent = 'Copy email →';
+    document.body.appendChild(tip);
+    document.addEventListener('mousemove', function (e) {
+      tip.style.transform = 'translate(' + (e.clientX + 14) + 'px, ' + (e.clientY + 18) + 'px)';
+    });
+  }
+  Array.prototype.forEach.call(document.querySelectorAll('a[href^="mailto:"]'), function (a) {
+    var addr = a.getAttribute('href').replace(/^mailto:/, '').split('?')[0];
+    if (tip) {
+      a.addEventListener('mouseenter', function () { tip.textContent = 'Copy email →'; tip.classList.add('is-on'); });
+      a.addEventListener('mouseleave', function () { tip.classList.remove('is-on'); });
+    }
+    a.addEventListener('click', function (e) {
+      e.preventDefault();
+      function done() { if (tip) tip.textContent = 'Copied ✓'; }
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(addr).then(done, function () { location.href = 'mailto:' + addr; });
+      else location.href = 'mailto:' + addr;
+    });
+  });
+})();
+</script>
+<script defer src="/assets/js/analytics.js"></script>
+</body>
+</html>
