@@ -7,7 +7,8 @@
   let fontsReady = false, phase = 'loading', modelProgress = 0;
   root.dataset.entry = 'loading';
   // Start the largest asset while the browser parses the page and imports React.
-  for (const href of ['/models/atelier/atelier.glb', '/models/atelier/camera.json']) {
+  // Reduced motion renders the static reading layout, which never fetches the model.
+  if (!reduced) for (const href of ['/models/atelier/atelier.glb', '/models/atelier/camera.json']) {
     const link = document.createElement('link');
     link.rel = 'preload'; link.as = 'fetch'; link.href = href; link.crossOrigin = 'anonymous';
     document.head.appendChild(link);

@@ -1,6 +1,7 @@
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { lazy, Suspense, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { createRoot } from 'react-dom/client'
-import AtelierCanvas from '../../components/atelier-canvas'
+// three.js and the canvas load only when the animation actually runs, never in reading/reduced mode.
+const AtelierCanvas = lazy(() => import('../../components/atelier-canvas'))
 import { useReducedMotion } from '../../lib/motion'
 import { scrollState } from '../../lib/scroll'
 import { ATELIER_INVALIDATE, type LoadState } from '../../lib/atelier'
@@ -100,7 +101,7 @@ function Story({ host, intro, chapters }: { host: HTMLElement; intro: Chapter; c
   }
   return <section ref={section} className={`story-journey ${staticMode ? 'is-reading' : ''}`} aria-label="How I build">
     <div className="story-stage">
-      {!staticMode && <div className="story-canvas" aria-hidden="true"><AtelierCanvas key={attempt} still={false} onLoad={onLoad} /></div>}
+      {!staticMode && <div className="story-canvas" aria-hidden="true"><Suspense fallback={null}><AtelierCanvas key={attempt} still={false} onLoad={onLoad} /></Suspense></div>}
       <div className="story-grid" aria-hidden="true"><i/><i/><i/><b/></div>
       <div className="story-chapters">
         <article id={intro.id} ref={opening} className="story-chapter story-intro" tabIndex={-1} dangerouslySetInnerHTML={{ __html: intro.html }} />
