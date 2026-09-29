@@ -14,6 +14,11 @@ function updateNav() {
   lastScroll = scrollY
   initialized = true
 }
+// Anchored chapters in reading mode scroll to just below the fixed nav (scroll-margin in build-story.css).
+// offsetTop/offsetHeight ignore the hide transform, so this is the nav's resting footprint.
+function measureNav() { document.documentElement.style.setProperty('--nav-height', `${nav.offsetTop + nav.offsetHeight}px`) }
+addEventListener('resize', measureNav)
+measureNav()
 addEventListener('scroll', updateNav, { passive: true })
 addEventListener('resize', updateNav)
 updateNav()

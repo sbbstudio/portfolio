@@ -26,6 +26,8 @@
 .is-reading .story-grid { display: none; }
 .story-fallback .story-chapter, .is-reading .story-chapter { position: relative; opacity: 1; padding: 80px var(--cell); background: #000; border-bottom: 1px solid var(--line); pointer-events: auto; }
 .is-reading .story-chapters { padding-top: 160px; }
+/* Jumps and reading mode land each chapter below the fixed nav; --nav-height is set by build-hero. */
+.story-fallback .story-chapter, .is-reading .story-chapter { scroll-margin-top: var(--nav-height, 0px); }
 .story-fallback .story-chapter > *, .is-reading .story-chapter > * { margin-left: calc(25% + var(--cell) / 2); }
 .is-reading .story-controls { position: relative; padding: var(--cell); left: auto; right: auto; bottom: auto; }
 .build-page .nav:not(.is-paper) { background: linear-gradient(#0b0b0d, #0b0b0d00); }
