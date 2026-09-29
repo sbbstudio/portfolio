@@ -15,7 +15,8 @@
 .story-chapter .story-label { font-size: var(--t-meta); color: #a6a6a6; margin: 0 0 32px; }
 .story-chapter h1, .story-chapter h2 { margin: 0 0 32px; font-size: clamp(40px,4.5vw,68px); font-weight: 500; line-height: 1.06; letter-spacing: -.035em; text-wrap: balance; }
 .story-chapter p { margin: 0 0 20px; font-size: var(--t-h4); line-height: 1.4; max-width: 40ch; }
-/* Type steps down from the opening: intro h1 largest, the four stops one step below (5/6 of it). */
+/* Type steps down from the opening: the four stops sit one step below the intro h1
+   (3.75vw against 4.5vw in the fluid range, 34–56px against 40–68px at the clamps); the recap uses the stops' size. */
 .story-chapter h2 { font-size: clamp(34px,3.75vw,56px); }
 .story-controls { position: absolute; bottom: var(--cell); left: var(--cell); right: var(--cell); display: flex; justify-content: space-between; gap: 20px; font-size: var(--t-meta); }
 .story-controls button { border: 0; background: none; padding: 0; color: #fff; font: inherit; cursor: pointer; }
@@ -113,9 +114,11 @@
      scoped here so the earlier animation chapters keep their current sizing. */
   #recap, .build-contact {
     --closing-base: clamp(13px, calc(100vw / 24.375), 18px);
+    --t-meta: calc(var(--closing-base) * .9375);
+  }
+  .build-contact {
     --t-h1: calc(var(--closing-base) * 1.875);
     --t-h4: calc(var(--closing-base) * 1.31);
-    --t-meta: calc(var(--closing-base) * .9375);
   }
   .build-contact .system-link { font-size: var(--t-meta); }
   #recap .story-recap { font-size: clamp(26px,6.75vw,44px); }
