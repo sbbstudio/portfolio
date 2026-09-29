@@ -22,7 +22,7 @@ The site owner chose this variant ("Apple scroll reveal, word by word") for the 
 ## Source
 
 - The task for this change (2026-09-29).
-- `studio-src/integration/rune-system/story-timeline.ts` (`recapProgress`, `recapLitAt`), `assets/css/build-story.css` (`.story-recap`).
+- `studio-src/integration/rune-system/story-timeline.ts` (`recapProgress`, `recapLitAt`), `assets/css/build-story.css` (`.story-recap`) and `tools/story-timeline.test.mjs`.
 
 ## Consequence
 

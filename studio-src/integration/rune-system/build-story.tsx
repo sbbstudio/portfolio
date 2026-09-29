@@ -12,7 +12,7 @@ function CanvasUnavailable({ onLoad }: { still: boolean; onLoad: (state: LoadSta
 import { useReducedMotion } from '../../lib/motion'
 import { scrollState } from '../../lib/scroll'
 import { ATELIER_INVALIDATE, type LoadState } from '../../lib/atelier'
-import { cameraAt, holds, introAt, recapProgress, textAt } from './story-timeline'
+import { cameraAt, holds, introAt, recapProgress, storyEndAt, textAt } from './story-timeline'
 
 type Chapter = { id: string; html: string }
 function Story({ host, intro, chapters }: { host: HTMLElement; intro: Chapter; chapters: Chapter[] }) {
@@ -42,7 +42,7 @@ function Story({ host, intro, chapters }: { host: HTMLElement; intro: Chapter; c
       host.dataset.progress = String(p)
       host.dataset.raw = String(raw)
       // The scene fades out with the ending's text, so only the last hold turns the stage black.
-      host.style.setProperty('--story-end', String(textAt(raw, holds.length - 1)))
+      host.style.setProperty('--story-end', String(storyEndAt(raw)))
       // Opacity is visual only: chapters hold no focusable content, so every chapter
       // stays in the accessibility tree and screen readers can read the whole story.
       opening.current?.style.setProperty('--chapter-opacity', String(staticMode ? 1 : introAt(raw)))
