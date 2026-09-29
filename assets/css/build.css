@@ -53,6 +53,8 @@
 .build-page .nav .cell { font-size: var(--t-body); line-height: 1.3; letter-spacing: -.012em; }
 .build-page .nav__links, .build-page .nav__jumps { display: flex; flex-direction: column; align-items: flex-start; }
 .build-page .nav__cta { text-align: right; }
+/* GitHub + Contact share the cell; 20px is the horizontal gap .nav__links uses (desktop stacks it vertically, so it has no horizontal value of its own). */
+.build-page .nav__cta a + a, .build-page .contact__cta .system-link + .system-link { margin-left: 20px; }
 .build-page .nav [aria-current] { color: var(--accent); }
 .build-page .nav__jumps span { display: inline-block; width: 3ch; opacity: .6; }
 .build-page .grid { position: absolute; inset: 0; z-index: 3; pointer-events: none; }
