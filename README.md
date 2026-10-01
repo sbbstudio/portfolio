@@ -29,6 +29,7 @@ node --test tests/analytics.test.cjs tools/story-timeline.test.mjs
 - `tests/` — Node tests for the analytics script.
 - `tools/` — the build scripts, a test for the story timeline and two local helper pages.
 - `vendor/` — pinned third-party scripts (GSAP, ScrollTrigger, Lenis).
+- `work/` — work-sample pages, one folder per work sample; the Sitter page is served at `/work/sitter/`.
 
 ## Rules and decisions
 

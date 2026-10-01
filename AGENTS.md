@@ -17,6 +17,7 @@ Local rules for everyone who changes this repo. Shared build rules are kept outs
 - `tests/` — Node tests.
 - `tools/` — build scripts, the story timeline test and local helper pages.
 - `vendor/` — pinned third-party scripts.
+- `work/` — work-sample pages, one folder per work sample (`/work/sitter/`).
 
 No new loose files in the root. A new file goes in one of the folders above; if none fits, ask before adding one.
 
