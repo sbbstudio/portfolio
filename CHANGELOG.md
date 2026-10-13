@@ -11,3 +11,7 @@ All notable changes to runeoverland.no are recorded here. The format follows [Ke
 - `README.md`, `AGENTS.md` and `CLAUDE.md`, so the repo explains how to run it, what each folder and root file is for, and the local rules.
 - `docs/decisions/`, starting with the decision to deploy by serving the `live` branch raw.
 - A pull request template and code owners.
+
+### Fixed
+
+- Copy follows the User Canon: the phone number reads `+47 411 67 940` everywhere, the SBB card says `SBB` (not `SBB Studio`), and the 6.55× ROAS figure is labelled as one TikTok Ads campaign.
