@@ -57,7 +57,8 @@ body { margin: 0; }
   --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
 
   --box: calc(100vh - (var(--pad) * 2));
-  --row: calc(var(--box) / 2);
+  --row-min: 0px;   /* set per width below: the shortest row that holds the prose */
+  --row: max(calc(var(--box) / 2), var(--row-min));
   --lh-body: calc(var(--row) / 17);
   --t-prose: var(--t-body);
 
@@ -276,6 +277,19 @@ h1 { margin: 0 0 var(--cell); font-size: var(--t-xxl); line-height: 1; letter-sp
 /* ─── FOOTER — the same as nyme and /build; styles live in
    assets/css/build-footer.css. The cells only get cell padding. */
 .footer .cell { padding: var(--cell); min-width: 0; }
+
+/* A row is half a viewport, but never shorter than the tallest
+   one-cell block needs. Prose lines are --row / 17 apart and a cell
+   holds about 15 of them inside its padding, so on a short screen the
+   text would run into the bottom padding. The minimum depends on the
+   cell width: measured with 16px prose, the tallest blocks (limits and
+   how it is built) need 428px at 1280px wide, 370px at 1440px and
+   333px from 1536px. At 1440 x 900 and up half a viewport is already more,
+   so nothing changes there. Below 1280px the cells are too narrow for
+   any row to hold the prose; that range is not handled here.        */
+@media (min-width: 1280px) { :root { --row-min: 430px; } }
+@media (min-width: 1440px) { :root { --row-min: 380px; } }
+@media (min-width: 1600px) { :root { --row-min: 340px; } }
 
 /* Prose one step down unless the screen is at least 1440 x 900: the
    single-cell blocks (the test, the limits, how it is built) only
