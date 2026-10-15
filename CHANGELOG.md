@@ -13,3 +13,7 @@ All notable changes to runeoverland.no are recorded here. The format follows [Ke
 - Decision 0002: the build page story stops at four camera views in film order and ends on a recap.
 - Decision 0003: the recap lights its words one by one, driven linearly by scroll.
 - A pull request template and code owners.
+
+### Fixed
+
+- Copy follows the User Canon: the phone number reads `+47 411 67 940` everywhere, the SBB card says `SBB` (not `SBB Studio`), and the 6.55× ROAS figure is labelled as one TikTok Ads campaign.
