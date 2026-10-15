@@ -23,7 +23,9 @@ or a failed model load returns to the original-model poster.
 model and portrait scene. To reproduce, serve the repo, call
 `createKai(container, { capture: true })` from `assets/kai/runtime/scene.js`,
 then `scene.render()` and `scene.poster()`, and save the base64 payload of the
-WebP data URL it returns. This uses the same renderer as the portfolio.
+WebP data URL it returns. Run the calls from the console on `/` (the model
+path is relative to the page), with `container` an empty 640×640 element on the
+page; capture draws at double size, which gives 1280×1280. This uses the same renderer as the portfolio.
 No image generation or character redesign is involved.
 
 ## Method stack
