@@ -16,7 +16,7 @@ import { fileURLToPath } from 'node:url'
 
 // Every path the pages fetch, relative to the repo root. A folder is copied whole.
 // Checked against href/src in the HTML, CSS and JS: see PR C0.
-export const SERVED = [
+const SERVED = [
   // pages
   'index.html',
   'grid-video.html',
@@ -45,19 +45,17 @@ export const SERVED = [
 const root = fileURLToPath(new URL('..', import.meta.url))
 const dist = `${root}dist`
 
-if (import.meta.url === `file://${process.argv[1]}`) {
-  await rm(dist, { recursive: true, force: true })
-  for (const entry of SERVED) {
-    try {
-      await stat(`${root}${entry}`)
-    } catch {
-      console.error(`build-site: "${entry}" is in SERVED but missing from the repo`)
-      process.exit(1)
-    }
-    await cp(`${root}${entry}`, `${dist}/${entry}`, {
-      recursive: true,
-      filter: (source) => basename(source) !== '.DS_Store',
-    })
+await rm(dist, { recursive: true, force: true })
+for (const entry of SERVED) {
+  try {
+    await stat(`${root}${entry}`)
+  } catch {
+    console.error(`build-site: "${entry}" is in SERVED but missing from the repo`)
+    process.exit(1)
   }
-  console.log(`build-site: ${SERVED.length} entries copied to dist/`)
+  await cp(`${root}${entry}`, `${dist}/${entry}`, {
+    recursive: true,
+    filter: (source) => basename(source) !== '.DS_Store',
+  })
 }
+console.log(`build-site: ${SERVED.length} entries copied to dist/`)
