@@ -1,0 +1,31 @@
+# 0003 — Build page recap: headlines lit word by word
+
+**Date:** 2026-09-29
+
+**Status:** Accepted
+
+## Decision
+
+The recap hold on `/build/` (raw scroll .90–1, see 0002) shows the four stop headlines as one paragraph, word for word as on the stops: "Several disciplines. One build. Problem first. Tool second. AI output is a proposal. One core. Three apps."
+
+- Every word starts dim (white at .22 opacity) and turns full white, one after another, as the reader scrolls through the hold.
+- The reveal is driven by a progress value `--p` on `#recap`: 0 until raw .925, when the recap text has fully faded in (hold start .90 plus the .025 text fade), linear to 1 at raw .98 (`recapLitAt`), then 1. No word lights while the paragraph is still appearing, and the whole paragraph is lit for the last .02 of the hold.
+- The curve is linear. Scroll is the easing; nothing is layered on top.
+- Per-word opacity is plain CSS from `--p`, the word count `--n` and each word's index `--i`.
+- Reading mode, the no-script fallback and reduced motion show every word lit, as ordinary text.
+- Type follows the stops: weight 500, tracking -.025em, the stops' size, centered.
+- Each headline sits on its own line, four lines in all. The paragraph is wider than the 620px column so no headline breaks on desktop; on a phone a headline wraps within its own line. The word reveal runs across the lines unchanged.
+
+## Why
+
+The site owner chose this variant ("Apple scroll reveal, word by word") for the recap on 2026-09-29. Ending the reveal before the hold ends lets the reader see the full paragraph lit before the page moves on to the summary.
+
+## Source
+
+- The task for this change (2026-09-29).
+- `studio-src/integration/rune-system/story-timeline.ts` (`recapProgress`, `recapLitAt`), `assets/css/build-story.css` (`.story-recap`) and `tools/story-timeline.test.mjs`.
+
+## Consequence
+
+- The recap text is marked up word by word in `build/index.html`. Changing a word means updating the `--i` indexes and `--n`.
+- The nav keeps four jump links; the recap has no link of its own.

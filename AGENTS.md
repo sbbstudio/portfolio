@@ -16,7 +16,9 @@ Local rules for everyone who changes this repo. Shared build rules are kept outs
 - `studio-src/` — source for the 3D studio and the build page story.
 - `tests/` — Node tests.
 - `tools/` — build scripts, the story timeline test and local helper pages.
+  `check-sitter-excerpts.mjs` checks that the code on `/work/sitter/` is the sitter-app source at the pinned commit; it needs the network or `--local <path to sitter-app>`, so it is not part of the commit-time tests.
 - `vendor/` — pinned third-party scripts.
+- `work/` — work-sample pages, one folder per work sample (`/work/sitter/`).
 
 No new loose files in the root. A new file goes in one of the folders above; if none fits, ask before adding one.
 

@@ -12,7 +12,7 @@ function CanvasUnavailable({ onLoad }: { still: boolean; onLoad: (state: LoadSta
 import { useReducedMotion } from '../../lib/motion'
 import { scrollState } from '../../lib/scroll'
 import { ATELIER_INVALIDATE, type LoadState } from '../../lib/atelier'
-import { cameraAt, holds, introAt, textAt } from './story-timeline'
+import { cameraAt, holds, introAt, recapProgress, storyEndAt, textAt } from './story-timeline'
 
 type Chapter = { id: string; html: string }
 function Story({ host, intro, chapters }: { host: HTMLElement; intro: Chapter; chapters: Chapter[] }) {
@@ -41,11 +41,14 @@ function Story({ host, intro, chapters }: { host: HTMLElement; intro: Chapter; c
       scrollState.p = p
       host.dataset.progress = String(p)
       host.dataset.raw = String(raw)
-      host.style.setProperty('--story-end', String(textAt(raw, 3)))
+      // The scene fades out with the ending's text, so only the last hold turns the stage black.
+      host.style.setProperty('--story-end', String(storyEndAt(raw)))
       // Opacity is visual only: chapters hold no focusable content, so every chapter
       // stays in the accessibility tree and screen readers can read the whole story.
       opening.current?.style.setProperty('--chapter-opacity', String(staticMode ? 1 : introAt(raw)))
       panels.current.forEach((panel, i) => panel?.style.setProperty('--chapter-opacity', String(staticMode ? 1 : textAt(raw, i))))
+      // The recap (last hold) lights its words from --p; reading mode shows them all lit.
+      panels.current[holds.length - 1]?.style.setProperty('--p', String(staticMode ? 1 : recapProgress(raw)))
       host.dispatchEvent(new Event('studio:presentation'))
       window.dispatchEvent(new Event(ATELIER_INVALIDATE))
     }

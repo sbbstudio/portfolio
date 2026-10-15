@@ -1,6 +1,6 @@
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
-import { cameraAt, holds, introAt, textAt } from '../studio-src/integration/rune-system/story-timeline.ts'
+import { cameraAt, holds, introAt, recapLitAt, recapProgress, storyEndAt, textAt, textFade } from '../studio-src/integration/rune-system/story-timeline.ts'
 
 test('the full original track is continuous, forward and reaches both endpoints', () => {
   assert.equal(cameraAt(-1), 0)
@@ -26,7 +26,22 @@ test('each reading window freezes the camera and only shows its own text', () =>
     }
   }
   assert.equal(textAt(0, 0), 0)
-  assert.equal(textAt(1, 3), 1, 'ending remains visible until the footer')
+})
+test('five holds in film order: four stops, then the recap on the final view', () => {
+  assert.deepEqual(holds.map(h => h.id), ['thinking', 'method', 'ai', 'system', 'recap'])
+  assert.deepEqual(holds.map(h => [h.start, h.end, h.camera]), [
+    [.10, .20, .18], [.30, .40, .29], [.50, .60, .44], [.70, .80, .70], [.90, 1, 1],
+  ])
+  for (let i = 1; i < holds.length; i++) {
+    assert.ok(holds[i].start > holds[i - 1].end, 'holds do not overlap')
+    assert.ok(holds[i].camera > holds[i - 1].camera, 'each stop is further along the camera track')
+  }
+})
+test('only the last hold stays visible to the end; earlier holds fade out', () => {
+  const last = holds.length - 1
+  assert.equal(textAt(1, last), 1, 'ending remains visible until the footer')
+  for (let i = 0; i < last; i++) assert.equal(textAt(holds[i].end, i), 0)
+  for (let i = 0; i < last; i++) assert.equal(textAt(1, i), 0)
 })
 test('the opening is readable on arrival and clears before the first chapter', () => {
   assert.equal(introAt(0), 1)
@@ -40,4 +55,32 @@ test('the opening is readable on arrival and clears before the first chapter', (
     previous = opacity
   }
   assert.equal(introAt(1), 0)
+})
+test('the scene fades to black with the last hold only', () => {
+  const last = holds.length - 1
+  for (let i = 0; i <= 1000; i++) assert.equal(storyEndAt(i / 1000), textAt(i / 1000, last))
+  for (const h of holds.slice(0, last)) assert.equal(storyEndAt((h.start + h.end) / 2), 0, `no fade during ${h.id}`)
+  assert.equal(storyEndAt(holds[last].start), 0)
+  assert.equal(storyEndAt(1), 1)
+})
+test('recap words light linearly once the recap text is fully in, until recapLitAt, then stay lit', () => {
+  const last = holds.length - 1, recap = holds[last]
+  const start = recap.start + textFade
+  assert.equal(recap.id, 'recap')
+  assert.ok(Math.abs(start - .925) < 1e-9 && recapLitAt === .98)
+  assert.ok(recapLitAt > start && recapLitAt < recap.end, 'fully lit before the hold ends')
+  assert.equal(textAt(start, last), 1, 'the reveal starts when the paragraph is fully visible')
+  assert.equal(recapProgress(0), 0)
+  assert.equal(recapProgress(recap.start), 0)
+  assert.equal(recapProgress(start), 0)
+  assert.ok(Math.abs(recapProgress((start + recapLitAt) / 2) - .5) < 1e-9, 'linear: midpoint is one half')
+  assert.equal(recapProgress(recapLitAt), 1)
+  assert.equal(recapProgress(recap.end), 1)
+  assert.equal(recapProgress(2), 1)
+  let previous = 0
+  for (let i = 0; i <= 1000; i++) {
+    const next = recapProgress(i / 1000)
+    assert.ok(next >= previous && next <= 1, 'never goes back')
+    previous = next
+  }
 })

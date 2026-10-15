@@ -1,0 +1,732 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rune Øverland — Sitter, a work sample</title>
+<meta name="description" content="Sitter is a local-first spaced-repetition app for children. The function that schedules a card, the tests that lock it, and where it is weak.">
+<link rel="icon" href="/favicon.ico?v=r1" sizes="16x16 32x32 48x48">
+<style>
+/* ============================================================
+   Work sample: Sitter. One page per public repository, set in
+   the home page grid: black page, four columns, rows of half a
+   viewport (--row), 1px hairlines with a node on each crossing,
+   --cell (20px) as the only spacing.
+
+   Every slot is placed on the grid by hand (.at-*), so the DOM
+   stays in reading order for a phone and a screen reader.
+
+   Code is the source, never retyped: each excerpt carries
+   data-file, data-lines and data-commit, and
+   tools/check-sitter-excerpts.mjs compares it with sitter-app
+   at that commit. Line numbers are a CSS counter started from
+   the inline counter-reset, so they are not copied with the code.
+
+   Code line-height is --row / 22, so the row hairlines fall
+   between two code lines. Where a code block spans cells, the
+   vertical hairlines and their nodes are masked out (.grid .v,
+   .grid .nodes), because a vertical line would cut through the
+   characters.
+   ============================================================ */
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; }
+
+:root {
+  --paper:  #FFFFFF;
+  --ground: #000000;
+  --ink:    #FFFFFF;
+  --ink-2:  rgba(255, 255, 255, .52);
+  --ink-3:  rgba(255, 255, 255, .30);
+  --line:   rgba(255, 255, 255, .16);
+  --accent: #3D6FC4;
+
+  --pad:  10px;   /* white frame around the black page */
+  --cell: 20px;   /* the only spacing */
+  --hair: 1px;
+  --node: 6px;
+  --ez: cubic-bezier(.22, .61, .36, 1);
+
+  --t-xxl:  min(6.875rem, 7.3vw);
+  --t-body: 1.125rem;
+  --t-meta: .9375rem;
+  --t-fine: .75rem;
+  --t-h1:   3.75rem;   /* footer ticker on mobile */
+  --t-h4:   1.31rem;   /* footer links on mobile */
+  --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  --box: calc(100vh - (var(--pad) * 2));
+  --row-min: 0px;   /* set per width below: the shortest row that holds the prose */
+  --row: max(calc(var(--box) / 2), var(--row-min));
+  --lh-body: calc(var(--row) / 17);
+  --t-prose: var(--t-body);
+
+  /* Code: 22 lines per row, one size on the whole page. The size is
+     the smallest of 15px, the line-height times .72, and what lets
+     the longest line fit its block at 0.6em per character with the
+     5-character gutter: 102 + 5 characters in three cells (test),
+     76 + 5 in two cells (migration test). */
+  --lh-code: calc(var(--row) / 22);
+  --fs-code: min(.9375rem, calc(var(--lh-code) * .72),
+    calc(((100vw - var(--pad) * 2) * .75 - var(--cell) * 2) / 66),
+    calc(((100vw - var(--pad) * 2) * .5 - var(--cell) * 2) / 50));
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: ui-sans-serif, -apple-system, "Helvetica Neue", Arial, sans-serif;
+  font-size: var(--t-body);
+  line-height: 1.45;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; }
+a:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
+p { margin: 0; }
+b, strong { font-weight: 500; }
+
+.label {
+  display: block;
+  font-size: var(--t-meta); line-height: 1.4;
+  letter-spacing: .14em; text-transform: uppercase;
+  color: var(--ink-2);
+}
+
+/* ─── PAGE — everything black inside the white frame ───────── */
+.page { position: relative; margin: var(--pad); background: var(--ground); }
+
+/* Light in the black: two light sources with real falloff, plus
+   grain, so the surface reads as material and not as absence.  */
+.board::before {
+  content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    radial-gradient(1300px 850px at 22% 18%, #181818 0%, #0c0c0c 40%, #050505 72%, transparent 100%),
+    radial-gradient(1200px 800px at 78% 74%, #151515 0%, #0a0a0a 40%, #040404 72%, transparent 100%);
+}
+.board::after {
+  content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none; opacity: .04;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+/* ─── NAV — the same as /build: four cells, links and jumps
+   stacked, GitHub and Contact on the right. Fixed at the top,
+   hides on scroll down, returns after 120px of upward scroll,
+   white back once the page has moved 40px. nav-system.css owns
+   size, colour and the dividers.                               */
+.nav {
+  position: fixed; z-index: 50;
+  top: var(--pad); left: var(--pad); right: var(--pad);
+  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
+  transition: transform .45s var(--ez), background-color .3s var(--ez);
+}
+.nav.is-hidden { transform: translateY(calc(-100% - var(--pad) - 2px)); }
+.nav.is-hidden:has(:focus-visible) { transform: translateY(0); }
+.nav.is-paper { background: var(--paper); box-shadow: 0 calc(var(--pad) * -1) 0 var(--paper); border-bottom: var(--hair) solid rgba(0, 0, 0, .2); }
+.nav .cell { padding: var(--cell); min-width: 0; line-height: 1.3; letter-spacing: -.012em; }
+.nav a { text-decoration: none; transition: color .3s var(--ez); }
+.nav a:hover, .nav .nav__jumps a.is-here { color: var(--accent); }
+.nav__links, .nav__jumps { display: flex; flex-direction: column; align-items: flex-start; }
+.nav__jumps span { display: inline-block; width: 3ch; opacity: .6; }
+.nav__cta { text-align: right; }
+.nav__cta a + a { margin-left: var(--cell); }
+
+/* ─── BOARD — the cells ─────────────────────────────────────── */
+.board {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-rows: repeat(9, var(--row));
+}
+.slot { position: relative; z-index: 1; min-width: 0; padding: var(--cell); overflow: hidden; font-size: var(--t-prose); line-height: var(--lh-body); }
+.slot .label { margin-bottom: var(--cell); }
+.slot--top { padding-top: calc(var(--cell) * 7); } /* row 1: below the fixed nav with its four stacked links */
+.slot--under-one { padding-top: calc(var(--cell) * 2 + var(--t-body) * 1.3); } /* row 1, columns 1 and 4: below a one-line nav cell */
+.slot--code { padding: var(--lh-code) var(--cell); } /* one code line on top, so code lines sit on the row grid */
+.slot p + p { margin-top: var(--cell); }
+.cols2 > p + p { margin-top: 0; } /* side by side, not stacked */
+
+/* Placement, desktop. Rows: 1 intro, 2-4 code, 5-6 test, 7 migration, 8-9 limits and files. */
+.at-head    { grid-column: 1 / 3; grid-row: 1; }
+.at-ways    { grid-column: 3;     grid-row: 1; }
+.at-status  { grid-column: 4;     grid-row: 1; }
+.at-rule    { grid-column: 4;     grid-row: 2 / 5; }
+.at-code    { grid-column: 1 / 4; grid-row: 2 / 5; }
+.at-about   { grid-column: 4;     grid-row: 5; }
+.at-test    { grid-column: 1 / 4; grid-row: 5 / 7; }
+.at-run     { grid-column: 4;     grid-row: 6; }
+.at-mig     { grid-column: 1 / 3; grid-row: 7; }
+.at-migtest { grid-column: 3 / 5; grid-row: 7; }
+.at-limits  { grid-column: 1 / 3; grid-row: 8; }
+.at-tree    { grid-column: 3 / 5; grid-row: 8 / 10; }
+.at-how     { grid-column: 1;     grid-row: 9; }
+.at-why     { grid-column: 2;     grid-row: 9; }
+
+/* The grid: absolute over the board, scrolls with the content */
+.grid { position: absolute; inset: 0; z-index: 2; pointer-events: none; }
+.grid .v { position: absolute; top: 0; bottom: 0; width: var(--hair); background: var(--line); }
+.grid .v1 { left: 25%; } .grid .v2 { left: 50%; } .grid .v3 { left: 75%; }
+.grid .rows {
+  position: absolute; inset: 0;
+  background-image: repeating-linear-gradient(to bottom,
+    var(--line) 0, var(--line) var(--hair), transparent var(--hair), transparent var(--row));
+}
+.grid .nodes {
+  position: absolute; top: 0; bottom: 0; width: var(--node); margin-left: calc(var(--node) / -2);
+  background-image: repeating-linear-gradient(to bottom,
+    var(--paper) 0, var(--paper) var(--node), transparent var(--node), transparent var(--row));
+  background-position: 0 calc(var(--node) / -2);
+}
+.grid .n1 { left: 25%; } .grid .n2 { left: 50%; } .grid .n3 { left: 75%; }
+
+/* Vertical hairlines are hidden from row --from to row --to, where a
+   code block spans the cells on both sides of the line. Nodes keep
+   half a node more, so the node on the block's edge stays whole.
+   25%: code, test and migration (rows 2-7). 50%: code and test
+   (rows 2-6). 75%: the migration test (row 7).                    */
+.board > .grid .v1, .board > .grid .n1 { --from: 1; --to: 7; }
+.board > .grid .v2, .board > .grid .n2 { --from: 1; --to: 6; }
+.board > .grid .v3, .board > .grid .n3 { --from: 6; --to: 7; }
+.board > .grid .v {
+  --mask: linear-gradient(to bottom,
+    #000 calc(var(--row) * var(--from)), transparent 0,
+    transparent calc(var(--row) * var(--to)), #000 0);
+  -webkit-mask-image: var(--mask); mask-image: var(--mask);
+}
+.board > .grid .nodes {
+  --mask: linear-gradient(to bottom,
+    #000 calc(var(--row) * var(--from) + var(--node) / 2), transparent 0,
+    transparent calc(var(--row) * var(--to) - var(--node) / 2), #000 0);
+  -webkit-mask-image: var(--mask); mask-image: var(--mask);
+}
+
+/* Two columns inside a two-cell block: each column sits in its own
+   cell, --cell from the hairline on both sides.                  */
+.cols2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: calc(var(--cell) * 2); }
+
+h1 { margin: 0 0 var(--cell); font-size: var(--t-xxl); line-height: 1; letter-spacing: -.025em; font-weight: 500; }
+
+/* Ways in: one link per line */
+.ways { margin: 0; padding: 0; list-style: none; }
+.ways li + li { margin-top: 6px; }
+.ways a { text-decoration: none; font-weight: 500; letter-spacing: -.012em; white-space: nowrap; }
+.ways a:hover, .ways a:focus-visible { color: var(--accent); }
+.ways .arrow { display: inline-block; transition: transform .35s var(--ez); }
+.ways a:hover .arrow { transform: translateX(.5ch); }
+
+/* Status: label on top, the verdict and its date at the bottom */
+.spec { display: flex; flex-direction: column; }
+.spec__num { margin-top: auto; font-family: var(--mono); font-size: var(--t-xxl); line-height: 1; letter-spacing: -.025em; font-weight: 500; }
+.spec__unit { margin-top: var(--cell); margin-bottom: 0 !important; }
+.spec__unit a { text-decoration: none; }
+.spec__unit a:hover { color: var(--ink); }
+
+/* The source line under a label, and the links after a limit */
+.src { display: inline-block; font-size: var(--t-meta); line-height: 1.4; text-decoration: underline; text-decoration-color: var(--ink-3); text-underline-offset: .25em; }
+.src:hover, .src:focus-visible { color: var(--accent); text-decoration-color: currentColor; }
+.slot .label:has(+ .src) { margin-bottom: 0; } /* the file line belongs to its label */
+.slot .label + .src { margin-bottom: var(--cell); }
+.limit + .limit { margin-top: var(--cell); }
+.limit .src { margin-top: 4px; }
+
+/* Code: the file's own text, no colouring, no box. Comments and
+   line numbers in the dimmer ink. Never scrolls on desktop.     */
+.code, .mono {
+  margin: 0; font-family: var(--mono); font-size: var(--fs-code); line-height: var(--lh-code);
+  white-space: pre; tab-size: 2;
+}
+.code code { font: inherit; }
+.code .l { counter-increment: line; }
+.code .l::before {
+  content: counter(line);
+  display: inline-block; width: 3ch; margin-right: 2ch; text-align: right;
+  color: var(--ink-3);
+}
+.code .c { color: var(--ink-3); }
+.code + p { margin-top: var(--cell); }
+.mono--wrap { white-space: pre-wrap; overflow-wrap: anywhere; }
+/* The clone command sits in one cell (column 4) and must not break inside
+   the URL: 43 characters at 0.6em, so the size is what makes the URL fit
+   the cell. Never below 10px. The URL is one unbreakable word (the
+   browser would otherwise break it after a hyphen); from 1250px up, and
+   on mobile from 360px, where the cell is the full width, it fits.
+   Where the cell is too narrow (1024px to 1249px, and under 360px) the
+   URL wraps instead of being clipped.                                  */
+.nobreak { white-space: normal; }
+@media (min-width: 1250px), (min-width: 360px) and (max-width: 1023px) { .nobreak { white-space: nowrap; } }
+@media (min-width: 1024px) {
+  .at-run .mono { font-size: max(10px, min(var(--fs-code),
+    calc(((100vw - var(--pad) * 2) * .25 - var(--cell) * 2) / 27))); }
+}
+.slot .mono + .label { margin-top: var(--cell); }
+
+/* The file tree: two columns over four cells, one per cell. The
+   slot starts one code line down and the label takes two, so the
+   row hairline between rows 8 and 9 falls between two lines.     */
+.slot--tree { padding-top: var(--lh-code); }
+.slot--tree .label { line-height: var(--lh-code); margin-bottom: var(--lh-code); }
+.tree pre b { font-weight: 500; }
+
+.list { margin: 0; padding: 0; list-style: none; }
+.list li + li { margin-top: 10px; }
+.list a { text-decoration: none; }
+.list a:hover, .list a:focus-visible { color: var(--accent); }
+.list small { display: block; font-size: var(--t-meta); line-height: 1.4; color: var(--ink-3); }
+
+/* ─── FOOTER — the same as nyme and /build; styles live in
+   assets/css/build-footer.css. The cells only get cell padding. */
+.footer .cell { padding: var(--cell); min-width: 0; }
+
+/* A row is half a viewport, but never shorter than the tallest
+   one-cell block needs. Prose lines are --row / 17 apart and a cell
+   holds about 15 of them inside its padding, so on a short screen the
+   text would run into the bottom padding. The minimum depends on the
+   cell width: measured with 16px prose, the tallest blocks (limits and
+   how it is built) need 428px at 1280px wide, 370px at 1440px and
+   333px from 1536px. At 1440 x 900 and up half a viewport is already more,
+   so nothing changes there. Below 1280px the cells are too narrow for
+   any row to hold the prose; that range is not handled here.        */
+@media (min-width: 1280px) { :root { --row-min: 430px; } }
+@media (min-width: 1440px) { :root { --row-min: 380px; } }
+@media (min-width: 1600px) { :root { --row-min: 340px; } }
+
+/* Prose one step down, to 16px and no lower, unless the screen is at
+   least 1440 x 900: the single-cell blocks (the test, the limits, how
+   it is built) only hold their text at 18px when a cell is that large.
+   The minimum rows above are sized for 16px.                        */
+@media (min-width: 1024px) and (max-width: 1439px), (min-width: 1024px) and (max-height: 899px) {
+  :root { --t-prose: 16px; }
+}
+
+/* ─── MOBILE — one column, slots stacked, a hairline between ── */
+@media (max-width: 1023px) {
+  html { font-size: clamp(14px, calc(100vw / 24.375), 18px); }
+  :root { --t-xxl: 2.8125rem; --fs-code: .75rem; --lh-code: calc(var(--fs-code) * 1.6); }
+  .nav { grid-template-columns: repeat(2, minmax(0, 1fr)); background: rgba(11, 11, 13, .91); }
+  .nav:not(.is-paper) a { color: #FFFFFF; }
+  .nav .cell { line-height: 1.3; }
+  .nav__cta { grid-column: 2; grid-row: 1; }
+  .nav__links { grid-column: 1 / 3; grid-row: 2; flex-direction: row; flex-wrap: wrap; gap: 8px var(--cell); padding-top: 0; }
+  .nav .nav__jumps { display: none; }
+  .board { grid-template-columns: minmax(0, 1fr); grid-template-rows: none; grid-auto-rows: auto; }
+  .board > .slot { grid-column: 1; grid-row: auto; line-height: 1.45; padding-bottom: calc(var(--cell) * 2); border-top: var(--hair) solid var(--line); }
+  .slot--top { padding-top: calc(var(--cell) * 2); }
+  .board > .slot--first { padding-top: calc(var(--cell) * 7); border-top: 0; } /* only the first slot sits below the fixed nav */
+  .slot--code, .slot--tree { padding-top: calc(var(--cell) * 2); }
+  .slot--tree .label { line-height: 1.4; margin-bottom: var(--cell); }
+  .grid { display: none; }
+  .cols2 { grid-template-columns: minmax(0, 1fr); row-gap: var(--cell); }
+  .spec__num { margin-top: 0; }
+  .code { overflow-x: auto; }
+}
+</style>
+<link rel="stylesheet" href="/nav-system.css">
+<link rel="stylesheet" href="/assets/css/build-footer.css">
+</head>
+<body>
+<div class="page" id="top">
+
+<nav class="nav" aria-label="Main">
+  <div class="cell nav__name"><a href="/grid-video.html">Rune &Oslash;verland</a></div>
+  <div class="cell nav__links"><a href="/nyme.html">Nyme</a><a href="/kaizen.html">Kaizen</a><a href="/how-i-work.html">How I work</a><a href="/build/">Technical</a></div>
+  <div class="cell nav__jumps" aria-label="Sections on this page"><a href="#code"><span>01</span>Code</a><a href="#test"><span>02</span>Test</a><a href="#migration"><span>03</span>Migration</a><a href="#limits"><span>04</span>Limits</a></div>
+  <div class="cell nav__cta"><a href="https://github.com/sbbstudio">GitHub</a><a href="/contact.html">Contact</a></div>
+</nav>
+
+<main class="board" id="hero">
+  <div class="grid" aria-hidden="true">
+    <div class="v v1"></div><div class="v v2"></div><div class="v v3"></div>
+    <div class="rows"></div>
+    <div class="nodes n1"></div><div class="nodes n2"></div><div class="nodes n3"></div>
+  </div>
+
+  <!-- Row 1 -->
+  <header class="slot slot--top slot--under-one slot--first at-head">
+    <span class="label">Work sample &middot; Sitter</span>
+    <h1>Sitter</h1>
+    <div class="cols2">
+      <p>A spaced-repetition app for children. It runs in the browser and keeps progress on the device: no server, no login, no tracking. Public repository, MIT licence.</p>
+      <p>Plain JavaScript, HTML and CSS. No framework, no build step, no dependencies. The files reviewed in a pull request are the files that ship.</p>
+    </div>
+  </header>
+  <section class="slot slot--top at-ways">
+    <span class="label">Four ways in</span>
+    <ul class="ways">
+      <li><a href="https://stackblitz.com/github/sbbstudio/sitter-app?file=app/sitter/sitter-mechanics.js">Open the code <span class="arrow">&rarr;</span></a></li>
+      <li><a href="https://stackblitz.com/github/sbbstudio/sitter-app?startScript=test">Run the tests <span class="arrow">&rarr;</span></a></li>
+      <li><a href="https://github.com/sbbstudio/sitter-app">Repository <span class="arrow">&rarr;</span></a></li>
+      <li><a href="https://sitter-app-review.vercel.app/sitter.html">Live demo <span class="arrow">&rarr;</span></a></li>
+    </ul>
+  </section>
+  <section class="slot slot--top slot--under-one spec at-status" id="status" data-owner="sbbstudio" data-repo="sitter-app">
+    <span class="label">Status on main</span>
+    <div class="spec__num" id="status-num">Pass</div>
+    <span class="label spec__unit" id="status-unit">CI, checked 15 Oct 2026</span>
+  </section>
+
+  <!-- Rows 2-4 -->
+  <section class="slot at-rule" id="code">
+    <span class="label">The rule</span>
+    <a class="src" href="https://github.com/sbbstudio/sitter-app/blob/e5f8e802072fb08606808063ba076e3a0d1f1d13/app/sitter/sitter-mechanics.js#L62-L123">app/sitter/sitter-mechanics.js, lines 62&ndash;123</a>
+    <p>This function decides when a card comes back in the student app. Five steps: now, one hour, one day, one week, thirty days.</p>
+    <p>A correct answer climbs one step. A near answer and a wrong answer both go back to the first step and return later in the same session.</p>
+    <p>It takes a card and returns a new one. It touches neither the page nor storage, so it runs in Node without a browser.</p>
+  </section>
+  <div class="slot slot--code at-code">
+<pre class="code" data-file="app/sitter/sitter-mechanics.js" data-lines="62-123" data-commit="e5f8e802072fb08606808063ba076e3a0d1f1d13" style="counter-reset: line 61"><code><span class="l c">  /**</span>
+<span class="l c">   * Applies one answer and returns { card, intervalMs, oldStage, nextStage,</span>
+<span class="l c">   * promoted, requeue, rewardEvent }. The input card is not mutated.</span>
+<span class="l c">   *</span>
+<span class="l c">   * Only "good" and "easy" are correct and climb one step ("easy" gets no extra</span>
+<span class="l c">   * step here). "hard" (a near answer) and "again" both reset to step 0 with</span>
+<span class="l c">   * dueAt = now and set `requeue`, so the session asks again after a gap (insertRetry).</span>
+<span class="l c">   * The last step is the ceiling: a correct answer there stays with a new 30-day</span>
+<span class="l c">   * interval; a miss there is recorded as `lostSitting` in history.</span>
+<span class="l c">   * History keeps the last 60 entries, responseTimes the last 20.</span>
+<span class="l c">   */</span>
+<span class="l">  function scheduleReview(card, grade, options = {}) {</span>
+<span class="l">    const now = Number(options.now ?? Date.now());</span>
+<span class="l">    const responseMs = Math.max(0, Number(options.responseMs || 0));</span>
+<span class="l">    const scratchpad = String(options.scratchpad || "").trim().slice(0, 1000);</span>
+<span class="l">    const correct = grade === "good" || grade === "easy";</span>
+<span class="l">    const oldStage = clampStage(card?.stage);</span>
+<span class="l">    const nextStage = correct ? Math.min(oldStage + 1, STAGES.length - 1) : 0;</span>
+<span class="l">    const intervalMs = correct ? STAGES[nextStage].intervalMs : 0;</span>
+<span class="l">    const rewardEvent = rewardEventFor(oldStage, nextStage, correct);</span>
+<span class="l">    const previousHistory = Array.isArray(card?.history) ? card.history : [];</span>
+<span class="l">    const previousResponses = Array.isArray(card?.responseTimes) ? card.responseTimes : [];</span>
+<span class="l">    const wasSitting = oldStage === STAGES.length - 1;</span>
+<span class="l">    const next = {</span>
+<span class="l">      ...card,</span>
+<span class="l">      stage: nextStage,</span>
+<span class="l">      reps: Number(card?.reps || 0) + 1,</span>
+<span class="l">      lapses: Number(card?.lapses || 0) + (correct ? 0 : 1),</span>
+<span class="l">      consecutiveLapses: correct ? 0 : Number(card?.consecutiveLapses || 0) + 1,</span>
+<span class="l">      lastReviewedAt: now,</span>
+<span class="l">      lastGrade: grade,</span>
+<span class="l">      dueAt: now + intervalMs,</span>
+<span class="l">      responseTimes: [...previousResponses, responseMs].slice(-20)</span>
+<span class="l">    };</span>
+<span class="l">    const historyEntry = {</span>
+<span class="l">      at: now,</span>
+<span class="l">      reviewedAt: now,</span>
+<span class="l">      grade,</span>
+<span class="l">      outcome: correct ? "correct" : grade === "hard" ? "near" : "wrong",</span>
+<span class="l">      oldStage,</span>
+<span class="l">      fromStage: STAGES[oldStage].key,</span>
+<span class="l">      nextStage,</span>
+<span class="l">      toStage: STAGES[nextStage].key,</span>
+<span class="l">      intervalMs,</span>
+<span class="l">      nextDueAt: next.dueAt,</span>
+<span class="l">      responseMs,</span>
+<span class="l">      scratchpad,</span>
+<span class="l">      rewardEvent,</span>
+<span class="l">      lostSitting: wasSitting &amp;&amp; !correct</span>
+<span class="l">    };</span>
+<span class="l">    next.history = [...previousHistory, historyEntry].slice(-60);</span>
+<span class="l"></span>
+<span class="l">    return {</span>
+<span class="l">      card: next,</span>
+<span class="l">      intervalMs,</span>
+<span class="l">      oldStage,</span>
+<span class="l">      nextStage,</span>
+<span class="l">      promoted: nextStage &gt; oldStage,</span>
+<span class="l">      requeue: !correct,</span>
+<span class="l">      rewardEvent</span>
+<span class="l">    };</span>
+<span class="l">  }</span></code></pre>
+  </div>
+
+  <!-- Rows 5-6 -->
+  <section class="slot at-about" id="test">
+    <span class="label">The test</span>
+    <a class="src" href="https://github.com/sbbstudio/sitter-app/blob/e5f8e802072fb08606808063ba076e3a0d1f1d13/tests/sitter-mechanics.test.js#L18-L50">tests/sitter-mechanics.test.js, lines 18&ndash;50</a>
+    <p>Two of the 110 tests. The first walks one card up the whole ladder with a fixed clock. The second takes a card from the top step, answers it nearly right, and checks that it falls to the first step.</p>
+    <p>CI runs the tests on every pull request and every push to main, after a syntax check and before a content validator. A pull request cannot merge until that job passes.</p>
+  </section>
+  <div class="slot slot--code at-test">
+<pre class="code" data-file="tests/sitter-mechanics.test.js" data-lines="18-50" data-commit="e5f8e802072fb08606808063ba076e3a0d1f1d13" style="counter-reset: line 17"><code><span class="l">test("Sitter uses the locked hour-day-week-month mastery ladder", () =&gt; {</span>
+<span class="l">  const now = 1_000_000;</span>
+<span class="l">  const hour = Mechanics.scheduleReview(card(), "good", { now });</span>
+<span class="l">  const day = Mechanics.scheduleReview(hour.card, "good", { now: now + Mechanics.HOUR });</span>
+<span class="l">  const week = Mechanics.scheduleReview(day.card, "good", { now: now + Mechanics.DAY });</span>
+<span class="l">  const month = Mechanics.scheduleReview(week.card, "good", { now: now + 8 * Mechanics.DAY });</span>
+<span class="l">  const maintenance = Mechanics.scheduleReview(month.card, "good", { now: now + 38 * Mechanics.DAY });</span>
+<span class="l"></span>
+<span class="l">  assert.equal(hour.nextStage, 1);</span>
+<span class="l">  assert.equal(hour.intervalMs, Mechanics.HOUR);</span>
+<span class="l">  assert.equal(day.nextStage, 2);</span>
+<span class="l">  assert.equal(day.intervalMs, Mechanics.DAY);</span>
+<span class="l">  assert.equal(week.nextStage, 3);</span>
+<span class="l">  assert.equal(week.rewardEvent, "promoted_to_week");</span>
+<span class="l">  assert.equal(month.nextStage, 4);</span>
+<span class="l">  assert.equal(month.intervalMs, 30 * Mechanics.DAY);</span>
+<span class="l">  assert.equal(month.rewardEvent, "promoted_to_month_sitter");</span>
+<span class="l">  assert.equal(Mechanics.stageLabel(month.card), "Sitter");</span>
+<span class="l">  assert.equal(maintenance.nextStage, 4);</span>
+<span class="l">  assert.equal(maintenance.rewardEvent, "answer_correct_standard");</span>
+<span class="l">});</span>
+<span class="l"></span>
+<span class="l">test("Near and wrong answers return a card to active rotation", () =&gt; {</span>
+<span class="l">  const result = Mechanics.scheduleReview(card({ stage: 4, reps: 9 }), "hard", { now: 4_000 });</span>
+<span class="l"></span>
+<span class="l">  assert.equal(result.nextStage, 0);</span>
+<span class="l">  assert.equal(result.intervalMs, 0);</span>
+<span class="l">  assert.equal(result.card.dueAt, 4_000);</span>
+<span class="l">  assert.equal(result.requeue, true);</span>
+<span class="l">  assert.equal(result.card.consecutiveLapses, 1);</span>
+<span class="l">  assert.equal(result.card.history.at(-1).lostSitting, true);</span>
+<span class="l">  assert.equal(result.card.history.at(-1).outcome, "near");</span>
+<span class="l">});</span></code></pre>
+  </div>
+  <section class="slot at-run">
+    <span class="label">Run it</span>
+<pre class="mono mono--wrap">git clone <span class="nobreak">https://github.com/sbbstudio/sitter-app.git</span>
+cd sitter-app
+npm test</pre>
+    <span class="label">What you should see</span>
+<pre class="mono">ℹ tests 110
+ℹ pass 110
+ℹ fail 0</pre>
+  </section>
+
+  <!-- Row 7 -->
+  <section class="slot at-mig" id="migration">
+    <span class="label">Migration</span>
+    <a class="src" href="https://github.com/sbbstudio/sitter-app/blob/e5f8e802072fb08606808063ba076e3a0d1f1d13/app/sitter/sitter-mechanics.js#L36-L43">app/sitter/sitter-mechanics.js, lines 36&ndash;43</a>
+<pre class="code" data-file="app/sitter/sitter-mechanics.js" data-lines="36-43" data-commit="e5f8e802072fb08606808063ba076e3a0d1f1d13" style="counter-reset: line 35"><code><span class="l">  function migrateLegacyStage(stage) {</span>
+<span class="l">    const value = Math.max(0, Number(stage) || 0);</span>
+<span class="l">    if (value &gt;= 6) return 4;</span>
+<span class="l">    if (value &gt;= 4) return 3;</span>
+<span class="l">    if (value &gt;= 2) return 2;</span>
+<span class="l">    if (value &gt;= 1) return 1;</span>
+<span class="l">    return 0;</span>
+<span class="l">  }</span></code></pre>
+    <p>Progress saved under the older nine-step ladder is mapped down, never up: a card keeps at most the interval it had earned.</p>
+  </section>
+  <section class="slot at-migtest">
+    <span class="label">Its test</span>
+    <a class="src" href="https://github.com/sbbstudio/sitter-app/blob/e5f8e802072fb08606808063ba076e3a0d1f1d13/tests/sitter-mechanics.test.js#L73-L79">tests/sitter-mechanics.test.js, lines 73&ndash;79</a>
+<pre class="code" data-file="tests/sitter-mechanics.test.js" data-lines="73-79" data-commit="e5f8e802072fb08606808063ba076e3a0d1f1d13" style="counter-reset: line 72"><code><span class="l">test("Legacy retention stages migrate to the compact Sitter ladder", () =&gt; {</span>
+<span class="l">  assert.equal(Mechanics.migrateLegacyStage(0), 0);</span>
+<span class="l">  assert.equal(Mechanics.migrateLegacyStage(1), 1);</span>
+<span class="l">  assert.equal(Mechanics.migrateLegacyStage(3), 2);</span>
+<span class="l">  assert.equal(Mechanics.migrateLegacyStage(5), 3);</span>
+<span class="l">  assert.equal(Mechanics.migrateLegacyStage(6), 4);</span>
+<span class="l">});</span></code></pre>
+  </section>
+
+  <!-- Rows 8-9 -->
+  <section class="slot at-limits" id="limits">
+    <span class="label">Where it is weak</span>
+    <div class="cols2">
+      <div>
+        <div class="limit">
+          <p>Progress lives in this browser's localStorage and nowhere else. Clearing site data deletes it.</p>
+          <p>Saving does not catch a full storage quota. If the browser refuses the write, the error is not handled.</p>
+          <a class="src" href="https://github.com/sbbstudio/sitter-app/blob/e5f8e802072fb08606808063ba076e3a0d1f1d13/app/sitter/sitter-app.js#L319-L335">app/sitter/sitter-app.js, lines 319&ndash;335</a>
+        </div>
+        <div class="limit">
+          <p>Progress is keyed by card id. Renaming a card in the content pack drops what the child had earned on it.</p>
+          <a class="src" href="https://github.com/sbbstudio/sitter-app/blob/e5f8e802072fb08606808063ba076e3a0d1f1d13/app/sitter/sitter-app.js#L264-L294">app/sitter/sitter-app.js, lines 264&ndash;294</a>
+        </div>
+      </div>
+      <div>
+        <div class="limit">
+          <p>The shared core is larger than the pages need. The student app uses it to normalise cards, the family game uses its scheduler, and the rest came with an earlier engine. That part is tested, and the pages do not call it.</p>
+          <a class="src" href="https://github.com/sbbstudio/sitter-app/blob/e5f8e802072fb08606808063ba076e3a0d1f1d13/core/retention-core.js#L1-L16">core/retention-core.js, lines 1&ndash;16</a>
+        </div>
+        <div class="limit">
+          <p>In the core's scheduler each grade sets an interval that one later call overwrites. The result is right; the assignments are dead code.</p>
+          <a class="src" href="https://github.com/sbbstudio/sitter-app/blob/e5f8e802072fb08606808063ba076e3a0d1f1d13/core/retention-core.js#L656-L727">core/retention-core.js, lines 656&ndash;727</a>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="slot slot--tree at-tree">
+    <span class="label">The repository, all 49 files</span>
+    <div class="tree cols2">
+<pre class="mono"><b>.github/</b>
+  CODEOWNERS
+  pull_request_template.md
+  <b>workflows/</b>
+    ci.yml
+<b>app/</b>
+  <b>family-game/</b>
+    family-game-app.js
+    family-game-base.css
+    family-game-content.js
+    family-game-core.js
+    family-game-styles.css
+  <b>family-practice/</b>
+    family-practice-bootstrap.js
+    family-practice-content.js
+  <b>sitter/</b>
+    sitter-app.js
+    sitter-curriculum-casper.js
+    sitter-curriculum.js
+    sitter-mechanics.js
+    sitter-styles.css
+<b>content/</b>
+  README.md
+  <b>essentials/no/grade-4/</b>
+    family-practice-v1.json
+  <b>packs/no/grade-4/</b>
+    casper-family-practice-v1.json
+  <b>schemas/</b>
+    learning-essential.schema.json
+    question-pack.schema.json
+<b>core/</b>
+  retention-core.js</pre>
+<pre class="mono"><b>docs/</b>
+  child-mvp-notes.md
+  family-game-mvp-evidence.md
+  <b>decisions/</b>
+    0001-statisk-app-fra-roten.md
+    0002-kildekode-i-mapper.md
+<b>scripts/</b>
+  validate-sitter-content.mjs
+<b>tests/</b>
+  family-game.test.js
+  family-practice-runtime.test.js
+  retention-core.test.js
+  sitter-casper.test.js
+  sitter-family-content.test.js
+  sitter-mechanics.test.js
+  sitter-mvp.test.js
+  static-assets.test.js
+.editorconfig
+.env.example
+.gitignore
+.prettierrc
+AGENTS.md
+CHANGELOG.md
+CLAUDE.md
+LICENSE
+README.md
+family-game.html
+family-practice.html
+package-lock.json
+package.json
+sitter.html
+vercel.json</pre>
+    </div>
+  </section>
+  <section class="slot at-how">
+    <span class="label">How it is built</span>
+    <p>Much of the code is written with AI assistance. I decide what gets built and what merges. A change has to pass the syntax check, the 110 tests and the content validator before it can reach main, and the decision log says why it was made.</p>
+    <p>Two decisions so far: the app is static with no build step, so the reviewed files are the shipped files; and the source lives in folders while the three entry pages stay in the root, so the public URLs never move.</p>
+  </section>
+  <section class="slot at-why">
+    <span class="label">Where the reasons are</span>
+    <ul class="list">
+      <li><a href="https://github.com/sbbstudio/sitter-app/tree/main/docs/decisions">docs/decisions<small>one file per decision, with the date and the reason</small></a></li>
+      <li><a href="https://github.com/sbbstudio/sitter-app/blob/main/CHANGELOG.md">CHANGELOG.md<small>what changed, newest first</small></a></li>
+      <li><a href="https://github.com/sbbstudio/sitter-app/blob/main/scripts/validate-sitter-content.mjs">scripts/validate-sitter-content.mjs<small>what a question must satisfy</small></a></li>
+      <li><a href="https://github.com/sbbstudio/sitter-app/blob/main/AGENTS.md">AGENTS.md<small>every folder and root file, explained</small></a></li>
+    </ul>
+  </section>
+</main>
+
+<footer class="footer" id="footer">
+    <div class="grid" aria-hidden="true"><i class="v v1"></i><i class="v v2"></i><i class="v v3"></i><div class="rows"></div><div class="nodes n1"></div><div class="nodes n2"></div><div class="nodes n3"></div></div>
+    <div class="cols">
+      <div class="footer__reel" aria-hidden="true">
+        <picture><source srcset="/assets/opt/contact-fog.webp" type="image/webp"><img src="/assets/opt/contact-fog.jpg" alt="" loading="lazy" decoding="async"></picture>
+      </div>
+      <div class="cell footer__colophon">
+        <div class="footer__name">Rune &Oslash;verland</div>
+        <div class="colo__mid">
+          <nav class="footer__nav" aria-label="Footer">
+            <a href="/grid-video.html#approach">Approach</a>
+            <a href="/grid-video.html#work">Work</a>
+            <a href="/how-i-work.html">How I work</a>
+            <a href="/build/">Technical</a>
+            <a href="/contact.html">Contact</a>
+          </nav>
+        </div>
+        <div class="colo__bottom">
+          <a class="footer__mail" href="tel:+4741167940">+47 411 67 940</a>
+          <a class="footer__mail" href="mailto:rune@kaizenstudio.no">rune@kaizenstudio.no</a>
+        </div>
+      </div>
+
+      <div class="cell footer__ticker" aria-hidden="true">
+        <div class="ticker__track">
+          <span class="ticker__seq"><i>ADS</i><i>VIDEO</i><i>DESIGN</i><i>CODE</i><i>AGENTS</i></span>
+          <span class="ticker__seq"><i>ADS</i><i>VIDEO</i><i>DESIGN</i><i>CODE</i><i>AGENTS</i></span>
+        </div>
+      </div>
+
+      <div class="cell footer__c">
+        <a class="footer__top" href="#top">Back to top <span class="arrow">&uarr;</span></a>
+        <span>&copy; 2026</span>
+      </div>
+    </div>
+  </footer>
+
+</div>
+
+<script>
+/* Status on main: read from GitHub while the page is open. If the call
+   fails (rate limit, offline), the dated text in the HTML stays. */
+(function () {
+  var el = document.getElementById('status');
+  var num = document.getElementById('status-num');
+  var unit = document.getElementById('status-unit');
+  if (!el || !num || !unit || !window.fetch) return;
+  var base = 'https://api.github.com/repos/' + el.dataset.owner + '/' + el.dataset.repo;
+  var runs = fetch(base + '/actions/workflows/ci.yml/runs?branch=main&per_page=1').then(function (r) { return r.ok ? r.json() : null; });
+  var head = fetch(base + '/commits/main').then(function (r) { return r.ok ? r.json() : null; });
+  Promise.all([runs, head]).then(function (res) {
+    var run = res[0] && res[0].workflow_runs && res[0].workflow_runs[0];
+    var commit = res[1];
+    if (!run || !commit) return;
+    // Only a finished run gets a verdict; a run in progress keeps the fallback.
+    if (run.status !== 'completed') return;
+    var when = new Date(commit.commit.committer.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+    num.textContent = '';
+    var a = document.createElement('a'); a.href = run.html_url; a.textContent = run.conclusion === 'success' ? 'Pass' : 'Fail';
+    a.style.textDecoration = 'none';
+    num.appendChild(a);
+    unit.textContent = '';
+    var b = document.createElement('a'); b.href = commit.html_url; b.textContent = 'CI, last commit ' + when;
+    unit.appendChild(b);
+  }).catch(function () {});
+})();
+</script>
+<script>
+/* Nav: hides on scroll down, returns after 120px of accumulated upward
+   scroll, white back after 40px. A jump link is current once its target
+   has passed 45 % of the window. */
+(function () {
+  var nav = document.querySelector('.nav');
+  if (!nav) return;
+  var jumps = Array.prototype.slice.call(nav.querySelectorAll('.nav__jumps a'));
+  var targets = jumps.map(function (a) { return document.getElementById(a.getAttribute('href').slice(1)); });
+  var lastY = window.scrollY, tick = false, upAcc = 0;
+  var onScroll = function () {
+    if (tick) return;
+    tick = true;
+    requestAnimationFrame(function () {
+      tick = false;
+      var y = window.scrollY, dy = y - lastY;
+      upAcc = dy > 0 ? 0 : upAcc - dy;
+      if (y <= 40) nav.classList.remove('is-hidden');
+      else if (dy > 0) nav.classList.add('is-hidden');
+      else if (upAcc >= 120) nav.classList.remove('is-hidden');
+      nav.classList.toggle('is-paper', y > 40);
+      lastY = y;
+      var active = -1;
+      targets.forEach(function (el, i) { if (el && el.getBoundingClientRect().top <= window.innerHeight * 0.45) active = i; });
+      jumps.forEach(function (a, i) { a.classList.toggle('is-here', i === active); });
+    });
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+})();
+</script>
+<script defer src="/assets/js/analytics.js"></script>
+</body>
+</html>
