@@ -1,0 +1,36 @@
+name: Publish portfolio
+
+# Builds dist/ from the source on this branch and publishes it to the gh-pages branch.
+# Nobody edits gh-pages by hand: every run replaces it (force_orphan).
+on:
+  push:
+    branches: [live]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: publish
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: 22
+      - run: npm ci
+      - run: npm run build
+      # The committed hashed files must equal what the build makes.
+      - run: git diff --exit-code
+      - run: test -z "$(git status --porcelain)"
+      # Temporary in PR C0: dist/ must equal today's served tree. Removed when the sources move.
+      - run: npm run check:dist
+      - uses: peaceiris/actions-gh-pages@84c30a85c19949d7eee79c4ff27748b70285e453 # v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: ./dist
+          force_orphan: true

@@ -2,13 +2,14 @@
 
 ## What this is
 
-The source of runeoverland.no, the portfolio of Rune Øverland. It is a set of static HTML pages plus a scroll-driven 3D studio written in React 19 and three.js and bundled with esbuild. GitHub Pages serves the `live` branch as raw files (`.nojekyll`), so there is no build step on the server.
+The source of runeoverland.no, the portfolio of Rune Øverland. It is a set of static HTML pages plus a scroll-driven 3D studio written in React 19 and three.js and bundled with esbuild. GitHub Pages serves the `live` branch as raw files (`.nojekyll`), so there is no build step on the server. The `live` branch is the source; the `gh-pages` branch is built output that `.github/workflows/publish.yml` writes from `dist/`, and nobody edits `gh-pages`. Pages still serves `live` until the owner points it at `gh-pages` (see `docs/decisions/0004-publish-dist-to-gh-pages.md`).
 
 ## How to run it
 
 ```bash
 npm install
-npm run build        # regenerates studio/ and assets/kai/runtime/; git status stays clean
+npm run build        # regenerates studio/ and assets/kai/runtime/, then dist/; git status stays clean
+npm run check:dist   # dist/ must equal the served files of the repo, byte for byte
 python3 -m http.server 8765 --bind 127.0.0.1
 # open http://127.0.0.1:8765/ (the build page is at http://127.0.0.1:8765/build/)
 node --test tests/analytics.test.cjs tools/story-timeline.test.mjs
@@ -16,7 +17,7 @@ node --test tests/analytics.test.cjs tools/story-timeline.test.mjs
 
 ## Folders
 
-- `.github/` — the CI workflow that checks the analytics script and runs its tests.
+- `.github/` — the CI workflows: one checks the analytics script and runs its tests, one builds `dist/` and publishes it to `gh-pages`.
 - `assets/` — media, PDFs and shared files for the pages: videos and images (web encodes in `assets/opt/`), case images, the Kai model and its bundled runtime in `assets/kai/`, the build page styles in `assets/css/` and shared scripts in `assets/js/`.
 - `build/` — the "How I build" page, served at `/build/`.
 - `decoders/` — the Draco decoder used to load the compressed 3D model.
@@ -26,7 +27,7 @@ node --test tests/analytics.test.cjs tools/story-timeline.test.mjs
 - `studio/` — generated from `studio-src/` by `npm run build`; do not edit by hand.
 - `studio-src/` — TypeScript and React source for the 3D studio and the build page story.
 - `tests/` — Node tests for the analytics script.
-- `tools/` — the build scripts, a test for the story timeline, and `check-sitter-excerpts.mjs`, which checks that the code on `/work/sitter/` is the sitter-app source at the pinned commit (`node tools/check-sitter-excerpts.mjs`, or `--local <path to sitter-app>` offline).
+- `tools/` — the build scripts (`build-site.mjs` copies the served files into the git-ignored `dist/`; `check-dist.mjs` checks that copy), a test for the story timeline, and `check-sitter-excerpts.mjs`, which checks that the code on `/work/sitter/` is the sitter-app source at the pinned commit (`node tools/check-sitter-excerpts.mjs`, or `--local <path to sitter-app>` offline).
 - `vendor/` — pinned third-party scripts (GSAP, ScrollTrigger, Lenis).
 - `work/` — work-sample pages, one folder per work sample; the Sitter page is served at `/work/sitter/`.
 
@@ -34,4 +35,4 @@ node --test tests/analytics.test.cjs tools/story-timeline.test.mjs
 
 - Rules for everyone who changes this repo: [`AGENTS.md`](AGENTS.md).
 - Decisions: [`docs/decisions/`](docs/decisions/), one file per decision.
-- Deploy is the `live` branch: whatever is on `live` is published.
+- Deploy is a push to `live`: the workflow builds `dist/` and publishes it to `gh-pages`. Until Pages is repointed, whatever is on `live` is published as it stands.
