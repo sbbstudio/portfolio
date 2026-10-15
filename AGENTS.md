@@ -106,7 +106,7 @@ Generated bundle from `npm run build`:
 ## Rules
 
 - `studio/` and `assets/kai/runtime/` are regenerated with `npm run build`. After a source change, run it and commit the output; with no source change it must give a zero diff.
-- `studio/runtime/` and `assets/kai/runtime/` hold only files that the entry files reach by following their imports (`index.js` and `build-hero.js`; `index.js`, `scene.js` and `stack-entry.js`). After `npm run build`, `git status` must be clean. esbuild does not delete the hashed files a build makes outdated, so delete them in the same PR as the build that made them outdated.
+- `studio/runtime/` and `assets/kai/runtime/` hold only files that the entry files reach by following their imports (`index.js` and `build-hero.js`; `index.js`, `scene.js` and `stack-entry.js`). After `npm run build`, `git status` must be clean. esbuild does not delete the hashed files a build makes outdated, so delete them in the same PR as the build that made them outdated. Until PR B lands, `hls-*.js` and `vision_bundle-*.js` in `studio/runtime/` are the exception: they are build output that no entry file reaches, and PR B removes them from the build.
 - Tests and the build pass before every commit: `node --test tests/analytics.test.cjs tools/story-timeline.test.mjs` and `npm run build`.
 - Text on the pages is public. No email address beyond the one on the contact page, and no internal names.
 - `docs/` is ignored except `docs/decisions/`. Record lasting decisions there, one file per decision.
