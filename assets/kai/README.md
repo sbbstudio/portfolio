@@ -20,9 +20,10 @@ in a hidden document, on Pause, or with reduced motion. A lost WebGL context
 or a failed model load returns to the original-model poster.
 
 `kai-poster.webp` is a transparent 1280×1280 WebP rendered from this exact
-model and portrait scene. To reproduce, serve the repo,
-open `tools/render-kai.html`, wait for `window.kaiPoster`, and save the base64
-payload of that WebP data URL. This uses the same renderer as the portfolio.
+model and portrait scene. To reproduce, serve the repo, call
+`createKai(container, { capture: true })` from `assets/kai/runtime/scene.js`,
+then `scene.render()` and `scene.poster()`, and save the base64 payload of the
+WebP data URL it returns. This uses the same renderer as the portfolio.
 No image generation or character redesign is involved.
 
 ## Method stack
