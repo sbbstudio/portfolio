@@ -23,11 +23,10 @@ node --test tests/analytics.test.cjs tools/story-timeline.test.mjs
 - `docs/` — ignored except `docs/decisions/`, which records decisions about the repo.
 - `kai-src/` — source for the Kai scene; `npm run build` bundles it into `assets/kai/runtime/`.
 - `models/` — the atelier 3D model, its camera track and its poster image.
-- `r2/` — a standalone favicon test page.
 - `studio/` — generated from `studio-src/` by `npm run build`; do not edit by hand.
 - `studio-src/` — TypeScript and React source for the 3D studio and the build page story.
 - `tests/` — Node tests for the analytics script.
-- `tools/` — the build scripts, a test for the story timeline, two local helper pages, and `check-sitter-excerpts.mjs`, which checks that the code on `/work/sitter/` is the sitter-app source at the pinned commit (`node tools/check-sitter-excerpts.mjs`, or `--local <path to sitter-app>` offline).
+- `tools/` — the build scripts, a test for the story timeline, and `check-sitter-excerpts.mjs`, which checks that the code on `/work/sitter/` is the sitter-app source at the pinned commit (`node tools/check-sitter-excerpts.mjs`, or `--local <path to sitter-app>` offline).
 - `vendor/` — pinned third-party scripts (GSAP, ScrollTrigger, Lenis).
 - `work/` — work-sample pages, one folder per work sample; the Sitter page is served at `/work/sitter/`.
 

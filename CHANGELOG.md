@@ -15,6 +15,10 @@ All notable changes to runeoverland.no are recorded here. The format follows [Ke
 - Decision 0003: the recap lights its words one by one, driven linearly by scroll.
 - A pull request template and code owners.
 
+### Removed
+
+- Files nothing uses: `grid-sticky.html`, `jelsa-hero.html`, `hero-lab.css`, `hero-lab.js`, the `r2/` favicon page, `tools/probe-reveal.html`, `tools/render-kai.html`, and 16 outdated hashed files in `studio/runtime/`. `AGENTS.md` now says the runtime folders hold only files the entry files reach.
+
 ### Fixed
 
 - Copy follows the User Canon: the phone number reads `+47 411 67 940` everywhere, the SBB card says `SBB` (not `SBB Studio`), and the 6.55× ROAS figure is labelled as one TikTok Ads campaign.
