@@ -4,7 +4,8 @@ Local rules for everyone who changes this repo. Shared build rules are kept outs
 
 ## Folders
 
-- `.github/` — CI workflow.
+- `.github/` — CI workflows (`verify.yml` checks and tests, `publish.yml` publishes `dist/` to `gh-pages`).
+- `dist/` — build output of `npm run build:site`; git-ignored, never committed.
 - `assets/` — media, PDFs, shared CSS and JS for the pages.
 - `build/` — the "How I build" page (`/build/`).
 - `decoders/` — Draco decoder for the 3D model.
@@ -14,7 +15,8 @@ Local rules for everyone who changes this repo. Shared build rules are kept outs
 - `studio/` — generated from `studio-src/`; never edit by hand.
 - `studio-src/` — source for the 3D studio and the build page story.
 - `tests/` — Node tests.
-- `tools/` — build scripts and the story timeline test.
+- `tools/` — build scripts and the story timeline test. `build-site.mjs` holds the allowlist of served files; a new served folder or root file must be added there, or it is not published.
+  `check-dist.mjs` checks that `dist/` equals the tracked files minus the non-served source; it is temporary and goes with the PR that moves the sources.
   `check-sitter-excerpts.mjs` checks that the code on `/work/sitter/` is the sitter-app source at the pinned commit; it needs the network or `--local <path to sitter-app>`, so it is not part of the commit-time tests.
 - `vendor/` — pinned third-party scripts.
 - `work/` — work-sample pages, one folder per work sample (`/work/sitter/`).
@@ -44,10 +46,10 @@ Styles and scripts:
 
 Config:
 
-- `package.json` — dependencies and the `build` script.
+- `package.json` — dependencies and the `build`, `build:site` and `check:dist` scripts.
 - `package-lock.json` — lock file for `package.json`.
 - `tsconfig.json` — type checking for `studio-src/` (`npx tsc --noEmit`).
-- `.gitignore` — ignored files (`node_modules/`, `docs/` except `docs/decisions/`).
+- `.gitignore` — ignored files (`node_modules/`, `dist/`, `docs/` except `docs/decisions/`).
 - `.gitattributes` — marks `studio/runtime/*.js` as generated and keeps its whitespace.
 - `.prettierrc` — formatter settings matching the existing code (no semicolons, single quotes, 100 columns).
 - `.editorconfig` — editor defaults: UTF-8, LF, two spaces, trimmed trailing whitespace, final newline.
@@ -110,4 +112,5 @@ Generated bundle from `npm run build`:
 - Tests and the build pass before every commit: `node --test tests/analytics.test.cjs tools/story-timeline.test.mjs` and `npm run build`.
 - Text on the pages is public. No email address beyond the one on the contact page, and no internal names.
 - `docs/` is ignored except `docs/decisions/`. Record lasting decisions there, one file per decision.
-- Deploy is the `live` branch: whatever is on `live` is published.
+- `live` is the source and `gh-pages` is built output: the publish workflow replaces `gh-pages` on every push to `live`, and nobody edits `gh-pages`. The owner must point Pages at `gh-pages` once after the merge; until then Pages serves `live` as raw files.
+- `npm run build` ends with `dist/`, and `npm run check:dist` must pass before a push to `live`.

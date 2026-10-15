@@ -6,6 +6,7 @@ All notable changes to runeoverland.no are recorded here. The format follows [Ke
 
 ### Added
 
+- A publish pipeline that separates source from what is served: `npm run build` now ends by copying an allowlist of served files into `dist/` (`tools/build-site.mjs`), `npm run check:dist` checks that `dist/` equals today's served files, and `.github/workflows/publish.yml` publishes `dist/` to the `gh-pages` branch on every push to `live`. Pages still serves `live` until it is repointed; no file moved and no URL changed. Decision 0004.
 - The "How I build" page at `/build/`: the 3D studio tells the story in four reading stops in the camera's forward order, then a recap chapter where the four headlines, as one paragraph, light up word by word as you scroll while the scene fades to black. The page falls back to a plain reading mode, with the same five chapters, when the 3D code cannot load.
 - GitHub in the navigation and in the contact block on the build page.
 - The Sitter work sample at `/work/sitter/`: the function that schedules a card, its tests, the migration, and where the code is weak, set in the site grid. The code is shown as it is in the public sitter-app repository, and `tools/check-sitter-excerpts.mjs` checks that each excerpt equals the source at the pinned commit.
