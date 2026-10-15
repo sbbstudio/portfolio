@@ -291,11 +291,12 @@ h1 { margin: 0 0 var(--cell); font-size: var(--t-xxl); line-height: 1; letter-sp
 @media (min-width: 1440px) { :root { --row-min: 380px; } }
 @media (min-width: 1600px) { :root { --row-min: 340px; } }
 
-/* Prose one step down unless the screen is at least 1440 x 900: the
-   single-cell blocks (the test, the limits, how it is built) only
-   hold their text at 18px when a cell is that large.               */
+/* Prose one step down, to 16px and no lower, unless the screen is at
+   least 1440 x 900: the single-cell blocks (the test, the limits, how
+   it is built) only hold their text at 18px when a cell is that large.
+   The minimum rows above are sized for 16px.                        */
 @media (min-width: 1024px) and (max-width: 1439px), (min-width: 1024px) and (max-height: 899px) {
-  :root { --t-prose: var(--t-meta); }
+  :root { --t-prose: 16px; }
 }
 
 /* ─── MOBILE — one column, slots stacked, a hairline between ── */
