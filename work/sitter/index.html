@@ -245,6 +245,19 @@ h1 { margin: 0 0 var(--cell); font-size: var(--t-xxl); line-height: 1; letter-sp
 .code .c { color: var(--ink-3); }
 .code + p { margin-top: var(--cell); }
 .mono--wrap { white-space: pre-wrap; overflow-wrap: anywhere; }
+/* The clone command sits in one cell (column 4) and must not break inside
+   the URL: 43 characters at 0.6em, so the size is what makes the URL fit
+   the cell. Never below 10px. The URL is one unbreakable word (the
+   browser would otherwise break it after a hyphen); from 1250px up, and
+   on mobile from 360px, where the cell is the full width, it fits.
+   Where the cell is too narrow (1024px to 1249px, and under 360px) the
+   URL wraps instead of being clipped.                                  */
+.nobreak { white-space: normal; }
+@media (min-width: 1250px), (min-width: 360px) and (max-width: 1023px) { .nobreak { white-space: nowrap; } }
+@media (min-width: 1024px) {
+  .at-run .mono { font-size: max(10px, min(var(--fs-code),
+    calc(((100vw - var(--pad) * 2) * .25 - var(--cell) * 2) / 27))); }
+}
 .slot .mono + .label { margin-top: var(--cell); }
 
 /* The file tree: two columns over four cells, one per cell. The
@@ -454,7 +467,7 @@ h1 { margin: 0 0 var(--cell); font-size: var(--t-xxl); line-height: 1; letter-sp
   </div>
   <section class="slot at-run">
     <span class="label">Run it</span>
-<pre class="mono mono--wrap">git clone https://github.com/sbbstudio/sitter-app.git
+<pre class="mono mono--wrap">git clone <span class="nobreak">https://github.com/sbbstudio/sitter-app.git</span>
 cd sitter-app
 npm test</pre>
     <span class="label">What you should see</span>
