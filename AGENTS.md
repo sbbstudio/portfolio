@@ -115,3 +115,5 @@ Generated bundle from `npm run build`:
 - `docs/` is ignored except `docs/design/` and `docs/decisions/`. Record lasting decisions in `docs/decisions/`, one file per decision.
 - `live` is the source and `gh-pages` is built output: the publish workflow replaces `gh-pages` on every push to `live`, and nobody edits `gh-pages`. The owner must point Pages at `gh-pages` once after the merge; until then Pages serves `live` as raw files.
 - `npm run build` ends with `dist/`, and `npm run check:dist` must pass before a push to `live`.
+
+Shared navigation: `assets/js/portfolio-nav.js` owns the primary destinations and rendered scroll/visual state for pages using `nav-system.css`. The default keeps the open layout and local section jumps; `/build/` opts into `data-variant="compact"` for the accessible glass menu. Add primary destinations in this shared script, not separate page copies. HTML links remain as the no-JavaScript fallback.

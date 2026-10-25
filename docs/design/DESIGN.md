@@ -94,8 +94,36 @@ Technical (`/build/`) og Sitter (`/work/sitter/`) inngår i porteføljen, men ho
 
 Kjente harmoniseringsoppgaver: Technical bruker fast 16 px mobilpadding, Sitter beholder 10/20 px ramme/celle, flere undersider har egne nav-/footerkopier. Glassnav og de nye mediekortvariantene er avgrenset til hovedsiden; delte CTA-piler og fjerning av nav-dividere gjelder sider som laster de delte filene.
 
-Planlagt egen 3D-studioside er ikke implementert av denne endringen. [FigJam-sitemap](https://www.figma.com/board/3mwhXw8SCggg33evk6Qjm2/Portefolio).
+Avklart videre: Technical er steget med 3D-modellen, ikke et prosjektkort eller en separat teknisk dokumentasjonsside. [FigJam-sitemap](https://www.figma.com/board/3mwhXw8SCggg33evk6Qjm2/Portefolio).
 
 ## QA før levering
 
 Kontroller desktop, smal desktop, mobil og 1023/1024-grensen. Se etter klippet tekst, bildeoverlegg, scrollbredde, døde lenker og footer som mangler. Test scrollnav, tastaturfokus, redusert bevegelse og CTA til Technical. Kjør prosjektets tester og build før commit. Målinger og begrensninger fra leveransen står i `HOMEPAGE-QA.md`.
+
+## Technical — tre steg i 3D-opplevelsen
+
+Desktopoversikten bruker én felles glassflate over rute 1–8 med 58 % sort og 6 px blur. Native scrolling bytter mellom tre steg: Context, Projects og Knowledge. Tittel ligger i 5–6, forklaring i 7; rute 8 er åpen. En indikator viser stegnummer av tre og alle stegnavn; aktivt steg har understrek. Ingen plusstegn eller klikk kreves. Stegnavnene er knapper som hopper til midten av riktig leseintervall; aktiv markering følger samme scrolltilstand. Knappene har minst 44 px høyde, synlig fokus og hover/trykkrespons. Tilbakescrolling går tilbake gjennom stegene. Kameravendingen kommer først, og den eksisterende avslutningen følger etter. Mobil beholder stablet innhold; lesemodus viser alle tre uten fremdriftsindikator.
+
+Oversikten ligger ved kamera .29 etter vendingen, med stillestående kamera fra scrollprogresjon .30 til .65. De tre tekstene deler det fullt synlige intervallet likt. Scrollområdet er 750svh for lesetid; avslutningen beholder sitt eksisterende innhold og siste kameravinkel.
+
+Technical har en egen overskriftsrad med «See it in practice.» øverst til venstre. Under ligger Sitter i rute 6 og kontakt i rute 8; rute 5 og 7 er åpne. Porteføljerepoet promoteres ikke som kodebevis. Desktop fyller én modul (`--box`, skjermhøyden minus ytterrammen) med to like rader, cellepadding, xxl-overskrift, h3-korttitler, meta-brødtekst og delte CTA-er nederst. Mobil viser overskrift og to handlinger i én kolonne. Gridlinjene bruker `--line` med hele 6 px noder over linjene, også ved ytterkantene.
+
+Global navigasjon: `assets/js/portfolio-nav.js` eier primærlenkene på sidene som bruker `nav-system.css`. Åpen variant beholder sidens komposisjon og seksjonslenker. Technical velger `data-variant="compact"`: navn og hamburger under 3D-opplevelsen, vanlig åpen navigasjon etterpå og i lesemodus. Hamburgeren folder ut de vanlige navcellene i samme grid, med glassflate og lukkekryss. Escape lukker og returnerer fokus; klikk utenfor, lenkevalg eller fokus ut lukker også. Ingen separat dialog. Uten JavaScript vises de opprinnelige lenkene.
+
+Lesbarhetsprøve for Technical: stegenes overskrift bruker h1 på desktop og h2 på mobil. Stegindikatoren ligger på desktop nederst i rute 1, med vanlig cellepadding over midtlinjen. Mobil beholder indikatoren over innholdet. Mens oversikten er synlig, skjules den nederste scroll-instruksjonen; lenken til lesemodus beholdes.
+
+Stegenes innhold toppjusteres i sine gridruter med vanlig `--cell` padding: tittel øverst i 5–6, brødtekst i 7 og åpen rute 8. Ingen baseline-forskyvning mellom cellene. Mobil beholder stablet tekstflyt.
+
+Stegknappene står nederst i rute 1. På desktop ligger «1 / 3 · Scroll to continue» nederst i rute 5 med cellepadding; den gjentatte steglabelen under tittelen er fjernet fra alle tre steg. Mobil beholder teller og knapper samlet over innholdet.
+
+## Felles navigasjon etter QA
+
+`portfolio-nav.js` eier synlighet, glass-tilstand, lenker og aktiv side gjennom data-attributter. Lokale scripts kan fortsatt markere seksjonslenker, men lokale `is-paper`/`is-hidden`-klasser styrer ikke den rendrede navflaten når den felles komponenten er startet. CSS lastes sist i head på alle åtte sider. Desktop: fire kolonner, 20 px padding og 18 px tekst. Mobil: to kolonner, 16 px padding, meta-tekst og lenker på egen rad. Toppen er 0, uten skygge, border eller kolonneskiller. Glass er 18 % hvitt, 18 px blur og 110 % saturation, med hvit tekst. Hovedsidens Hero og How I work beholder sort starttekst. Opp-scroll på 120 px viser nav; tastaturfokus holder den synlig. Technical bruker hamburger kun i 3D-opplevelsen.
+
+Technical-avslutningen oppsummerer nå de tre faktiske stegene, og ordtelling/indekser er oppdatert. De to lenkene til How I work bruker samme navn. Den korte kontaktinvitasjonen gjentar ikke neste seksjons avsnitt.
+
+CTA-er er fjernet fra de tre scrollstegene. Sitter og kontakt finnes i avslutningen, slik at hovedfortellingen kan følges uten avstikkere.
+
+## Godkjent innhold — engelsk nettside
+
+Technical er en forlengelse av Section 1 for rekruttereren. Intro: «Slik bygger jeg». Tre steg på siden: «People and product», «The system behind» og «Learning from use». Oppsummeringen er «Forstå behovet. Bygge sammenhengen. Forbedre gjennom bruk.» Norsk brukes bare til tekstgjennomgang i samtalen. Publisert og lokal side skal være engelsk, med samme godkjente innhold. Stegknappene spenner over rute 1–2 for å få plass til navnene. Ved desktop 1024–1279 px bruker brødteksten rute 7–8; på bred desktop rute 7. På korte mobilskjermer brukes meta-størrelse på brødteksten for lesbar plassering. Global navigasjon beholder felles navn på tvers av språk.
