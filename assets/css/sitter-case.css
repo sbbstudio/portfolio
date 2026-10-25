@@ -105,3 +105,9 @@ a:focus-visible,summary:focus-visible,pre:focus-visible { outline:2px solid curr
   .case-next { padding-bottom:32px; }
 }
 @media (prefers-reduced-motion:reduce) { html { scroll-behavior:auto; } }
+
+/* The limitations form one black panel across two cells. Keep its boundary
+   lines and nodes visible, but remove the internal line through the prose. */
+#limits .case-copy { background:#000; max-width:none; }
+#limits .case-grid { z-index:2; }
+#limits .case-grid i:nth-child(4) { background:none; }
