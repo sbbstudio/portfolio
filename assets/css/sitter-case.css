@@ -17,7 +17,6 @@ p,h1,h2 { margin:0; }
 a { color:inherit; text-decoration:none; }
 a:hover { text-decoration:underline; text-underline-offset:.25em; }
 a:focus-visible,summary:focus-visible,pre:focus-visible { outline:2px solid currentColor; outline-offset:4px; }
-.nav { transition:transform .35s ease,background-color .3s ease; }
 .case-label,.label { display:block; font-size:var(--t-meta); color:var(--ink-2); line-height:1.5; }
 .case-label { margin-bottom:var(--cell); }
 .case-hero,.case-section { position:relative; display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); isolation:isolate; scroll-margin-top:140px; }

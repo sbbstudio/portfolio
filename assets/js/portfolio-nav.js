@@ -29,7 +29,7 @@
     const homeHero = document.body.classList.contains('home-photo') && document.querySelector('#hero');
     const heroVisible = homeHero && homeHero.getBoundingClientRect().bottom > 12;
     nav.dataset.glass = String(homeHero ? !heroVisible : y > 40);
-    if (y <= 40 || heroVisible || upward >= 120 || nav.contains(document.activeElement) || nav.classList.contains('is-menu-open')) nav.dataset.hidden = 'false';
+    if (y <= 40 || upward >= 120 || nav.contains(document.activeElement) || nav.classList.contains('is-menu-open')) nav.dataset.hidden = 'false';
     else if (delta > 0) nav.dataset.hidden = 'true';
     lastY = y;
     document.documentElement.style.setProperty('--nav-height', `${nav.offsetHeight}px`);

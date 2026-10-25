@@ -76,6 +76,7 @@ body .nav[data-portfolio-nav] {
   padding: 0; border: 0; box-shadow: none; background: transparent;
   backdrop-filter: none; -webkit-backdrop-filter: none;
   color: #fff; transform: translateY(0);
+  transition: transform .45s cubic-bezier(.22,.61,.36,1), background-color .3s cubic-bezier(.22,.61,.36,1);
 }
 body .nav[data-portfolio-nav][data-ink="true"][data-glass="false"] { color: #000; }
 body .nav[data-portfolio-nav][data-glass="true"] {
