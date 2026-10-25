@@ -133,3 +133,5 @@ Lukket hamburgernav er transparent uten blur, også ved scroll. Åpning viser de
 ## Felles footer
 
 Alle åtte porteføljesider bruker samme statiske mal: `tools/templates/portfolio-footer.html`, med stil i `assets/css/portfolio-footer.css`. Kontaktbudskapet foran er sidespesifikt. Desktop: solnedgangsbildet fyller rute 1–2, kolofon med navn, lenker og kontakt i rute 4, ticker nederst i rute 5–6 og profilbildet i rute 8 med Back to top og copyright over. Rute 3 og 7 er åpne. Modulen har to like rader, fire kolonner, 20 px padding, felles linjefarge og 6 px noder over linjene. Hovedsidens eksisterende kontaktanimasjon og grid eier fortsatt rammen rundt denne modulen. Mobil: landskapsbilde, kontakt/lenker, ticker og profilbilde med Back to top i normal flyt; 16 px padding og meta-tekst. Bildene lazy-loades med deklarerte dimensjoner; redusert bevegelse stopper tickeren.
+
+Technical: aktivt steg markeres på desktop med en 2 px strek på den felles midtlinjen, over hele bredden av stegets gridrute uten innrykk. Teksten beholder cellepadding. Mobil beholder understreken under knappen.
