@@ -138,10 +138,12 @@ Technical: aktivt steg markeres på desktop med en 2 px strek på den felles mid
 
 ## Sitter — case-layout
 
-`/work/sitter/` bruker `assets/css/sitter-case.css` og de felles nav-/footerkomponentene. Desktopintro fyller en modul: undertittel i øverste rad, Sitter-tittelen i rute 5, forklaring i rute 6, tekniske lenker i 7 og Try Sitter i 8. Innholdsseksjonene har fire kolonner med h1-titler i 1–2 og brødtekst i 3–4, 20 px cellepadding og felles linjer/noder. Hver tekstrad er minst en halv modul, og kan vokse med innholdet. Kode, tester, migrering og repo-struktur ligger i native details/summary under seksjonen; kode bruker lesbar monospace og lokal horisontal scrolling fremfor nedskalering. Ingen skygger, gradientflater eller dekorativt korn. Mobil bruker 8 px ramme, 16 px padding, stablet innhold, h2-størrelse på seksjonstitler og fullbredde utfellingsfelt. Kildeutdrag er fortsatt bundet til samme commit og verifiseres av `check-sitter-excerpts.mjs`.
+`/work/sitter/` bruker `assets/css/sitter-case.css` og de felles nav-/footerkomponentene. Desktopintro fyller en modul: Sitter-tittelen og undertittelen i rute 5, forklaring i rute 6, tekniske lenker i 7 og Try Sitter i 8. Innholdsseksjonene har fire kolonner med h1-titler i 1–2 og brødtekst i 3–4, 20 px cellepadding og felles linjer/noder. Hver tekstrad er minst en halv modul, og kan vokse med innholdet. Kode, tester, migrering og repo-struktur ligger i native details/summary under seksjonen; kode bruker lesbar monospace og lokal horisontal scrolling fremfor nedskalering. Ingen skygger, gradientflater eller dekorativt korn. Mobil bruker 8 px ramme, 16 px padding, stablet innhold, h2-størrelse på seksjonstitler og fullbredde utfellingsfelt. Kildeutdrag er fortsatt bundet til samme commit og verifiseres av `check-sitter-excerpts.mjs`.
 
 Sitter: begrensningsseksjonens tekstfelt er én sort, flat flate over kolonne 3–4. Den indre vertikale linjen skjules, mens ytterlinjer og noder beholdes. Ingen radius eller skygge.
 
 Sitter: scroll anchoring er deaktivert på siden, slik at åpning av kodefeltene beholder knappen på samme sted i vinduet og skyver resten av innholdet nedover. Native details/summary og tastaturbetjening beholdes.
 
 Sitter-intro: H1 og etiketten under ligger øverst i rute 5. Begge forklaringsavsnitt ligger øverst i rute 6. Lenker ligger i 7 og Try Sitter i 8. Alle fire feltene har vanlig cellepadding under den felles midtlinjen. Mobil bruker normal leserekkefølge uten tomme gridrader.
+
+Sitter: «A learning app / for children.» står rett under H1 i rute 5, med h3-størrelse på desktop og h2 på mobil. Work sample-etiketten følger under.
