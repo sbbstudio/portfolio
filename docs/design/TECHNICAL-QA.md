@@ -33,3 +33,7 @@ Rechecked all eight pages at 390/1440px: HTTP 200, no page errors or horizontal 
 ## Release check
 
 English approved copy is installed. The hamburger expands the existing nav cells in place, without a separate modal. Verified at 1440, 1024 and 390 px: open/close, Escape and focus return, outside click, step switching, return to ordinary navigation after 3D, no page errors or horizontal overflow. Visually checked the expanded desktop nav after its reveal animation. Build, TypeScript and all 14 tests pass.
+
+## Shared footer — 25 October 2026
+
+All eight portfolio pages checked at 1440, 1024 and 390 px: exactly one footer, both optimized images loaded, no horizontal overflow or JS errors, and Back to top returns to zero. Homepage and Technical visually checked on desktop/mobile. Shared static template preserves links without JavaScript; footer ticker stops for reduced motion. Page-specific contact copy and homepage photo transition remain separate.
