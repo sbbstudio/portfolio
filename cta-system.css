@@ -34,3 +34,22 @@
 @media (prefers-reduced-motion: reduce) {
   .proof-story > a .arrow, .system-link .arrow, .build-action .arrow, .proof-cell > a .arrow { transition: none; }
 }
+
+/* Shared CTA attention cue: a short nudge, then a pause; the label stays still. */
+:is(.hero__cta, .nyme__cta, .kz__cta, .intro__cta, .contact__cta, .close__cta, .build-action, .proof-cell, .proof-story) a .arrow,
+.system-link .arrow,
+.card__link .arrow {
+  display: inline-block;
+  letter-spacing: 0;
+}
+@media (prefers-reduced-motion: no-preference) {
+  :is(.hero__cta, .nyme__cta, .kz__cta, .intro__cta, .contact__cta, .close__cta, .build-action, .proof-cell, .proof-story) a .arrow,
+  .system-link .arrow,
+  .card__link .arrow {
+    animation: cta-arrow-nudge 3.2s ease-in-out infinite;
+  }
+}
+@keyframes cta-arrow-nudge {
+  0%, 40%, 100% { transform: translateX(0); }
+  20% { transform: translateX(.35ch); }
+}

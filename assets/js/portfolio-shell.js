@@ -1,4 +1,4 @@
-/* Navigation and contact remain independent of the optional 3D experience. */
+/* Navigation, Hero parallax and contact remain independent of the optional 3D experience. */
 (() => {
   const nav = document.querySelector('.nav');
   const hero = document.querySelector('#hero');
@@ -27,6 +27,30 @@
   nav?.addEventListener('focusin', scheduleNav);
   nav?.addEventListener('focusout', scheduleNav);
   updateNav();
+
+  const heroPhoto = sharedIntro?.querySelector('.home-intro-photo');
+  if (heroPhoto) {
+    const parallaxEnabled = matchMedia('(min-width: 1024px) and (prefers-reduced-motion: no-preference)');
+    let photoFrame = 0;
+    let lastPhotoOffset = -1;
+    const updateHeroPhoto = () => {
+      photoFrame = 0;
+      const bounds = sharedIntro.getBoundingClientRect();
+      const progress = Math.max(0, Math.min(1, -bounds.top / Math.max(1, bounds.height)));
+      // Downward travel stays slower than scrolling, keeping the exposed top above the viewport.
+      const offset = parallaxEnabled.matches ? progress * 40 : 0;
+      if (offset === lastPhotoOffset) return;
+      heroPhoto.style.setProperty('--hero-photo-offset', `${offset}px`);
+      lastPhotoOffset = offset;
+    };
+    const scheduleHeroPhoto = () => {
+      if (!photoFrame) photoFrame = requestAnimationFrame(updateHeroPhoto);
+    };
+    addEventListener('scroll', scheduleHeroPhoto, { passive: true });
+    addEventListener('resize', scheduleHeroPhoto);
+    parallaxEnabled.addEventListener('change', scheduleHeroPhoto);
+    updateHeroPhoto();
+  }
 
   const wrap = document.querySelector('.contact-reveal');
   if (!wrap) return;

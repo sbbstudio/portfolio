@@ -502,14 +502,7 @@ body.ready .rl { opacity: 1; transform: none; }
   padding: var(--cell);
   display: flex; flex-direction: column;
   justify-content: space-between;
-  background: linear-gradient(180deg, rgba(255, 255, 255, .09), rgba(255, 255, 255, .04));
-  /* Flush mot nabofliser: sømmen er en inset hairline-ring +
-     topplys — ikke ytre skygge som blør over naboene.          */
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, .16),
-    inset 0 0 0 var(--hair) rgba(255, 255, 255, .07);
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
+  /* Surface and body typography are shared in assets/css/card-system.css. */
 }
 
 /* CEO 08-14: top left — porteføljens kort-grammatikk. Nummer
@@ -756,7 +749,7 @@ body.ready .rl { opacity: 1; transform: none; }
   .ticker__track { animation: none; }
 }
 </style>
-</head>
+<link rel="stylesheet" href="assets/css/card-system.css"></head>
 <body>
 
 <div class="page">

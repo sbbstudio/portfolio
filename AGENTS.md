@@ -9,7 +9,7 @@ Local rules for everyone who changes this repo. Shared build rules are kept outs
 - `assets/` — media, PDFs, shared CSS and JS for the pages.
 - `build/` — the "How I build" page (`/build/`).
 - `decoders/` — Draco decoder for the 3D model.
-- `docs/` — ignored except `docs/decisions/`.
+- `docs/` — tracked `docs/design/` for the portfolio design reference and `docs/decisions/` for repo decisions; other contents are ignored.
 - `kai-src/` — Kai scene source, bundled into `assets/kai/runtime/`.
 - `models/` — atelier model, camera track and poster.
 - `studio/` — generated from `studio-src/`; never edit by hand.
@@ -29,8 +29,8 @@ The root holds more than 15 files on purpose: GitHub Pages serves the repo as ra
 
 Pages:
 
-- `index.html` — the home page.
-- `grid-video.html` — the home page with the 3D studio section.
+- `index.html` — redirects to `grid-video.html`, the rendered home page.
+- `grid-video.html` — the rendered home page; shared visual rules live in `assets/css/`, `nav-system.css` and `cta-system.css`.
 - `how-i-work.html` — how I work.
 - `contact.html` — contact page.
 - `kaizen.html` — KAIZEN case.
@@ -49,7 +49,7 @@ Config:
 - `package.json` — dependencies and the `build`, `build:site` and `check:dist` scripts.
 - `package-lock.json` — lock file for `package.json`.
 - `tsconfig.json` — type checking for `studio-src/` (`npx tsc --noEmit`).
-- `.gitignore` — ignored files (`node_modules/`, `dist/`, `docs/` except `docs/decisions/`).
+- `.gitignore` — ignored files (`node_modules/`, `dist/`, `docs/` except `docs/design/` and `docs/decisions/`).
 - `.gitattributes` — marks `studio/runtime/*.js` as generated and keeps its whitespace.
 - `.prettierrc` — formatter settings matching the existing code (no semicolons, single quotes, 100 columns).
 - `.editorconfig` — editor defaults: UTF-8, LF, two spaces, trimmed trailing whitespace, final newline.
@@ -111,6 +111,7 @@ Generated bundle from `npm run build`:
 - `studio/runtime/` and `assets/kai/runtime/` hold only files that the entry files reach by following their imports (`index.js` and `build-hero.js`; `index.js`, `scene.js` and `stack-entry.js`). After `npm run build`, `git status` must be clean. esbuild does not delete the hashed files a build makes outdated, so delete them in the same PR as the build that made them outdated. Until PR B lands, `hls-*.js` and `vision_bundle-*.js` in `studio/runtime/` are the exception: they are build output that no entry file reaches, and PR B removes them from the build.
 - Tests and the build pass before every commit: `node --test tests/analytics.test.cjs tools/story-timeline.test.mjs` and `npm run build`.
 - Text on the pages is public. No email address beyond the one on the contact page, and no internal names.
-- `docs/` is ignored except `docs/decisions/`. Record lasting decisions there, one file per decision.
+- `docs/design/DESIGN.md` is the portfolio design reference. Read it before visual changes; use its component roles and values, and resolve the listed differences before treating them as shared defaults. Keep it updated with the CSS it describes.
+- `docs/` is ignored except `docs/design/` and `docs/decisions/`. Record lasting decisions in `docs/decisions/`, one file per decision.
 - `live` is the source and `gh-pages` is built output: the publish workflow replaces `gh-pages` on every push to `live`, and nobody edits `gh-pages`. The owner must point Pages at `gh-pages` once after the merge; until then Pages serves `live` as raw files.
 - `npm run build` ends with `dist/`, and `npm run check:dist` must pass before a push to `live`.

@@ -4,6 +4,8 @@
 
 The source of runeoverland.no, the portfolio of Rune Øverland. It is a set of static HTML pages plus a scroll-driven 3D studio written in React 19 and three.js and bundled with esbuild. GitHub Pages serves the `live` branch as raw files (`.nojekyll`), so there is no build step on the server. The `live` branch is the source; the `gh-pages` branch is built output that `.github/workflows/publish.yml` writes from `dist/`, and nobody edits `gh-pages`. Pages still serves `live` until the owner points it at `gh-pages` (see `docs/decisions/0004-publish-dist-to-gh-pages.md`).
 
+The rendered homepage is `grid-video.html`; `/` redirects there. Its design reference and QA notes are in `docs/design/`.
+
 ## How to run it
 
 ```bash
@@ -21,7 +23,7 @@ node --test tests/analytics.test.cjs tools/story-timeline.test.mjs
 - `assets/` — media, PDFs and shared files for the pages: videos and images (web encodes in `assets/opt/`), case images, the Kai model and its bundled runtime in `assets/kai/`, the build page styles in `assets/css/` and shared scripts in `assets/js/`.
 - `build/` — the "How I build" page, served at `/build/`.
 - `decoders/` — the Draco decoder used to load the compressed 3D model.
-- `docs/` — ignored except `docs/decisions/`, which records decisions about the repo.
+- `docs/` — tracked design reference in `docs/design/DESIGN.md` and repo decisions in `docs/decisions/`; other contents are ignored.
 - `kai-src/` — source for the Kai scene; `npm run build` bundles it into `assets/kai/runtime/`.
 - `models/` — the atelier 3D model, its camera track and its poster image.
 - `studio/` — generated from `studio-src/` by `npm run build`; do not edit by hand.
@@ -33,6 +35,7 @@ node --test tests/analytics.test.cjs tools/story-timeline.test.mjs
 
 ## Rules and decisions
 
+- Design reference for the whole portfolio: [`docs/design/DESIGN.md`](docs/design/DESIGN.md), including spacing, typography, components and unresolved differences. Read it before visual changes.
 - Rules for everyone who changes this repo: [`AGENTS.md`](AGENTS.md).
 - Decisions: [`docs/decisions/`](docs/decisions/), one file per decision.
 - Deploy is a push to `live`: the workflow builds `dist/` and publishes it to `gh-pages`. Until Pages is repointed, whatever is on `live` is published as it stands.
