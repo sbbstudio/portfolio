@@ -139,3 +139,5 @@ Technical: aktivt steg markeres på desktop med en 2 px strek på den felles mid
 ## Sitter — case-layout
 
 `/work/sitter/` bruker `assets/css/sitter-case.css` og de felles nav-/footerkomponentene. Desktopintro fyller en modul: tittel i øverste rad, forklaring i 5–6, tekniske lenker i 7 og Try Sitter i 8. Innholdsseksjonene har fire kolonner med h1-titler i 1–2 og brødtekst i 3–4, 20 px cellepadding og felles linjer/noder. Hver tekstrad er minst en halv modul, og kan vokse med innholdet. Kode, tester, migrering og repo-struktur ligger i native details/summary under seksjonen; kode bruker lesbar monospace og lokal horisontal scrolling fremfor nedskalering. Ingen skygger, gradientflater eller dekorativt korn. Mobil bruker 8 px ramme, 16 px padding, stablet innhold, h2-størrelse på seksjonstitler og fullbredde utfellingsfelt. Kildeutdrag er fortsatt bundet til samme commit og verifiseres av `check-sitter-excerpts.mjs`.
+
+Sitter: begrensningsseksjonens tekstfelt er én sort, flat flate over kolonne 3–4. Den indre vertikale linjen skjules, mens ytterlinjer og noder beholdes. Ingen radius eller skygge.
