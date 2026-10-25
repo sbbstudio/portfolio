@@ -23,10 +23,11 @@ a:focus-visible,summary:focus-visible,pre:focus-visible { outline:2px solid curr
 .case-hero,.case-section { position:relative; display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); isolation:isolate; scroll-margin-top:140px; }
 .case-hero { min-height:var(--box); grid-template-rows:minmax(var(--row),auto) minmax(var(--row),auto); }
 .case-hero::after { content:''; position:absolute; top:50%; left:0; right:0; height:1px; background:var(--line); pointer-events:none; }
-.case-hero__title { grid-column:1 / -1; padding:calc(var(--nav-height,134px) + 40px) var(--cell) 40px; }
+.case-hero__title { grid-column:1; grid-row:2; padding:var(--cell); }
+.case-hero__title > .case-label { margin:var(--cell) 0 0; }
 .case-hero h1 { font-size:var(--t-xxl); font-weight:500; line-height:1; letter-spacing:-.04em; }
-.case-subtitle { position:absolute; left:50%; top:calc(var(--nav-height,134px) + 40px); padding:var(--cell); font-size:var(--t-h2); line-height:1.1; letter-spacing:-.025em; }
-.case-hero__intro { grid-column:1 / 3; grid-row:2; padding:var(--cell); max-width:64ch; }
+.case-subtitle { position:absolute; left:50%; top:calc(var(--nav-height,134px) + var(--cell)); padding:0 var(--cell); font-size:var(--t-h2); line-height:1.1; letter-spacing:-.025em; }
+.case-hero__intro { grid-column:2; grid-row:2; padding:var(--cell); max-width:64ch; }
 .case-hero__intro p+p { margin-top:var(--cell); color:#ccc; font-size:var(--t-meta); }
 .case-hero__links { grid-column:3; grid-row:2; padding:var(--cell); }
 .case-hero__cta { grid-column:4; grid-row:2; padding:var(--cell); text-align:right; font-size:var(--t-meta); }
@@ -92,8 +93,8 @@ a:focus-visible,summary:focus-visible,pre:focus-visible { outline:2px solid curr
   .case-hero,.case-section { display:flex; flex-direction:column; min-height:0; scroll-margin-top:100px; }
   .case-hero::after { display:none; }
   .case-grid i:not(:first-child):not(:last-child) { display:none; }
-  .case-hero__title { padding:calc(var(--nav-height,110px) + 40px) var(--cell) 40px; }
-  .case-subtitle { position:static; padding:24px 0 0; font-size:var(--t-h2); }
+  .case-hero__title { padding:calc(var(--nav-height,110px) + var(--cell)) var(--cell) 24px; }
+  .case-subtitle { position:static; padding:0 var(--cell) 24px; font-size:var(--t-h2); }
   .case-hero__intro { font-size:var(--t-body); }
   .case-hero__links { padding-top:32px; }
   .case-hero__cta { text-align:left; padding-block:24px 48px; }
