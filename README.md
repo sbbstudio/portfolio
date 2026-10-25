@@ -41,3 +41,5 @@ node --test tests/analytics.test.cjs tools/story-timeline.test.mjs
 - Deploy is a push to `live`: the workflow builds `dist/` and publishes it to `gh-pages`. Until Pages is repointed, whatever is on `live` is published as it stands.
 
 Shared navigation: `assets/js/portfolio-nav.js` owns the primary destinations and rendered scroll/visual state for pages using `nav-system.css`. The default keeps the open layout and local section jumps; `/build/` opts into `data-variant="compact"` for the accessible glass menu. Add primary destinations in this shared script, not separate page copies. HTML links remain as the no-JavaScript fallback.
+
+Shared footer: edit `tools/templates/portfolio-footer.html` and `assets/css/portfolio-footer.css`. `tools/sync-portfolio-footer.mjs` expands the template into marked blocks in the eight portfolio HTML pages during `npm run build` or `npm run build:site`. Commit generated page changes with the template. The preceding contact sections stay page-specific; the homepage retains its photo transition.

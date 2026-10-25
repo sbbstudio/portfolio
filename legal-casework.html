@@ -977,6 +977,8 @@ a:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
 </style>
 <link rel="stylesheet" href="cta-system.css">
 <link rel="stylesheet" href="/nav-system.css">
+<link rel="stylesheet" href="/assets/css/portfolio-footer.css">
+<script src="/assets/js/portfolio-footer.js" defer></script>
 </head>
 <body>
 
@@ -1191,41 +1193,25 @@ a:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
 
   <!-- ══ 06 · FOOTER — forsidens fulle kolofonmodul (CEO 08-14:
        samme footer på alle sider, inkludert reel-klippet) ═════ -->
-  <footer class="footer">
-    <i class="mline" aria-hidden="true"></i>
-    <div class="cols">
-      <div class="footer__reel" aria-hidden="true">
-        <picture><source srcset="assets/opt/contact-fog.webp" type="image/webp"><img src="assets/opt/contact-fog.jpg" alt="" loading="lazy" decoding="async"></picture>
-      </div>
-      <div class="cell footer__colophon">
-        <div class="footer__name">Rune &Oslash;verland</div>
-        <div class="colo__mid">
-          <nav class="footer__nav" aria-label="Footer">
-            <a href="grid-video.html#approach">Approach</a>
-            <a href="grid-video.html#work">Work</a>
-            <a href="how-i-work.html">How I work</a>
-            <a href="contact.html">Contact</a>
-          </nav>
-        </div>
-        <div class="colo__bottom">
-          <a class="footer__mail" href="tel:+4741167940">+47 411 67 940</a>
-          <a class="footer__mail" href="mailto:rune@kaizenstudio.no">rune@kaizenstudio.no</a>
-        </div>
-      </div>
-
-      <div class="cell footer__ticker" aria-hidden="true">
-        <div class="ticker__track">
-          <span class="ticker__seq"><i>CODE</i><i>AGENTS</i><i>CODE</i><i>AGENTS</i></span>
-          <span class="ticker__seq"><i>CODE</i><i>AGENTS</i><i>CODE</i><i>AGENTS</i></span>
-        </div>
-      </div>
-
-      <div class="cell footer__c">
-        <a class="footer__top" href="#top">Back to top <span class="arrow">&uarr;</span></a>
-        <span>&copy; 2026</span>
-      </div>
-    </div>
-  </footer>
+  <!-- portfolio-footer:start -->
+<footer class="portfolio-footer" id="footer" role="contentinfo" aria-label="Portfolio footer">
+  <div class="portfolio-footer__grid" aria-hidden="true"><i style="--x:0%;--y:0%"></i><i style="--x:0%;--y:50%"></i><i style="--x:0%;--y:100%"></i><i style="--x:25%;--y:0%"></i><i style="--x:25%;--y:50%"></i><i style="--x:25%;--y:100%"></i><i style="--x:50%;--y:0%"></i><i style="--x:50%;--y:50%"></i><i style="--x:50%;--y:100%"></i><i style="--x:75%;--y:0%"></i><i style="--x:75%;--y:50%"></i><i style="--x:75%;--y:100%"></i><i style="--x:100%;--y:0%"></i><i style="--x:100%;--y:50%"></i><i style="--x:100%;--y:100%"></i></div>
+  <img class="portfolio-footer__landscape" src="/assets/opt/intro-sunset-portrait.webp" alt="Rune on a beach at sunset." width="1333" height="2000" loading="lazy" decoding="async">
+  <div class="portfolio-footer__details">
+    <p class="portfolio-footer__name">Rune Øverland</p>
+    <nav class="portfolio-footer__links" aria-label="Footer">
+      <a href="/grid-video.html#approach">Approach</a><a href="/grid-video.html#work">Work</a>
+      <a href="/how-i-work.html">How I work</a><a href="/contact.html">Contact</a>
+    </nav>
+    <div class="portfolio-footer__contact"><a href="tel:+4741167940">+47 411 67 940</a><a href="mailto:rune@kaizenstudio.no">rune@kaizenstudio.no</a></div>
+  </div>
+  <div class="portfolio-footer__ticker" aria-hidden="true"><div class="portfolio-footer__track">
+    <span>ADS VIDEO DESIGN CODE AGENTS&nbsp;</span><span>ADS VIDEO DESIGN CODE AGENTS&nbsp;</span>
+  </div></div>
+  <img class="portfolio-footer__portrait" src="/assets/opt/footer-sunset-profile.webp" alt="Rune looking toward the sea at sunset." width="889" height="1334" loading="lazy" decoding="async">
+  <div class="portfolio-footer__end"><a class="portfolio-footer__top" href="#top">Back to top <span class="arrow">↑</span></a><span>© 2026</span></div>
+</footer>
+<!-- portfolio-footer:end -->
 
 </div>
 

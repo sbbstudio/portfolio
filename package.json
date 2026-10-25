@@ -4,9 +4,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "node tools/build-studio.mjs && node tools/build-kai.mjs && node tools/build-site.mjs",
+    "build": "node tools/build-studio.mjs && node tools/build-kai.mjs && node tools/sync-portfolio-footer.mjs && node tools/build-site.mjs",
     "build:kai": "node tools/build-kai.mjs",
-    "build:site": "node tools/build-site.mjs",
+    "build:site": "node tools/sync-portfolio-footer.mjs && node tools/build-site.mjs",
     "check:dist": "node tools/check-dist.mjs"
   },
   "dependencies": {
