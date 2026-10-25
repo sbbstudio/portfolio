@@ -110,11 +110,11 @@ Technical har en egen overskriftsrad med «See it in practice.» øverst til ven
 
 Global navigasjon: `assets/js/portfolio-nav.js` eier primærlenkene på sidene som bruker `nav-system.css`. Åpen variant beholder sidens komposisjon og seksjonslenker. Technical velger `data-variant="compact"`: navn og hamburger under 3D-opplevelsen, vanlig åpen navigasjon etterpå og i lesemodus. Hamburgeren folder ut de vanlige navcellene i samme grid, med glassflate og lukkekryss. Escape lukker og returnerer fokus; klikk utenfor, lenkevalg eller fokus ut lukker også. Ingen separat dialog. Uten JavaScript vises de opprinnelige lenkene.
 
-Lesbarhetsprøve for Technical: stegenes overskrift bruker h1 på desktop og h2 på mobil. Stegindikatoren ligger på desktop nederst i rute 1, med vanlig cellepadding over midtlinjen. Mobil beholder indikatoren over innholdet. Mens oversikten er synlig, skjules den nederste scroll-instruksjonen; lenken til lesemodus beholdes.
+Lesbarhetsprøve for Technical: stegenes overskrift bruker h1 på desktop og h2 på mobil. Stegindikatoren ligger på desktop nederst i rute 1–3, med vanlig cellepadding over midtlinjen. Mobil beholder indikatoren over innholdet. Mens oversikten er synlig, skjules den nederste scroll-instruksjonen; lenken til lesemodus beholdes.
 
 Stegenes innhold toppjusteres i sine gridruter med vanlig `--cell` padding: tittel øverst i 5–6, brødtekst i 7 og åpen rute 8. Ingen baseline-forskyvning mellom cellene. Mobil beholder stablet tekstflyt.
 
-Stegknappene står nederst i rute 1. På desktop ligger «1 / 3 · Scroll to continue» nederst i rute 5 med cellepadding; den gjentatte steglabelen under tittelen er fjernet fra alle tre steg. Mobil beholder teller og knapper samlet over innholdet.
+Stegknappene står nederst i hver sin rute: 1, 2 og 3. Rute 4 er åpen. På desktop ligger «1 / 3 · Scroll to continue» nederst i rute 5 med cellepadding; den gjentatte steglabelen under tittelen er fjernet fra alle tre steg. Mobil beholder teller og knapper samlet over innholdet.
 
 ## Felles navigasjon etter QA
 
@@ -126,4 +126,4 @@ CTA-er er fjernet fra de tre scrollstegene. Sitter og kontakt finnes i avslutnin
 
 ## Godkjent innhold — engelsk nettside
 
-Technical er en forlengelse av Section 1 for rekruttereren. Intro: «Slik bygger jeg». Tre steg på siden: «People and product», «The system behind» og «Learning from use». Oppsummeringen er «Forstå behovet. Bygge sammenhengen. Forbedre gjennom bruk.» Norsk brukes bare til tekstgjennomgang i samtalen. Publisert og lokal side skal være engelsk, med samme godkjente innhold. Stegknappene spenner over rute 1–2 for å få plass til navnene. Ved desktop 1024–1279 px bruker brødteksten rute 7–8; på bred desktop rute 7. På korte mobilskjermer brukes meta-størrelse på brødteksten for lesbar plassering. Global navigasjon beholder felles navn på tvers av språk.
+Technical er en forlengelse av Section 1 for rekruttereren. Intro: «Slik bygger jeg». Tre steg på siden: «People and product», «The system behind» og «Learning from use». Oppsummeringen er «Forstå behovet. Bygge sammenhengen. Forbedre gjennom bruk.» Norsk brukes bare til tekstgjennomgang i samtalen. Publisert og lokal side skal være engelsk, med samme godkjente innhold. Stegknappene fordeles likt over rute 1–3 med vanlig cellepadding og klikkflate over hele innholdsbredden i hver celle. Ved desktop 1024–1279 px bruker brødteksten rute 7–8; på bred desktop rute 7. På korte mobilskjermer brukes meta-størrelse på brødteksten for lesbar plassering. Global navigasjon beholder felles navn på tvers av språk.

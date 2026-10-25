@@ -228,20 +228,12 @@
   .story-journey:not(.is-reading) #thinking .context-heading .story-label { margin: 0; }
 }
 
-/* Desktop progress anchors to the bottom of cell 1, above the heading in cell 5. */
-@media (min-width:1024px) {
-  #thinking .story-steps { top: auto; bottom: 50%; left: 0; right: auto; width: 25%; padding: var(--cell); box-sizing: border-box; }
-  .story-steps ol { gap: clamp(8px, 1vw, 20px); flex-wrap: nowrap; }
-  .story-steps li { white-space: nowrap; }
-}
-@media (min-width:1024px) and (max-width:1279px) {
-  .story-steps li span { display: none; }
-}
-
-/* Step names stay in cell 1; the scroll count anchors to the bottom of cell 5. */
+/* Each desktop step occupies one grid cell; the scroll count stays in cell 5. */
 @media (min-width:1024px) {
   #thinking .story-steps { position: static; width: auto; padding: 0; }
-  #thinking .story-steps ol { position: absolute; left: var(--cell); bottom: calc(50% + var(--cell)); width: calc(25% - var(--cell) * 2); }
+  #thinking .story-steps ol { position: absolute; left: 0; bottom: calc(50% + var(--cell)); width: 75%; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; }
+  .story-steps li { padding: 0 var(--cell); }
+  .story-steps button { width: 100%; height: 100%; }
   #thinking .story-steps__count { position: absolute; left: var(--cell); bottom: var(--cell); margin: 0; }
 }
 
@@ -250,9 +242,6 @@
 #thinking .context-copy p:last-child { margin-bottom: 0; }
 .story-steps button { white-space: normal; text-align: left; }
 .story-steps li { white-space: normal; min-width: 0; }
-@media (min-width:1024px) {
-  #thinking .story-steps ol { width: calc(50% - var(--cell) * 2); }
-}
 @media (min-width:1024px) and (max-width:1279px) {
   .story-journey:not(.is-reading) #thinking .context-copy { grid-column: 3 / 5; }
 }
