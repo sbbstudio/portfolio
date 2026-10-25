@@ -37,3 +37,7 @@ English approved copy is installed. The hamburger expands the existing nav cells
 ## Shared footer — 25 October 2026
 
 All eight portfolio pages checked at 1440, 1024 and 390 px: exactly one footer, both optimized images loaded, no horizontal overflow or JS errors, and Back to top returns to zero. Homepage and Technical visually checked on desktop/mobile. Shared static template preserves links without JavaScript; footer ticker stops for reduced motion. Page-specific contact copy and homepage photo transition remain separate.
+
+## Sitter design alignment — 25 October 2026
+
+Sitter checked at 1440, 1024, 1023 and 390 px: no horizontal page overflow or JS errors; one H1 and one shared footer; all four native disclosures open/close. Code stays in scrollable 14 px blocks (13 px mobile), with focusable excerpts. Four pinned excerpts match upstream source. Desktop/mobile screenshots inspected. This is a layout pass, not a new verification of every product or repository claim.
