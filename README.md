@@ -39,3 +39,5 @@ node --test tests/analytics.test.cjs tools/story-timeline.test.mjs
 - Rules for everyone who changes this repo: [`AGENTS.md`](AGENTS.md).
 - Decisions: [`docs/decisions/`](docs/decisions/), one file per decision.
 - Deploy is a push to `live`: the workflow builds `dist/` and publishes it to `gh-pages`. Until Pages is repointed, whatever is on `live` is published as it stands.
+
+Shared navigation: `assets/js/portfolio-nav.js` owns the primary destinations and rendered scroll/visual state for pages using `nav-system.css`. The default keeps the open layout and local section jumps; `/build/` opts into `data-variant="compact"` for the accessible glass menu. Add primary destinations in this shared script, not separate page copies. HTML links remain as the no-JavaScript fallback.

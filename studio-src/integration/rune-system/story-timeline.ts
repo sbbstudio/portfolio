@@ -1,11 +1,7 @@
-// Full 0–1 camera track, with five scroll-controlled reading holds: four stops, then a recap.
-// Each hold freezes the camera at one view (start–end is raw scroll, camera is track progress).
-// The last hold is the ending: its text stays up to the footer and the scene fades to black under it.
+// Full camera path with one scroll-driven overview after the turn and one closing hold.
+// The overview freezes the camera while visitors scroll through three notes.
 export const holds = [
-  { id: 'thinking', start: .10, end: .20, camera: .18 },
-  { id: 'method', start: .30, end: .40, camera: .29 },
-  { id: 'ai', start: .50, end: .60, camera: .44 },
-  { id: 'system', start: .70, end: .80, camera: .70 },
+  { id: 'thinking', start: .30, end: .65, camera: .29 },
   { id: 'recap', start: .90, end: 1, camera: 1 },
 ] as const
 const keyframes = [[0, 0], ...holds.flatMap(h => [[h.start, h.camera], [h.end, h.camera]])]
@@ -42,4 +38,11 @@ export const recapLitAt = .98
 export function recapProgress(raw: number) {
   const start = holds[holds.length - 1].start + textFade
   return Math.max(0, Math.min(1, (raw - start) / (recapLitAt - start)))
+}
+
+// Divide the fully visible overview into equal reading windows; reverse scrolling retraces them.
+export function noteAt(raw: number, count: number) {
+  const start = holds[0].start + textFade
+  const end = holds[0].end - textFade
+  return Math.max(0, Math.min(count - 1, Math.floor((raw - start) / (end - start) * count)))
 }

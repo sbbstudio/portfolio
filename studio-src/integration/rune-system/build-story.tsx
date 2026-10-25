@@ -12,14 +12,25 @@ function CanvasUnavailable({ onLoad }: { still: boolean; onLoad: (state: LoadSta
 import { useReducedMotion } from '../../lib/motion'
 import { scrollState } from '../../lib/scroll'
 import { ATELIER_INVALIDATE, type LoadState } from '../../lib/atelier'
-import { cameraAt, holds, introAt, recapProgress, storyEndAt, textAt } from './story-timeline'
+import { cameraAt, holds, introAt, noteAt, recapProgress, storyEndAt, textAt, textFade } from './story-timeline'
 
 type Chapter = { id: string; html: string }
-function Story({ host, intro, chapters }: { host: HTMLElement; intro: Chapter; chapters: Chapter[] }) {
+type StackNote = { name: string; html: string }
+function StackNotes({ notes, staticMode, active, onSelect }: { notes: StackNote[]; staticMode: boolean; active: number; onSelect: (index: number) => void }) {
+  return <>
+    {notes.map((note, i) => <div key={note.name} id={`stack-note-${i}`} className="context-note" hidden={!staticMode && active !== i} dangerouslySetInnerHTML={{ __html: note.html }} />)}
+    {!staticMode && <div className="story-steps" aria-label="Progress through the system">
+      <p className="story-steps__count">{active + 1} / {notes.length} · Scroll to continue ↓</p>
+      <ol>{notes.map((note, i) => <li key={note.name}><button type="button" aria-current={active === i ? 'step' : undefined} aria-controls={`stack-note-${i}`} onClick={() => onSelect(i)}><span>{String(i + 1).padStart(2, '0')}</span> {note.name}</button></li>)}</ol>
+    </div>}
+  </>
+}
+function Story({ host, intro, chapters, notes }: { host: HTMLElement; intro: Chapter; chapters: Chapter[]; notes: StackNote[] }) {
   const reduced = useReducedMotion()
   const [reading, setReading] = useState(host.dataset.skipped === 'true')
   const [load, setLoad] = useState<LoadState>({ phase: 'loading', loaded: 0, total: 0 })
   const [attempt, setAttempt] = useState(0)
+  const [activeNote, setActiveNote] = useState(0)
   const section = useRef<HTMLElement>(null)
   const opening = useRef<HTMLElement>(null)
   const panels = useRef<(HTMLElement | null)[]>([])
@@ -37,14 +48,16 @@ function Story({ host, intro, chapters }: { host: HTMLElement; intro: Chapter; c
       const el = section.current
       if (!el) return
       const raw = Math.max(0, Math.min(1, -el.getBoundingClientRect().top / Math.max(1, el.offsetHeight - innerHeight)))
+      setActiveNote(noteAt(raw, notes.length))
+      el.classList.toggle('is-overview', !staticMode && textAt(raw, 0) > .1)
       const p = cameraAt(raw)
       scrollState.p = p
       host.dataset.progress = String(p)
       host.dataset.raw = String(raw)
       // The scene fades out with the ending's text, so only the last hold turns the stage black.
       host.style.setProperty('--story-end', String(storyEndAt(raw)))
-      // Opacity is visual only: chapters hold no focusable content, so every chapter
-      // stays in the accessibility tree and screen readers can read the whole story.
+      // The overview must not expose invisible CTA links to focus or clicks.
+      if (panels.current[0]) panels.current[0].inert = !staticMode && textAt(raw, 0) < .1
       opening.current?.style.setProperty('--chapter-opacity', String(staticMode ? 1 : introAt(raw)))
       panels.current.forEach((panel, i) => panel?.style.setProperty('--chapter-opacity', String(staticMode ? 1 : textAt(raw, i))))
       // The recap (last hold) lights its words from --p; reading mode shows them all lit.
@@ -57,7 +70,7 @@ function Story({ host, intro, chapters }: { host: HTMLElement; intro: Chapter; c
     addEventListener('resize', schedule)
     update()
     return () => { cancelAnimationFrame(frame); removeEventListener('scroll', schedule); removeEventListener('resize', schedule) }
-  }, [host, staticMode])
+  }, [host, staticMode, notes.length])
   useEffect(() => {
     // Scroll schedules the presentation update in the next frame. Wait until
     // that update has run before moving keyboard focus to the panel.
@@ -76,7 +89,7 @@ function Story({ host, intro, chapters }: { host: HTMLElement; intro: Chapter; c
       if (staticMode) panels.current[i]?.scrollIntoView({ behavior: 'instant' })
       else {
         const el = section.current!, h = holds[i]
-        scrollTo({ top: el.getBoundingClientRect().top + scrollY + (el.offsetHeight - innerHeight) * (h.start + h.end) / 2, behavior: 'instant' })
+        scrollTo({ top: el.getBoundingClientRect().top + scrollY + (el.offsetHeight - innerHeight) * (i === 0 ? h.start + .03 : (h.start + h.end) / 2), behavior: 'instant' })
       }
       focusPanel(panels.current[i])
     }
@@ -94,6 +107,14 @@ function Story({ host, intro, chapters }: { host: HTMLElement; intro: Chapter; c
     if (location.hash === `#${intro.id}` || holds.some(h => `#${h.id}` === location.hash)) requestAnimationFrame(onHash)
     return () => { document.removeEventListener('click', onClick); removeEventListener('hashchange', onHash) }
   }, [staticMode, intro.id])
+  // Jump into the middle of a reading window so clicks and native scroll share one state.
+  const selectNote = (index: number) => {
+    const el = section.current
+    if (!el) return
+    const hold = holds[0]
+    const raw = hold.start + textFade + (index + .5) * (hold.end - hold.start - 2 * textFade) / notes.length
+    scrollTo({ top: el.getBoundingClientRect().top + scrollY + (el.offsetHeight - innerHeight) * raw, behavior: 'instant' })
+  }
   const read = () => {
     host.dataset.skipped = 'true'
     history.replaceState(null, '', `#${intro.id}`)
@@ -115,7 +136,9 @@ function Story({ host, intro, chapters }: { host: HTMLElement; intro: Chapter; c
       <div className="story-grid" aria-hidden="true"><i/><i/><i/><b/></div>
       <div className="story-chapters">
         <article id={intro.id} ref={opening} className="story-chapter story-intro" tabIndex={-1} dangerouslySetInnerHTML={{ __html: intro.html }} />
-        {chapters.map((chapter, i) => <article key={chapter.id} id={chapter.id} ref={el => { panels.current[i] = el }} className={`story-chapter story-chapter--${i + 1}`} tabIndex={-1} dangerouslySetInnerHTML={{ __html: chapter.html }} />)}
+        {chapters.map((chapter, i) => i === 0
+          ? <article key={chapter.id} id={chapter.id} ref={el => { panels.current[i] = el }} className="story-chapter story-chapter--1" tabIndex={-1}><StackNotes notes={notes} staticMode={staticMode} active={activeNote} onSelect={selectNote} /></article>
+          : <article key={chapter.id} id={chapter.id} ref={el => { panels.current[i] = el }} className={`story-chapter story-chapter--${i + 1}`} tabIndex={-1} dangerouslySetInnerHTML={{ __html: chapter.html }} />)}
       </div>
       <div className="story-controls">
         {/* Load status lives in the controls row, never over the centered intro title. */}
@@ -128,6 +151,7 @@ export function mountStory(host: HTMLElement) {
   const opening = host.querySelector<HTMLElement>('.story-intro')!
   const intro = { id: opening.id, html: opening.innerHTML }
   const chapters = [...host.querySelectorAll<HTMLElement>('.story-chapter:not(.story-intro)')].map(el => ({ id: el.id, html: el.innerHTML }))
-  createRoot(host).render(<Story host={host} intro={intro} chapters={chapters} />)
+  const notes = [...host.querySelectorAll<HTMLElement>('[data-stack]')].map(el => ({ name: el.dataset.stack!, html: el.innerHTML }))
+  createRoot(host).render(<Story host={host} intro={intro} chapters={chapters} notes={notes} />)
   host.dataset.mounted = 'true'
 }

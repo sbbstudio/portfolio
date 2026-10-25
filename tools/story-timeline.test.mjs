@@ -1,6 +1,6 @@
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
-import { cameraAt, holds, introAt, recapLitAt, recapProgress, storyEndAt, textAt, textFade } from '../studio-src/integration/rune-system/story-timeline.ts'
+import { cameraAt, holds, introAt, noteAt, recapLitAt, recapProgress, storyEndAt, textAt, textFade } from '../studio-src/integration/rune-system/story-timeline.ts'
 
 test('the full original track is continuous, forward and reaches both endpoints', () => {
   assert.equal(cameraAt(-1), 0)
@@ -27,15 +27,19 @@ test('each reading window freezes the camera and only shows its own text', () =>
   }
   assert.equal(textAt(0, 0), 0)
 })
-test('five holds in film order: four stops, then the recap on the final view', () => {
-  assert.deepEqual(holds.map(h => h.id), ['thinking', 'method', 'ai', 'system', 'recap'])
-  assert.deepEqual(holds.map(h => [h.start, h.end, h.camera]), [
-    [.10, .20, .18], [.30, .40, .29], [.50, .60, .44], [.70, .80, .70], [.90, 1, 1],
-  ])
-  for (let i = 1; i < holds.length; i++) {
-    assert.ok(holds[i].start > holds[i - 1].end, 'holds do not overlap')
-    assert.ok(holds[i].camera > holds[i - 1].camera, 'each stop is further along the camera track')
+test('the overview follows the camera turn and replaces the old text stops', () => {
+  assert.deepEqual(holds.map(h => h.id), ['thinking', 'recap'])
+  const overview = holds[0]
+  assert.equal(overview.camera, .29, 'top-down view after the model turns')
+  assert.ok(overview.end - overview.start >= .3, 'room to explore without moving the camera')
+  assert.equal(textAt(overview.start - .01, 0), 0, 'controls stay hidden during the turn')
+  for (let raw = overview.start + textFade; raw < overview.end - textFade; raw += .01) {
+    assert.equal(cameraAt(raw), .29)
+    assert.equal(textAt(raw, 0), 1)
+    assert.equal(storyEndAt(raw), 0, 'model stays visible throughout exploration')
   }
+  assert.ok(holds[1].start > overview.end)
+  assert.equal(holds[1].camera, 1, 'ending stays on the final view')
 })
 test('only the last hold stays visible to the end; earlier holds fade out', () => {
   const last = holds.length - 1
@@ -83,4 +87,8 @@ test('recap words light linearly once the recap text is fully in, until recapLit
     assert.ok(next >= previous && next <= 1, 'never goes back')
     previous = next
   }
+})
+
+test("overview notes follow scroll in both directions with bounded endpoints", () => {
+  assert.deepEqual([0,.35,.46,.57,1,.46,.35].map(p => noteAt(p,3)), [0,0,1,2,2,1,0])
 })
