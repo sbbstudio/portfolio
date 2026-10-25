@@ -51,7 +51,7 @@ Mobil erstatter display med 13vw, xl med 2.8125rem, h1/h2 med 1.875rem og h3 med
 
 Kortbrødtekst bruker `--t-meta`, line-height 1.5 og tracking -.012em. Ingressen i Section 1 (`system-copy__intro`) bruker `--t-body`; nederste avsnitt beholder meta. CTA bruker `--t-meta`, line-height 1.6 og vekt 400 via `cta-system.css`. Nav bruker body på desktop og meta på mobil. Hero-rolletittel bruker h4.
 
-Section 1-tittelen er uppercase, vekt 500, line-height 1 og tracking -.04em. Desktopstørrelse: `min(8vw, calc(var(--row) / 2.4))`; mobil: `clamp(45px, 12vw, 80px)`. NYME bruker xxl, med den opprinnelige fullbreddekomposisjonen og 12 % av radhøyden ekstra bunnpadding for å samle linjene.
+Section 1-tittelen er uppercase, vekt 500, line-height 1 og tracking -.04em. Desktopstørrelse: `min(8vw, calc(var(--row) / 2.4))`; mobil: `clamp(45px, 12vw, 80px)`. NYME bruker xxl med fullbreddekomposisjon. «STARTS WITH THE JOB.» ligger nederst i øverste rad med vanlig cellepadding. Mobil beholder venstrejusterte linjer i normal flyt.
 
 ## Farger og overflater
 
@@ -127,3 +127,5 @@ CTA-er er fjernet fra de tre scrollstegene. Sitter og kontakt finnes i avslutnin
 ## Godkjent innhold — engelsk nettside
 
 Technical er en forlengelse av Section 1 for rekruttereren. Intro: «Slik bygger jeg». Tre steg på siden: «People and product», «The system behind» og «Learning from use». Oppsummeringen er «Forstå behovet. Bygge sammenhengen. Forbedre gjennom bruk.» Norsk brukes bare til tekstgjennomgang i samtalen. Publisert og lokal side skal være engelsk, med samme godkjente innhold. Stegknappene fordeles likt over rute 1–3 med vanlig cellepadding og klikkflate over hele innholdsbredden i hver celle. Ved desktop 1024–1279 px bruker brødteksten rute 7–8; på bred desktop rute 7. På korte mobilskjermer brukes meta-størrelse på brødteksten for lesbar plassering. Global navigasjon beholder felles navn på tvers av språk.
+
+Lukket hamburgernav er transparent uten blur, også ved scroll. Åpning viser den vanlige glassflaten. Den åpne standardnavigasjonen beholder glass ved scroll.

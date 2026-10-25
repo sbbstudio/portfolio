@@ -130,3 +130,10 @@ body .nav[data-portfolio-nav].is-menu-open .portfolio-menu-toggle { position: ab
 }
 @media (prefers-reduced-motion:reduce) { .portfolio-menu-toggle span { transition: none; } }
 body .nav[data-portfolio-nav].has-compact-menu.is-menu-open { align-items: start; }
+
+/* Closed compact navigation leaves the scene visible; opening restores shared glass. */
+body .nav[data-portfolio-nav].has-compact-menu:not(.is-menu-open) {
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
