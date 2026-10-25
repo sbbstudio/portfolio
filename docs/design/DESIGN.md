@@ -84,7 +84,7 @@ NYME følger Section 1. Footerportrettet ligger i rute 8 i den andre kontaktmodu
 - Hero-parallax: 0–40 px ned, bare desktop og uten redusert bevegelse; ingen horisontal bevegelse.
 - CTA-pil: .35ch frem/tilbake over 3.2 sekunder med pause. Bare uten redusert bevegelse. Back to top er ikke med i løkken.
 - Nav skjules etter scrolling ned og kommer tilbake etter 120 px samlet scroll opp under Hero. Tastaturfokus holder nav synlig.
-- Kontaktbildet skaleres ved scrolling; redusert bevegelse og mobil bruker statisk sluttilstand.
+- Kontaktbildet holdes i full størrelse i 0.2 moduler scroll før det skaleres over én modul. Wrapperen er 3.2 moduler høy; redusert bevegelse og mobil bruker statisk sluttilstand.
 
 Behold synlig tastaturfokus. Tilstander for skjema og 3D må testes separat fra hovedsiden.
 

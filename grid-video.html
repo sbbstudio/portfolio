@@ -1127,12 +1127,12 @@ body.ready .rl { opacity: 1; transform: none; }
 }
 
 /* CEO 09-04: sticky modul + bilde som krymper inn i griden.
-   Wrapperen er 3 bokser høy; modulen (2 bokser) låser på --pad
-   og scrollen over den første boksen driver bildet (rAF-skript
-   nederst): bildet starter som hele øvre modulhalvdel og lander
+   Wrapperen er 3.2 bokser høy; modulen (2 bokser) låser på --pad.
+   Først holdes bildet i 0.2 bokser scroll, så driver én boks
+   overgangen i portfolio-shell.js: bildet starter som hele øvre modulhalvdel og lander
    som rute 13–14 (kol 1–2, rad 3) — modulen (1.85) og de to
    rutene (1.85) deler forhold, så kantene treffer gridlinjene. */
-.contact-reveal { position: relative; height: calc(var(--box) * 3); }
+.contact-reveal { position: relative; height: calc(var(--box) * 3.2); }
 .contact { position: sticky; top: var(--pad); height: calc(var(--box) * 2); isolation: isolate; }
 .contact::before { background: none; }   /* Fotografiet gir bakgrunnen lys. */
 .contact-bg {
@@ -2576,6 +2576,6 @@ body.ready .rl { opacity: 1; transform: none; }
 <script type="module" src="assets/kai/runtime/index.js"></script>
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "111e05e03c3f411fa8ebbbd04b820e76"}'></script>
 <script defer src="assets/js/analytics.js"></script>
-<script src="assets/js/portfolio-shell.js?v=20261025-hero-parallax" defer></script><script src="assets/js/hero-roles.js" defer></script><script defer src="/assets/js/portfolio-nav.js"></script>
+<script src="assets/js/portfolio-shell.js?v=20261025-contact-hold" defer></script><script src="assets/js/hero-roles.js" defer></script><script defer src="/assets/js/portfolio-nav.js"></script>
 </body>
 </html>

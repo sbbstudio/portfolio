@@ -63,7 +63,10 @@
   const updateContact = () => {
     contactFrame = 0;
     const staticLayout = getComputedStyle(contact).position !== 'sticky' || reduced.matches;
-    const p = staticLayout ? 1 : Math.max(0, Math.min(1, -wrap.getBoundingClientRect().top / (wrap.offsetHeight / 3)));
+    // Extra wrapper height holds the full photograph before one module of travel.
+    const travel = contact.offsetHeight / 2;
+    const hold = Math.max(0, wrap.offsetHeight - contact.offsetHeight - travel);
+    const p = staticLayout ? 1 : Math.max(0, Math.min(1, (-wrap.getBoundingClientRect().top - hold) / Math.max(1, travel)));
     fog.style.transform = `translate3d(0,${p * 100}%,0) scale(${1 - p * .5})`;
     const q = staticLayout ? 1 : Math.max(0, Math.min(1, (p - .86) / .14));
     for (const el of [lede, cta]) {
