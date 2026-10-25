@@ -254,3 +254,14 @@
   .story-steps li span { display: none; }
   .story-steps button { width: 100%; height: 100%; }
 }
+
+/* The active desktop step highlights its full cell edge on the shared row baseline. */
+@media (min-width:1024px) {
+  .story-steps li { position: relative; }
+  .story-steps button[aria-current="step"] { border-bottom-color: transparent; }
+  .story-steps button[aria-current="step"]::after {
+    content: ''; position: absolute; left: 0; right: 0;
+    bottom: calc(-1 * var(--cell) - 1px); height: 2px;
+    background: currentColor; pointer-events: none;
+  }
+}
