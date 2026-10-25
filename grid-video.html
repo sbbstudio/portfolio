@@ -5,10 +5,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Rune Øverland — Creative Fullstack Engineer</title>
+<meta name="description" content="Rune Øverland’s portfolio: design, code and AI systems, with working products and a look at how they are built.">
+<link rel="canonical" href="https://runeoverland.no/grid-video.html">
 <link rel="icon" href="favicon.ico?v=r1" sizes="16x16 32x32 48x48">
-<!-- LCP: hero-bakgrunnen er CSS-bg og kan ikke få loading-attributt —
-     preload med høy prioritet er hero-lasten. ALDRI lazy (perf-task). -->
-<link rel="preload" as="image" href="assets/opt/contact-fog.webp" type="image/webp" media="(min-width: 1024px)">
+<!-- Preload the visible Hero image; the matching img has high fetch priority. -->
+<link rel="preload" as="image" href="assets/opt/contact-fog.webp" type="image/webp">
 <style>
 /* ============================================================
    LAB — frittstående. Delt NAV-stil; ingen JS-deps eller build.
@@ -128,8 +129,10 @@ body {
 }
 
 /* 6×6 hvite firkanter i hvert kryss — samme takt som linjene.   */
-.grid .nodes {
-  position: absolute; top: 0; bottom: 0;
+.grid .nodes, .grid::before, .grid::after {
+  /* Extend the marker layer across section seams instead of clipping each square in half. */
+  position: absolute; top: calc(var(--node) / -2); bottom: calc(var(--node) / -2);
+  z-index: 1; /* Markers sit above both horizontal and vertical grid lines. */
   width: var(--node);
   margin-left: calc(var(--node) / -2);
   background-image: repeating-linear-gradient(
@@ -137,9 +140,13 @@ body {
     var(--paper) 0, var(--paper) var(--node),
     transparent var(--node), transparent var(--row)
   );
-  background-position: 0 calc(var(--node) / -2);
+  background-position: 0 0;
 }
 .grid .n1 { left: 25%; }  .grid .n2 { left: 50%; }  .grid .n3 { left: 75%; }
+/* Keep edge markers inside the frame so section clipping preserves the squares. */
+.grid::before, .grid::after { content: ''; margin-left: 0; }
+.grid::before { left: 0; }
+.grid::after { right: 0; }
 /* n2-masken (nodene vekk i pipelinesporets radspenn) er FJERNET
    med sporet: kjeden bor nå på undersiden (nyme.html), og
    nettet står helt igjen. (CEO 08-11: 100vh per work-seksjon.) */
@@ -480,7 +487,6 @@ body.ready .rl { opacity: 1; transform: none; }
 
 .card {
   height: var(--box);
-  border-top: var(--hair) solid var(--line);
   position: relative;
   z-index: 1;
   overflow: hidden;
@@ -493,8 +499,9 @@ body.ready .rl { opacity: 1; transform: none; }
    (nyme.html). Ny grid med heroens grammatikk: toppraden bærer
    grunnmerket i glass, alt tekstinnhold henger RETT UNDER
    midtstreken — samme system som Hero Section.                 */
+.card--nyme { background: #888C8F; }
 .card--nyme::before { background: none; }
-.card--nyme::after { display: none; }   /* ren sort — «ingenting i det sorte» (Gauntlet R2; åpnet av CEO 08-12: app-klippet står i flaten) */
+.card--nyme::after { display: none; }
 /* Grunnmerket (rute 5) FJERNET fra forsiden (CEO 08-11) —
    wordmarket lever på undersiden nyme.html.                    */
 /* Rute 7 = KORTET (CEO: «samme oppsett som kortet vi tok
@@ -924,26 +931,7 @@ body.ready .rl { opacity: 1; transform: none; }
 .card--jelsa[data-terreng="vid"]  .jelsa-terreng { background-image: url("assets/jelsa/terreng-vid.avif"); }
 .card--jelsa[data-terreng="tett"] .jelsa-terreng { background-image: url("assets/jelsa/terreng-tett.avif"); }
 
-/* Glasset fikk kontrasten sin gratis så lenge bunnen var sort.
-   Med terreng under leser backdrop-filteret nå en LYS flate, og
-   faktalinjene på 12 px er det første som ryker — det var det
-   som satte taket rundt 64 % dekning.
-
-   Grunnen legges tilbake her, men bare under glassruta og bare i
-   takt med dekningen: background-color males av elementet selv,
-   altså ETTER backdrop-filteret og FØR glass-gradienten. Glassets
-   fysikk (topplys, dybdeskygge, blur) er urørt — det får bare
-   igjen flaten den ble tegnet mot. Ved --terreng: 0 er alfaen 0,
-   så nulltrinnet holder fortsatt bit for bit.
-
-   .86 er målt, ikke valgt på øyemål: uten grunn faller
-   faktalinjene fra 5,7:1 til 1,3:1 ved full dekning. Med .86
-   ligger de på 3,9–5,0:1 gjennom hele spennet, og terrenget har
-   fortsatt ~39 gråtrinn synlig gjennom glasset — nok til at ruta
-   leser som glass over fjell, ikke som en sort boks.             */
-.card--jelsa .card__box {
-  background-color: rgba(0, 0, 0, calc(var(--terreng, 0) * .86));
-}
+/* Terrain card surface is owned by assets/css/card-system.css. */
 
 /* CEO 08-13: full-bleed-modifikator — klippet dekker HELE
    seksjonen, scrim-gradient (som card__media) så teksten leser
@@ -1047,9 +1035,7 @@ body.ready .rl { opacity: 1; transform: none; }
 }
 .card__note a:hover, .nyme__cta a:hover, .kz__cta a:hover, .card__link:hover { border-bottom-color: var(--ink); }
 
-/* HELE kortet i ÉN grid rute. Glass på hele stacken:
-   panelkanten faller på gridlinjene, de 20px innenfor er samme
-   linje-til-tekst som resten av flaten.                        */
+/* One card per grid cell; shared surface rules keep its edges flat. */
 .card__box {
   grid-column: var(--bc, 4) / span 1;
   grid-row:    var(--br, 1) / span 1;
@@ -1058,15 +1044,7 @@ body.ready .rl { opacity: 1; transform: none; }
   display: flex; flex-direction: column;
   justify-content: space-between;
 
-  /* Glass med fysikk — topplys og dybdeskygge, men INGEN linje
-     rundt ruta (CEO-krav R3): panelet skilles fra flaten med
-     lys, ikke med strek.                                      */
-  background: linear-gradient(180deg, rgba(255, 255, 255, .09), rgba(255, 255, 255, .04));
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, .10),
-    0 24px 60px rgba(0, 0, 0, .5);
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
+  /* Surface and body typography are shared in assets/css/card-system.css. */
 }
 
 /* HIERARKI — fire trinn fra skalaen, ingen naboverdier:
@@ -1142,6 +1120,8 @@ body.ready .rl { opacity: 1; transform: none; }
 /* CEO 08-11 r10: FIRE rader = to hele 100vh-moduler. Modul 1:
    tom rad + tekstraden. Modul 2: kolofonrad + tickerrad.       */
 .contact .cols {
+  /* Match the clipping container so image dimensions cannot enlarge the rows. */
+  height: calc(var(--box) * 2);
   min-height: calc(var(--box) * 2);
   grid-template-rows: repeat(4, minmax(0, 1fr));
 }
@@ -1149,20 +1129,21 @@ body.ready .rl { opacity: 1; transform: none; }
 /* CEO 09-04: sticky modul + bilde som krymper inn i griden.
    Wrapperen er 3 bokser høy; modulen (2 bokser) låser på --pad
    og scrollen over den første boksen driver bildet (rAF-skript
-   nederst): tåken starter som hele øvre modulhalvdel og lander
+   nederst): bildet starter som hele øvre modulhalvdel og lander
    som rute 13–14 (kol 1–2, rad 3) — modulen (1.85) og de to
    rutene (1.85) deler forhold, så kantene treffer gridlinjene. */
 .contact-reveal { position: relative; height: calc(var(--box) * 3); }
 .contact { position: sticky; top: var(--pad); height: calc(var(--box) * 2); isolation: isolate; }
-.contact::before { background: none; }   /* lysfeltet ut — tåken er lyset */
+.contact::before { background: none; }   /* Fotografiet gir bakgrunnen lys. */
 .contact-bg {
   position: absolute; left: 0; right: 0; top: 0; height: 50%;
   z-index: -1; pointer-events: none;
-  background: #0b0b0b url("assets/opt/contact-fog.jpg") center bottom / cover no-repeat;
-  background: #0b0b0b image-set(url("assets/opt/contact-fog.webp") type("image/webp"), url("assets/opt/contact-fog.jpg") type("image/jpeg")) center bottom / cover no-repeat;
+  background: #0b0b0b url("assets/opt/intro-sunset-portrait.webp") center center / cover no-repeat;
   transform-origin: 0 0; will-change: transform;
 }
 .contact__footer-image { display: none; }
+/* Cell 8 of the footer module; footer links remain above the photograph. */
+.footer__portrait { grid-column: 4; grid-row: 4; width: 100%; height: 100%; min-width: 0; min-height: 0; object-fit: cover; object-position: center; }
 
 /* CEO 09-04: H2 midtstilt i rad 1 (kol 2–3); avsnitt under i
    rad 2, CTA i rute 8. Avsnitt og CTA er skjult til skriptet
@@ -1303,6 +1284,7 @@ body.ready .rl { opacity: 1; transform: none; }
 .footer__cta .arrow { display: inline-block; transition: transform .35s var(--ez); }
 .footer__cta:hover .arrow { transform: translateX(.5ch); }
 .contact__c {
+  position: relative; z-index: 1;
   grid-column: 4 / 5; grid-row: 4 / 5; align-self: end;
   font-size: var(--t-fine); line-height: 1.4;
   color: var(--ink-3); letter-spacing: .14em;
@@ -1353,7 +1335,7 @@ body.ready .rl { opacity: 1; transform: none; }
     display: block;
     position: absolute; top: 0; left: 0; right: 0;
     height: var(--hair);
-    background: rgba(255, 255, 255, .3);
+    background: var(--line);
     z-index: 40; pointer-events: none;
   }
   .mline::before, .mline::after {
@@ -1366,9 +1348,7 @@ body.ready .rl { opacity: 1; transform: none; }
   .mline::before { left: calc(var(--node) / -2); }
   .mline::after  { right: calc(var(--node) / -2); }
 
-  /* NAV — som how-i-work-mobil: hvit rygg ALLTID (papirtilstanden
-     fra desktop, låst), sort blekk, navn + CTA på topplinja,
-     sidelenkene under. Jump-lista er desktop-instrument.       */
+  /* Mobile NAV layout: name and contact above links. Homepage glass/color overrides live in build.css. */
   .nav {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     background: var(--paper);
@@ -1412,6 +1392,7 @@ body.ready .rl { opacity: 1; transform: none; }
   .contact-bg { display: none; }
   .contact__footer-image { display: block; width: 100%; }
   .contact__footer-image img { display: block; width: 100%; height: auto; }
+  .footer__portrait { display: block; height: auto; }
   .contact__lede, .contact__cta { opacity: 1; transform: none; }
   .contact__h h2, .contact__lede p, .contact__cta a { color: var(--ink); mix-blend-mode: normal; }
   /* Kolofonens grid-area 1/1-stabling (navn + lenkeblokk i
@@ -1646,10 +1627,10 @@ body.ready .rl { opacity: 1; transform: none; }
   .splash__enter:hover .arrow, .splash__enter:focus-visible .arrow { transform: translateX(.5ch); }
 }
 </style>
-<link rel="stylesheet" href="nav-system.css">
+<link rel="stylesheet" href="nav-system.css?v=20261025-no-dividers">
 <link rel="stylesheet" href="cta-system.css">
 <link rel="stylesheet" href="studio/integration.css?v=3">
-<link rel="stylesheet" href="assets/css/build.css?v=20260928-xxl-cta"></head>
+<link rel="stylesheet" href="assets/css/build.css?v=20261025-approach-copy-bottom-five"><link rel="stylesheet" href="assets/css/card-system.css?v=20261025-approach-intro-body"></head>
 <body class="ready home-photo" id="top">
 <div class="page">
 
@@ -1670,7 +1651,7 @@ body.ready .rl { opacity: 1; transform: none; }
   </nav>
 
   <div class="home-intro">
-    <img class="home-intro-photo" src="assets/opt/intro-sunset-portrait.jpg" alt="Rune on a beach at sunset, with the sea and a steep mountain behind." width="1333" height="2000" fetchpriority="high" decoding="async">
+    <img class="home-intro-photo" src="assets/opt/contact-fog.webp" alt="A person standing in a misty landscape." width="2400" height="1599" fetchpriority="high" decoding="async">
   <section class="hero" id="hero">
 <div class="grid" aria-hidden="true">
     <i class="v v1"></i><i class="v v2"></i><i class="v v3"></i>
@@ -1679,7 +1660,11 @@ body.ready .rl { opacity: 1; transform: none; }
   </div>
     <div class="cols">
       <div class="cell hero__display">
-        <h1 class="split">Fullstack engineer.</h1>
+        <h1 class="hero-roles" aria-label="UX Designer, Forward Deployment Engineer, Fullstack Engineer">
+          <span aria-hidden="true">UX Designer.</span>
+          <span aria-hidden="true">Forward Deployment Engineer.</span>
+          <span aria-hidden="true">Fullstack Engineer.</span>
+        </h1>
       </div>
 
       <div class="cell hero__aside card__box" style="--bc:3;--br:2">
@@ -1706,24 +1691,26 @@ body.ready .rl { opacity: 1; transform: none; }
     </div>
   </section>
 
+  </div><!-- /home-intro: photograph confined to Hero -->
+
   <!-- ══ 02 · APPROACH — 100vh, ingen sticky ════════════════ -->
 <section id="approach" class="system-section" aria-labelledby="system-title" tabindex="-1">
   <i class="mline" aria-hidden="true"></i>
   <div class="grid" aria-hidden="true"><i class="v v1"></i><i class="v v2"></i><i class="v v3"></i><div class="rows"></div><div class="nodes n1"></div><div class="nodes n2"></div><div class="nodes n3"></div></div>
   <div class="system-grid">
-    <div class="cell system-title"><h2 id="system-title">I build<br>the whole<br>system.</h2></div>
+    <div class="cell system-title"><h2 id="system-title">There’s a system behind the work.</h2></div>
+    <div class="approach-photo" aria-hidden="true"></div>
+    <div class="approach-color" aria-hidden="true"></div>
     <div class="cell system-copy card__box">
-      <p>I connect product thinking, design, code and data to build working systems. AI is part of how I work.</p>
-      <p>I make the decisions, evaluate the output and take responsibility for what ships.</p>
+      <p class="system-copy__intro">The products are what you see. Behind them is an AI harness I’ve built to coordinate agents, check their work and improve how I build.</p>
+      <p>A working system for turning ideas into products—and evaluating what comes out.</p>
     </div>
+    <div class="cell system-cta"><a class="system-link" href="build/">See how I build <span class="arrow" aria-hidden="true">→</span></a></div>
   </div>
 </section>
 
-  </div><!-- /home-intro: one full-width photograph across Hero + Approach -->
-
   <!-- ══ 03 · WORK — én komponent per prosjekt ══════════════ -->
   <section class="work" id="work" tabindex="-1">
-    <i class="mline" aria-hidden="true"></i>
 
     <!-- NYME (CEO 08-11): ÉN modul — heroens grammatikk. Toppraden
          bærer grunnmerket i glass over rute 2–3; identiteten øverst
@@ -1767,13 +1754,13 @@ body.ready .rl { opacity: 1; transform: none; }
           <p class="card__say">It finds the job, writes the application, builds the site.</p>
         </div>
         <p class="card__body">Every application is built for a single role: the company researched, its needs framed as hypotheses, not facts &mdash; then a tailored CV, a cover letter and a dedicated website that carries the whole argument. No mass sending, no invented experience. You keep the final decision.</p>
-        <a class="card__link" href="https://nymestudio.no" target="_blank" rel="noopener">nymestudio.no&nbsp;&rarr;</a>
+        <a class="card__link" href="https://nymestudio.no" target="_blank" rel="noopener">nymestudio.no&nbsp;<span class="arrow" aria-hidden="true">&rarr;</span></a>
       </div>
       <div class="nyme__ph iv" style="--d:180ms">
         <img src="assets/opt/nyme/placeholder-success.webp" alt="Placeholder: handshake over a laptop" loading="lazy" decoding="async" width="680" height="1020" />
       </div>
       <div class="cell nyme__cta iv" style="--d:240ms">
-        <a href="nyme.html">How NYME works&nbsp;&rarr;</a>
+        <a href="nyme.html">How NYME works&nbsp;<span class="arrow" aria-hidden="true">&rarr;</span></a>
       </div>
     </article>
 
@@ -1924,7 +1911,7 @@ body.ready .rl { opacity: 1; transform: none; }
         <p class="kz__sub captrim">The work still gets done.</p>
       </div>
       <div class="cell kz__cta iv" style="--d:240ms">
-        <a href="kaizen.html">How KAIZEN works&nbsp;&rarr;</a>
+        <a href="kaizen.html">How KAIZEN works&nbsp;<span class="arrow" aria-hidden="true">&rarr;</span></a>
       </div>
       <div class="card__box iv" style="--d:120ms">
         <div class="card__lead">
@@ -1938,7 +1925,7 @@ body.ready .rl { opacity: 1; transform: none; }
           <p class="card__say">We build systems that do the routine work for you.</p>
         </div>
         <p class="card__body">New systems or existing tools. Routine work runs automatically, while you make the decisions that matter.</p>
-        <a class="card__link" href="https://kaizenstudio.no" target="_blank" rel="noopener">kaizenstudio.no&nbsp;&rarr;</a>
+        <a class="card__link" href="https://kaizenstudio.no" target="_blank" rel="noopener">kaizenstudio.no&nbsp;<span class="arrow" aria-hidden="true">&rarr;</span></a>
       </div>
     </article>
 
@@ -1969,7 +1956,7 @@ body.ready .rl { opacity: 1; transform: none; }
 
       <div class="cell contact__cta"><a href="contact.html">Contact <span class="arrow">→</span></a></div>
 
-      <picture class="contact__footer-image" aria-hidden="true"><source srcset="assets/opt/contact-fog.webp" type="image/webp"><img src="assets/opt/contact-fog.jpg" alt="" loading="lazy" decoding="async"></picture>
+      <picture class="contact__footer-image" aria-hidden="true"><img src="assets/opt/intro-sunset-portrait.webp" alt="" width="1333" height="2000" loading="lazy" decoding="async"></picture>
       <div class="cell contact__colophon">
         <div class="footer__name">Rune Øverland</div>
         <div class="colo__mid">
@@ -1986,6 +1973,7 @@ body.ready .rl { opacity: 1; transform: none; }
         </div>
       </div>
 
+      <img class="footer__portrait" width="889" height="1334" src="assets/opt/footer-sunset-profile.webp" alt="Rune looking toward the sea at sunset." loading="lazy" decoding="async">
       <div class="cell contact__c">
         <a class="footer__top" href="#top">Back to top <span class="arrow">&uarr;</span></a>
         <span>&copy; 2026</span>
@@ -2595,5 +2583,5 @@ body.ready .rl { opacity: 1; transform: none; }
 <script type="module" src="assets/kai/runtime/index.js"></script>
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "111e05e03c3f411fa8ebbbd04b820e76"}'></script>
 <script defer src="assets/js/analytics.js"></script>
-<script src="assets/js/portfolio-shell.js?v=20260928-nav-intro" defer></script></body>
+<script src="assets/js/portfolio-shell.js?v=20261025-hero-parallax" defer></script><script src="assets/js/hero-roles.js" defer></script></body>
 </html>

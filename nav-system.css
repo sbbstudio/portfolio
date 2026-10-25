@@ -7,13 +7,10 @@
   --nav-foreground: #FFFFFF;
   --nav-paper-foreground: #000000;
   --nav-mobile-foreground: #000000;
-  --nav-divider: rgba(255, 255, 255, .2);
-  --nav-paper-divider: rgba(0, 0, 0, .16);
 }
 
 html[data-nav-theme="ink"] {
   --nav-foreground: #000000;
-  --nav-divider: rgba(0, 0, 0, .16);
 }
 
 .nav .cell,
@@ -35,22 +32,8 @@ html[data-nav-theme="ink"] {
   color: var(--nav-paper-foreground);
 }
 
-/* Inset grid dividers: one shared treatment at each desktop
-   column boundary, open at the top and bottom. */
-.nav .cell + .cell::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: calc(var(--cell) * .5);
-  bottom: calc(var(--cell) * .5);
-  width: var(--hair, 1px);
-  background: var(--nav-divider);
-  pointer-events: none;
-}
-
-.nav.is-paper .cell + .cell::before {
-  background: var(--nav-paper-divider);
-}
+/* Navigation has no separate column dividers; the page grid remains visible behind it. */
+.nav .cell + .cell::before { content: none; }
 
 @media (max-width: 1023px) {
   .nav .cell {
@@ -64,7 +47,4 @@ html[data-nav-theme="ink"] {
     color: var(--nav-mobile-foreground);
   }
 
-  .nav .cell + .cell::before {
-    display: none;
-  }
 }
