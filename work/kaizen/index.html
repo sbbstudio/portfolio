@@ -4,14 +4,15 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>KAIZEN — Website design decisions | Rune Øverland</title>
-<meta name="description" content="My design decisions behind KAIZEN’s website: connecting a digital assistant to everyday work, explaining the agreement and making the first conversation clear.">
+<meta name="description" content="Designing an approachable AI service for small businesses: character-led identity, visual hierarchy, interaction and the next usability questions.">
 <link rel="icon" href="/favicon.ico?v=r1" sizes="16x16 32x32 48x48">
-<link rel="stylesheet" href="/assets/css/module-system.css">
+<link rel="stylesheet" href="/assets/css/module-system.css?v=20261027-dark-active">
 
 <link rel="stylesheet" href="/cta-system.css">
 <link rel="stylesheet" href="/nav-system.css?v=20261025-scroll-nav">
 <link rel="stylesheet" href="/assets/css/portfolio-footer.css">
 <script src="/assets/js/portfolio-footer.js" defer></script>
+<script src="/assets/js/portfolio-snapshot-links.js"></script>
 </head>
 <body>
 <div class="page" id="top">
@@ -19,7 +20,7 @@
 <nav class="nav" data-variant="compact" aria-label="Main">
   <div class="cell nav__name"><a href="/grid-video.html">Rune &Oslash;verland</a></div>
   <div class="cell nav__links"><a href="/work/nyme/">Nyme</a><a href="/work/kaizen/">Kaizen</a><a href="/how-i-work.html">How I work</a></div>
-  <div class="cell nav__jumps" aria-label="Sections on this page"><a href="#intro" data-panel="0"><span>01</span>Start</a><a href="#story" data-panel="2"><span>03</span>First task</a><a href="#story" data-panel="6"><span>07</span>Result</a></div>
+  <div class="cell nav__jumps" aria-label="Sections on this page"><a href="#intro" data-panel="0"><span>01</span>Start</a><a href="#story" data-panel="2"><span>03</span>Familiar work</a><a href="#story" data-panel="6"><span>07</span>Learning</a></div>
   <div class="cell nav__cta"><a href="/contact.html">Contact</a></div>
 </nav>
 
@@ -33,7 +34,7 @@
   <div class="prelude__body">
     <p class="label">Design process</p>
     <h1 class="prelude__title" id="kaizen-title"><span class="prelude__name">KAIZEN</span><span class="prelude__sub">How I designed it.</span></h1>
-    <p class="prelude__lead">I designed and built KAIZEN’s website to connect a digital assistant to everyday business tasks. Follow the site from the introduction to the contact form, with my design decisions beside each section.</p>
+    <p class="prelude__lead">How do you make an unfamiliar AI service tangible for a small business? I explored a character-led identity, plain language and interaction to help explain the offer. Follow the design decisions and what I still need to test.</p>
     <p class="prelude__status" aria-live="polite"><span class="prelude__state" data-loading>Loading kaizenstudio.no <span class="prelude__bar" aria-hidden="true"></span></span><span class="prelude__state" data-ready>kaizenstudio.no is running in the window.</span></p>
   </div>
 </div>
@@ -42,45 +43,54 @@
      The site runs in cells 1–3/5–7. Cells 4 and 8 are a sequence of panels
      driven by the page scroll: intro → problem → one panel per decision
      (the window scrolls to the element it names) → result. ══ -->
-<section class="pin pin--live" id="story" style="--panels:1" aria-label="The design process">
+<section class="pin pin--live pin--credits" id="story" style="--panels:1" aria-label="The design process">
   <div class="mod step pin__stage">
   <div class="mgrid" aria-hidden="true"><i style="--x:0%"><b></b></i><i style="--x:25%"><b></b></i><i style="--x:50%"><b></b></i><i style="--x:75%"><b></b></i><i style="--x:100%"><b></b></i></div>
   <div class="cell step__window"><div class="window window--live window--notes" data-window="notes" style="--poster:url(/assets/opt/process/kaizen-poster.jpg)">
-    <iframe src="/work/kaizen/site/" data-hide=".kai-startup,.kai-loading,section.kai-top" data-css="main #topp[data-rn]::before{top:80px}html:not([data-kai-site=ready]) body>:not(.kai-startup):not(.kai-loading) *{visibility:visible!important}html:not([data-kai-site=ready]){overflow:auto!important}" title="kaizenstudio.no, as designed — October 2026"></iframe>
+    <iframe src="/work/kaizen/site/" data-hide=".kai-startup,.kai-loading,section.kai-top" data-css="html:not([data-kai-site=ready]) body>:not(.kai-startup):not(.kai-loading) *{visibility:visible!important}html:not([data-kai-site=ready]){overflow:auto!important}" title="kaizenstudio.no, as designed — October 2026"></iframe>
+  <div class="pin__navigation" data-glass="dark">
+    <nav class="pin__steps" aria-label="Sections"><button type="button" data-step="0" aria-current="step">1</button><button type="button" data-step="1">2</button><button type="button" data-step="2">3</button><button type="button" data-step="3">4</button><button type="button" data-step="4">5</button><button type="button" data-step="5">6</button><button type="button" data-step="6">7</button></nav>
+  </div>
+    <p class="pin__site-link" data-glass="dark"><a href="https://kaizenstudio.no" target="_blank" rel="noopener">Open kaizenstudio.no <span class="arrow" aria-hidden="true">↗</span></a></p>
   </div></div>
 
-  <!-- Section chooser in cell 4: one number per section of the site. It does not fade. -->
-  <nav class="cell pin__steps" aria-label="Sections"><button type="button" data-step="0" aria-current="step">1</button><button type="button" data-step="1">2</button><button type="button" data-step="2">3</button><button type="button" data-step="3">4</button><button type="button" data-step="4">5</button><button type="button" data-step="5">6</button><button type="button" data-step="6">7</button></nav>
+  <!-- Section navigation sits inside the window; each panel supplies its own summary in cell 4. -->
+
 
   <article class="panel is-active" id="intro" data-target="#topp">
-    <header class="cell step__head"><p class="label">Design process · 1 of 7</p><h1 class="step__title"><span class="step__name">KAIZEN</span><span class="step__sub">How I designed it.</span></h1></header>
-    <div class="cell step__copy"><p>Product design, brand and build. Solo, 2025–26.</p>
-    <dl class="think"><dt>Problem</dt><dd>I need to make an unfamiliar service concrete enough for a small business to consider using it.</dd><dt>Decision in this section</dt><dd>A character can attract attention while leaving the service unexplained. I pair the introduction with concrete jobs: preparing quotes, drafting replies and following up customers.</dd></dl></div>
+    <header class="cell step__head"><p class="label">The design challenge · 1 of 7</p><h1 class="step__title"><span class="step__name">KAIZEN</span><span class="step__sub">How I designed it.</span></h1></header>
+    <div class="cell step__copy"><dl class="think"><dt>Audience</dt><dd>Small businesses without the budget for senior developers or an in-house team.</dd><dt>Exploration</dt><dd>Early versions without a character felt abstract and difficult to distinguish. Introducing Kai gave the service a name and a recognisable presence.</dd><dt>Decision</dt><dd>I redesigned the experience around Kai, from animation to the navigation logo, to create one coherent identity.</dd></dl></div>
+    <p class="cell pin__credits">Product design, visual identity and interaction. Solo, 2025–26.</p>
   </article>
-  <article class="panel" data-target="#avtalen">
-    <header class="cell step__head"><p class="label">The offer · 2 of 7</p><p class="step__num">02</p><h2>Put the agreement in view.</h2></header>
-    <div class="cell step__copy"><dl class="think"><dt>Starting point</dt><dd>I’m asking a business to consider handing over part of its work.</dd><dt>What I saw</dt><dd>The price is only part of that decision. Scope, existing systems and approval also need explaining.</dd><dt>Decision</dt><dd>I keep the scope, installation price and payment condition together in the offer.</dd></dl></div>
+  <article class="panel" data-target="#avtalen-title">
+    <header class="cell step__head"><p class="label">Clarity · 2 of 7</p><h2>Make the service tangible.</h2></header>
+    <div class="cell step__copy"><dl class="think"><dt>Design challenge</dt><dd>Kai creates an introduction, but the visitor still needs to understand what they can buy.</dd><dt>Design reasoning</dt><dd>I use familiar work, plain language and a clear hierarchy to make the service approachable without AI knowledge.</dd><dt>Decision</dt><dd>The offer brings everyday tasks, the installation price and the payment condition into one section.</dd></dl></div>
+    <p class="cell pin__credits">A recognisable character needs a concrete offer.</p>
   </article>
-  <article class="panel" data-target="#arbeidsflyter">
-    <header class="cell step__head"><p class="label">The first task · 3 of 7</p><p class="step__num">03</p><h2>Start with work they recognise.</h2></header>
-    <div class="cell step__copy"><dl class="think"><dt>Starting point</dt><dd>I’m asking the visitor to describe a task worth handing over.</dd><dt>What I saw</dt><dd>That first conversation should be possible without AI knowledge or a prepared brief.</dd><dt>Decision</dt><dd>I use three cards to explain where to start, how suitability is assessed and what preparation is needed.</dd></dl></div>
+  <article class="panel" data-target=".kai-capability-track, #arbeidsflyter">
+    <header class="cell step__head"><p class="label">Information hierarchy · 3 of 7</p><h2>Start with familiar work.</h2></header>
+    <div class="cell step__copy"><dl class="think"><dt>Design challenge</dt><dd>The service can cover many kinds of work. A broad promise alone gives visitors little to relate to.</dd><dt>Design reasoning</dt><dd>Concrete tasks give an unfamiliar service a familiar frame of reference.</dd><dt>Decision</dt><dd>I organise the examples around business activities, so visitors can connect the offer to their own working day.</dd></dl></div>
+    <p class="cell pin__credits">Help visitors recognise a need before explaining the solution.</p>
   </article>
   <article class="panel" data-target="#metode">
-    <header class="cell step__head"><p class="label">The method · 4 of 7</p><p class="step__num">04</p><h2>Show how the work is agreed and checked.</h2></header>
-    <div class="cell step__copy"><dl class="think"><dt>Starting point</dt><dd>I’m explaining how a task becomes a working service.</dd><dt>What I saw</dt><dd>The visitor needs to see what they approve and how the finished work is assessed.</dd><dt>Decision</dt><dd>I present four steps, from agreeing the scope to checking the work together.</dd></dl></div>
+    <header class="cell step__head"><p class="label">Expectations · 4 of 7</p><h2>Make the next steps visible.</h2></header>
+    <div class="cell step__copy"><dl class="think"><dt>Design challenge</dt><dd>Interest in the service does not explain what happens after a conversation.</dd><dt>Design reasoning</dt><dd>A short sequence makes responsibilities and approval points easier to inspect.</dd><dt>Decision</dt><dd>I show four stages, from agreeing the work to reviewing it together, with a heading and explanation for each.</dd></dl></div>
+    <p class="cell pin__credits">Agreement, delivery and review form one readable sequence.</p>
   </article>
   <article class="panel" data-target="#prat">
-    <header class="cell step__head"><p class="label">The invitation · 5 of 7</p><p class="step__num">05</p><h2>Make one task enough.</h2></header>
-    <div class="cell step__copy"><dl class="think"><dt>Starting point</dt><dd>I’m turning the explanation into an invitation to talk.</dd><dt>What I saw</dt><dd>The first conversation can begin with a single task. The invitation needs no larger commitment.</dd><dt>Decision</dt><dd>I give it a dedicated section and state that the conversation carries no obligation.</dd></dl></div>
+    <header class="cell step__head"><p class="label">Attention and action · 5 of 7</p><h2>Give curiosity a next step.</h2></header>
+    <div class="cell step__copy"><dl class="think"><dt>Design intent</dt><dd>I want visitors to explore before asking them to make contact. Kai’s eyes invite them to notice that the page responds.</dd><dt>Trade-off</dt><dd>Kai can draw too much attention. I use his head direction to point towards the content, alongside simple copy and visual hierarchy.</dd><dt>Next step</dt><dd>The invitation asks for one task and a conversation, rather than a prepared brief.</dd></dl></div>
+    <p class="cell pin__credits">Motion should support the message, not compete with it.</p>
   </article>
   <article class="panel" data-target="#kontakt">
-    <header class="cell step__head"><p class="label">Contact · 6 of 7</p><p class="step__num">06</p><h2>Leave room for a question.</h2></header>
-    <div class="cell step__copy"><dl class="think"><dt>Starting point</dt><dd>I’m giving visitors a way to ask for help.</dd><dt>What I saw</dt><dd>Someone may have a question before they can name a task.</dd><dt>Decision</dt><dd>I offer phone, email and a short form, alongside a clear invitation to ask.</dd></dl></div>
+    <header class="cell step__head"><p class="label">Contact · 6 of 7</p><h2>Leave room for uncertainty.</h2></header>
+    <div class="cell step__copy"><dl class="think"><dt>Design challenge</dt><dd>Someone may be interested without knowing which task to start with.</dd><dt>Design reasoning</dt><dd>The contact section makes a question a valid reason to reach out.</dd><dt>Decision</dt><dd>I provide phone, email and a short form, with copy that explains there is no commitment to proceed.</dd></dl></div>
+    <p class="cell pin__credits">A visitor should not need a finished brief to get in touch.</p>
   </article>
   <article class="panel is-last" data-target="footer.site-footer">
-    <header class="cell step__head"><p class="label">Result · 7 of 7</p><p class="step__num">07</p><h2>The page connects the offer to direct contact options.</h2></header>
-    <div class="cell step__copy"><dl class="think"><dt>Result</dt><dd>Next, I would test whether visitors can explain the service and identify a task they would bring to the first conversation.</dd></dl>
-    <p class="cta"><a href="https://kaizenstudio.no" target="_blank" rel="noopener">Open kaizenstudio.no <span class="arrow" aria-hidden="true">→</span></a><br><a href="/contact.html">Contact <span class="arrow" aria-hidden="true">→</span></a></p></div>
+    <header class="cell step__head"><p class="label">Learning · 7 of 7</p><h2>Test beyond first impressions.</h2></header>
+    <div class="cell step__copy"><dl class="think"><dt>Feedback so far</dt><dd>Informal walkthroughs have brought positive reactions to Kai and the visual design. They were open requests for feedback, not structured usability tests.</dd><dt>Still unknown</dt><dd>I have not established whether visitors understand the offer or whether the page generates enquiries.</dd><dt>Next test</dt><dd>Ask small-business participants to explain the service, identify a relevant task and find how to make contact. Observe where Kai helps or distracts.</dd></dl></div>
+    <p class="cell pin__credits">Positive reactions are a starting point, not proof of effectiveness.</p>
   </article>
 
 </div>
@@ -129,11 +139,18 @@
   var frame = pin.querySelector('iframe');
   var panels = Array.prototype.slice.call(pin.querySelectorAll('.panel'));
   var steps = Array.prototype.slice.call(pin.querySelectorAll('[data-step]'));
-  var desktop = function () { return matchMedia('(min-width: 1024px)').matches; };
+  var desktopQuery = matchMedia('(min-width: 1024px)');
+  var desktop = function () { return desktopQuery.matches; };
+  var scrollBehavior = function () { return matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth'; };
   var doc = null, targets = [], current = -1;
   var setPanel = function (i) {
     if (i === current) return; current = i;
-    panels.forEach(function (p, k) { p.classList.toggle('is-active', k === i); });
+    panels.forEach(function (p, k) {
+      var visible = !desktop() || k === i;
+      p.classList.toggle('is-active', visible);
+      p.inert = !visible;
+      if (visible) p.removeAttribute('aria-hidden'); else p.setAttribute('aria-hidden', 'true');
+    });
     steps.forEach(function (b, k) { if (k === i) b.setAttribute('aria-current', 'step'); else b.removeAttribute('aria-current'); });
     targets.forEach(function (t, k) { if (t) t.classList.toggle('is-current', k === i); });
   };
@@ -148,7 +165,7 @@
   };
   var resolve = function () {
     targets = panels.map(function (p, k) {
-      var t = targets[k] && targets[k].isConnected ? targets[k] : doc.querySelector(p.getAttribute('data-target'));
+      var t = doc.querySelector(p.getAttribute('data-target')); // Re-resolve after runtime inserts or replaces sections.
       if (t && !t.hasAttribute('data-rn')) t.setAttribute('data-rn', String(k + 1).padStart(2, '0'));
       return t;
     });
@@ -156,11 +173,11 @@
   var wire = function () {
     var d = frame.contentDocument; if (doc || !d || !d.body || !d.querySelector('main')) return;
     doc = d;
+    window.portfolioSnapshotLinks(d, pin.querySelector('.pin__site-link a').href);
     frame.parentNode.classList.add('is-loaded');
     var css = d.createElement('style');
     var hide = frame.getAttribute('data-hide'), extra = frame.getAttribute('data-css') || '';
     css.textContent = (hide ? hide + '{display:none!important}' : '') + extra + 'html{scrollbar-width:none}::-webkit-scrollbar{display:none}main>section{min-height:100vh;box-sizing:border-box;display:flex;flex-direction:column;justify-content:center}[data-rn]{position:relative;outline:1px solid transparent;outline-offset:-1px}' +
-      '[data-rn]::before{content:attr(data-rn);position:absolute;top:0;left:0;z-index:50;font:500 20px/1 ui-sans-serif,-apple-system,"Helvetica Neue",Arial,sans-serif;color:#000;background:rgba(255,255,255,.64);backdrop-filter:blur(18px) saturate(110%);-webkit-backdrop-filter:blur(18px) saturate(110%);padding:10px 14px}' +
       '[data-rn].is-current{outline-color:#000}@media (max-width:1023px){[data-rn]::before{display:none}}';
     d.head.appendChild(css);
     resolve();
@@ -169,13 +186,25 @@
     render();
   };
   var go = function (k) {
-    if (!desktop()) { panels[k].scrollIntoView({ behavior: 'smooth' }); return; }
+    if (!desktop()) { panels[k].scrollIntoView({ behavior: scrollBehavior() }); return; }
+    if (!doc) return;
+    resolve(); // The site's runtime may create sections after the iframe load event.
     var t = targets[k], w = frame.contentWindow; if (!t) return;
-    w.scrollTo({ top: k === 0 ? 0 : t.getBoundingClientRect().top + w.scrollY - w.innerHeight * 0.3, behavior: 'smooth' });
+    var se = doc.scrollingElement || doc.documentElement;
+    // The last panel is a reflection at the end of the page, even when the footer is short.
+    var top = k === panels.length - 1 ? se.scrollHeight - w.innerHeight :
+      k === 0 ? 0 : t.getBoundingClientRect().top + w.scrollY - w.innerHeight * 0.3;
+    w.scrollTo({ top: Math.max(0, top), behavior: scrollBehavior() });
+    render();
   };
   steps.forEach(function (b, k) { b.addEventListener('click', function () { go(k); }); });
   document.querySelectorAll('[data-panel]').forEach(function (a) { a.addEventListener('click', function (e) { if (!desktop()) return; e.preventDefault(); go(+a.getAttribute('data-panel')); }); });
-  if (!desktop()) panels.forEach(function (p) { p.classList.add('is-active'); });
+  // Mobile exposes every note; crossing the breakpoint restores the current desktop panel.
+  desktopQuery.addEventListener('change', function () {
+    var previous = Math.max(0, current); current = -1;
+    setPanel(previous); render();
+  });
+  setPanel(0);
   wire(); frame.addEventListener('load', wire);
 })();
 </script>

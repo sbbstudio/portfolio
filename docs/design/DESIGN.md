@@ -119,7 +119,17 @@ Avklart videre: Technical er steget med 3D-modellen, ikke et prosjektkort eller 
 
 ## Vindu-modulen (`/work/nyme/`, `/work/kaizen/`)
 
-Én modul, `--box` høy, i `assets/css/module-system.css`. Rute 1–3/5–7 er ett vindu som kjører et speil av nymestudio.no (`work/nyme/site/`, samme opphav, Next.js-runtime hydrerer) i 100 %, uten skalering. Vinduet er scrolleren; porteføljesiden står. Rute 4 bærer etikett (`--t-meta`, 40 px over), seksjonsnummer (`--t-xl`), tittel (`--t-h3`, 20 px under) og en velger 1–N nederst (siste panel er Result og peker på nettstedets footer; det aktiveres når rammen står i bunnen); rute 8 bærer tankegangen som *Starting point → What I saw → Decision* (`.think`: etikett 6 px over linjen, 20 px mellom ledd). Én transformasjon per seksjon på nettstedet: seksjonen hvis topp har passert øvre tredjedel av vinduet er aktiv, og dens element får lys glasslapp (`data-rn`) i vinduet. Innkommende celler toner inn og løfter 12 px. Gridet over vinduet er fjernet; bare linjen mot kolonne 4 og linjen mellom rute 4 og 8 står. Mobil: tittelen fra rute 4 først, så vinduet i 4:5, så alle notater stablet, slik at nettstedets egen meny aldri ligger under hamburgerflisen; glasslappene i vinduet er skjult der, siden koblingen panel ↔ seksjon bare finnes på desktop. Et stillbilde av nettstedet (`--poster` på `.window`) ligger bak rammen til den er hydrert, så glasset har noe å gjøre uklart fra første tegning; `data-hide` og `data-css` på rammen skjuler nettstedets egne oppstartslag. Preluden foran er mørkt glass med NYME (`--t-xxl`), undertittel 6 px under, lukkes med kryss, og klarner når rammen er hydrert.
+Godkjent felles oppsett: én modul (`--box`) med to like høye rader. Rute 1–3/5–7 er ett vindu som kjører en lokal kopi av prosjektets nettsted i 100 %, uten skalering. Vinduet er scrolleren. Gridet tegner bare skillet mot kolonne 4 og linjen mellom rute 4 og 8.
+
+Rute 4 viser etikett (`--t-meta`), prosjektnavn på steg 1 (`--t-xl`) eller seksjonstittel (`--t-h3`). Undertittelen bruker også `--t-h3`. Nederst står en seksjonsspesifikk oppsummering (`.pin__credits`, `--t-h4`, vekt 500, linjehøyde 1.1, tracking -.025em, sekundær tekstfarge). Separate seksjonsnumre over titlene er fjernet. NYME og KAIZEN har samme hierarki.
+
+Rute 8 viser begrunnelsen med etiketter og tekst (`--t-meta`, linjehøyde 1.5). Etiketten står 6 px over teksten, med 20 px mellom ledd. Feltet kan scrolles vertikalt hvis teksten ikke får plass; ingen navigasjon ligger over teksten.
+
+Tallvelgeren ligger nederst til venstre i rute 5 og nettsidelenken nederst til høyre i rute 7, begge over nettstedvinduet og tilgjengelige gjennom alle steg. Begge bruker den eksisterende mørke glassklassen (`data-glass="dark"`), uten radius, border eller skygge. Padding er 9 px vertikalt (1.5 × `--s-1`) og 15 px horisontalt på desktop (.75 × `--s-2`). Tallene bruker `--t-meta`: aktivt tall er hvitt med vekt 600, øvrige sekundære med vekt 400. Nettsidelenken bruker meta-typografi. Velgeren erstatter den separate stegmarkøren. Contact-lenken er fjernet fra panelene.
+
+Seksjonen hvis topp har passert øvre tredjedel av vinduet aktiverer tilhørende panel. KAIZENs avtale måles ved den synlige overskriften, ikke starten på wrapperen som overlapper introen. Steg 3 starter ved `.kai-capability-track`, med `#arbeidsflyter` som fallback før runtime har opprettet oversikten. Målene slås opp på nytt når nettstedets runtime endrer strukturen. Siste stegknapp går helt til bunnen og aktiverer avslutningen: Learning på KAIZEN, Validation på NYME. Innkommende paneler toner inn og løfter 12 px; redusert bevegelse fjerner overgangen.
+
+Mobil: introtittel og første oppsummering, vinduet i 4:5, så begrunnelsene i normal flyt. Senere oppsummeringer følger sin tittel. Tallvelgeren er skjult; nettsidelenken ligger nederst til høyre over vinduet. Et stillbilde (`--poster`) ligger bak rammen mens nettstedet lastes. `data-hide` og `data-css` tilpasser nettstedets oppstartslag i vinduet. Preluden bruker mørkt glass med prosjektnavn, undertittel og lukkekryss.
 
 ## Ikke i dette designet
 
@@ -188,3 +198,18 @@ Sitter: scroll anchoring er deaktivert på siden, slik at åpning av kodefeltene
 Sitter-intro: H1 og etiketten under ligger øverst i rute 5. Begge forklaringsavsnitt ligger øverst i rute 6. Lenker ligger i 7 og Try Sitter i 8. Alle fire feltene har vanlig cellepadding under den felles midtlinjen. Mobil bruker normal leserekkefølge uten tomme gridrader.
 
 Sitter: «A learning app / for children.» står rett under H1 i rute 5, med h3-størrelse på desktop og h2 på mobil. Work sample-etiketten følger under.
+
+
+## KAIZEN — design case narrative
+
+The case explains product-design judgment through the website: making an abstract service tangible for small businesses without an in-house development team; a character-led identity; consistency across motion and navigation; plain language, visual hierarchy and familiar task examples; and the balance between attention and comprehension. Kai’s head direction is an intended attention cue, not a measured usability improvement. The alternative explored was a direction without a character. Feedback to date consists of informal walkthroughs and positive visual reactions, not structured usability testing or conversion evidence. The closing panel states those limits and proposes task-based testing. Technical implementation belongs on the separate Technical page. Personal feedback quotations are not public case content.
+
+## Process-page accessibility and snapshot navigation
+
+NYME and KAIZEN expose only the active desktop panel to assistive technology; inactive panels are inert and aria-hidden. Mobile exposes all panels in reading order, including when resizing across 1024 px. Step navigation respects reduced-motion preferences. The shared `assets/js/portfolio-snapshot-links.js` keeps snapshot section anchors local and opens full-site routes on the live project domain in a new tab; it also handles links inserted by the site's runtime. This preserves the annotated portfolio view while avoiding missing local routes.
+
+## NYME — design case narrative
+
+The case focuses on comprehension, information hierarchy, inspectable examples, process transparency and candidate control. Reasoning is labelled as design reasoning rather than user-research findings. The timing panel explicitly identifies the risk that an example timeline may be read as a guarantee. The final panel separates delivered design from proposed comprehension testing; it does not claim measured usability, conversion or hiring outcomes. Audience specifics, explored alternatives and feedback require confirmation before being added.
+
+NYME audience working assumption (2026-10-27): candidates seeking relevant roles with limited time to prepare a considered application. Inferred from the public homepage and `/soknadstjenesten` (especially “Du har ikke tid. Søknaden trenger den likevel.”), not from confirmed interviews. Rune authorised this inference for next-day review. The case highlights the switcher’s focus/comparison trade-off and the process accordion’s overview/detail trade-off. No claim is made that these choices improved measured outcomes or that alternative versions were tested. Review with Rune: actual audience, alternatives explored, feedback and learning. Sources: https://www.nymestudio.no and https://www.nymestudio.no/soknadstjenesten .

@@ -4,14 +4,15 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>NYME — Website design decisions | Rune Øverland</title>
-<meta name="description" content="My design decisions behind NYME’s website: explaining the application package, making the checks visible and showing who controls submission.">
+<meta name="description" content="Designing NYME’s website around comprehension and candidate control: an inspectable application package, visible checks and clear responsibility for submission.">
 <link rel="icon" href="/favicon.ico?v=r1" sizes="16x16 32x32 48x48">
-<link rel="stylesheet" href="/assets/css/module-system.css">
+<link rel="stylesheet" href="/assets/css/module-system.css?v=20261027-dark-active">
 
 <link rel="stylesheet" href="/cta-system.css">
 <link rel="stylesheet" href="/nav-system.css?v=20261025-scroll-nav">
 <link rel="stylesheet" href="/assets/css/portfolio-footer.css">
 <script src="/assets/js/portfolio-footer.js" defer></script>
+<script src="/assets/js/portfolio-snapshot-links.js"></script>
 </head>
 <body>
 <div class="page" id="top">
@@ -19,7 +20,7 @@
 <nav class="nav" data-variant="compact" aria-label="Main">
   <div class="cell nav__name"><a href="/grid-video.html">Rune &Oslash;verland</a></div>
   <div class="cell nav__links"><a href="/work/nyme/">Nyme</a><a href="/work/kaizen/">Kaizen</a><a href="/how-i-work.html">How I work</a></div>
-  <div class="cell nav__jumps" aria-label="Sections on this page"><a href="#intro" data-panel="0"><span>01</span>Start</a><a href="#story" data-panel="2"><span>03</span>Timing</a><a href="#story" data-panel="7"><span>08</span>Result</a></div>
+  <div class="cell nav__jumps" aria-label="Sections on this page"><a href="#intro" data-panel="0"><span>01</span>Start</a><a href="#story" data-panel="2"><span>03</span>Timing</a><a href="#story" data-panel="7"><span>08</span>Validation</a></div>
   <div class="cell nav__cta"><a href="/contact.html">Contact</a></div>
 </nav>
 
@@ -33,7 +34,7 @@
   <div class="prelude__body">
     <p class="label">Design process</p>
     <h1 class="prelude__title" id="nyme-title"><span class="prelude__name">NYME</span><span class="prelude__sub">How I designed it.</span></h1>
-    <p class="prelude__lead">I designed and built NYME’s website to explain a job application service: what candidates receive, how the work is checked and who controls submission. Follow the site in the window, with my design decisions beside each section.</p>
+    <p class="prelude__lead">How do you make an application service easy to understand while keeping candidates in control? I designed and built NYME’s website around three questions: what you receive, how it is checked and who can send it. This case follows the design decisions and what needs testing next.</p>
     <p class="prelude__status" aria-live="polite"><span class="prelude__state" data-loading>Loading nymestudio.no <span class="prelude__bar" aria-hidden="true"></span></span><span class="prelude__state" data-ready>nymestudio.no is running in the window.</span></p>
   </div>
 </div>
@@ -42,49 +43,60 @@
      The site runs in cells 1–3/5–7. Cells 4 and 8 are a sequence of panels
      driven by the page scroll: intro → problem → one panel per decision
      (the window scrolls to the element it names) → result. ══ -->
-<section class="pin pin--live" id="story" style="--panels:1" aria-label="The design process">
+<section class="pin pin--live pin--credits" id="story" style="--panels:1" aria-label="The design process">
   <div class="mod step pin__stage">
   <div class="mgrid" aria-hidden="true"><i style="--x:0%"><b></b></i><i style="--x:25%"><b></b></i><i style="--x:50%"><b></b></i><i style="--x:75%"><b></b></i><i style="--x:100%"><b></b></i></div>
   <div class="cell step__window"><div class="window window--live window--notes" data-window="notes" style="--poster:url(/assets/opt/process/nyme-poster.jpg)">
     <iframe src="/work/nyme/site/" title="nymestudio.no, as designed — October 2026"></iframe>
+  <div class="pin__navigation" data-glass="dark">
+    <nav class="pin__steps" aria-label="Sections"><button type="button" data-step="0" aria-current="step">1</button><button type="button" data-step="1">2</button><button type="button" data-step="2">3</button><button type="button" data-step="3">4</button><button type="button" data-step="4">5</button><button type="button" data-step="5">6</button><button type="button" data-step="6">7</button><button type="button" data-step="7">8</button></nav>
+  </div>
+    <p class="pin__site-link" data-glass="dark"><a href="https://www.nymestudio.no" target="_blank" rel="noopener">Open nymestudio.no <span class="arrow" aria-hidden="true">↗</span></a></p>
   </div></div>
 
-  <!-- Section chooser in cell 4: one number per section of the site. It does not fade. -->
-  <nav class="cell pin__steps" aria-label="Sections"><button type="button" data-step="0" aria-current="step">1</button><button type="button" data-step="1">2</button><button type="button" data-step="2">3</button><button type="button" data-step="3">4</button><button type="button" data-step="4">5</button><button type="button" data-step="5">6</button><button type="button" data-step="6">7</button><button type="button" data-step="7">8</button></nav>
+  <!-- Section navigation sits inside the window; each panel supplies its own summary in cell 4. -->
+
 
   <article class="panel is-active" id="intro" data-target="[data-home-movement=role]">
-    <header class="cell step__head"><p class="label">Design process · 1 of 8</p><h1 class="step__title"><span class="step__name">NYME</span><span class="step__sub">How I designed it.</span></h1></header>
-    <div class="cell step__copy"><p>Product design, research and build. Solo, 2025–26.</p>
-    <dl class="think"><dt>Problem</dt><dd>I need to explain three application formats while making the service’s purpose clear.</dd><dt>Decision in this section</dt><dd>A promise about speed also needs to explain what the candidate receives. I lead with readiness for a new role and name the CV, letter and website beneath it.</dd></dl></div>
+    <header class="cell step__head"><p class="label">The design challenge · 1 of 8</p><h1 class="step__title"><span class="step__name">NYME</span><span class="step__sub">How I designed it.</span></h1></header>
+    <div class="cell step__copy">
+    <dl class="think"><dt>Audience</dt><dd>Candidates who want a considered application for a relevant role, but have limited time to prepare it.</dd><dt>Design challenge</dt><dd>Explain what they can delegate without making them uncertain about what happens in their name.</dd><dt>Decision</dt><dd>I introduce the outcome first, then name the three formats and make candidate control part of the opening message.</dd></dl></div>
+    <p class="cell pin__credits">Product design, content and build. Solo, 2025–26.</p>
   </article>
   <article class="panel" data-target="[data-application-output-switcher]">
-    <header class="cell step__head"><p class="label">The package · 2 of 8</p><p class="step__num">02</p><h2>Give each format a job.</h2></header>
-    <div class="cell step__copy"><dl class="think"><dt>Starting point</dt><dd>I have three formats to explain within one application.</dd><dt>What I saw</dt><dd>The CV makes relevant experience easy to find. The letter explains the fit. The website gives the candidate’s proposed contribution more room.</dd><dt>Decision</dt><dd>I group them in one switcher, with a distinct purpose for each.</dd></dl></div>
+    <header class="cell step__head"><p class="label">Information hierarchy · 2 of 8</p><h2>Give each format a clear purpose.</h2></header>
+    <div class="cell step__copy"><dl class="think"><dt>Design challenge</dt><dd>Three formats can look like three versions of the same information.</dd><dt>Design reasoning</dt><dd>Showing one format at a time gives each room, but makes comparison less immediate. Clear labels need to keep the whole package understandable.</dd><dt>Decision</dt><dd>I use one switcher: the CV surfaces relevant experience, the letter explains the fit, and the website develops the proposed contribution.</dd></dl></div>
+    <p class="cell pin__credits">One application package, with a clear role for each format.</p>
   </article>
   <article class="panel" data-target="[data-home-movement=timing]">
-    <header class="cell step__head"><p class="label">Timing · 3 of 8</p><p class="step__num">03</p><h2>Explain when the work starts.</h2></header>
-    <div class="cell step__copy"><dl class="think"><dt>Starting point</dt><dd>I make readiness part of the opening promise.</dd><dt>What I saw</dt><dd>The headline makes a claim about speed; the page needs to explain its basis.</dd><dt>Decision</dt><dd>I place the timing section before the detailed process and show preparation alongside an example application timeline.</dd></dl></div>
+    <header class="cell step__head"><p class="label">Setting expectations · 3 of 8</p><h2>Explain the promise of readiness.</h2></header>
+    <div class="cell step__copy"><dl class="think"><dt>Design challenge</dt><dd>The opening promise depends on work that happens before the candidate starts writing.</dd><dt>Design reasoning</dt><dd>A timeline makes the sequence concrete, but precise dates can also imply a guaranteed result.</dd><dt>Decision</dt><dd>I place preparation before the detailed process. In testing, I would check whether readers distinguish the example timeline from a delivery promise.</dd></dl></div>
+    <p class="cell pin__credits">Make the sequence clear without overstating the outcome.</p>
   </article>
   <article class="panel" data-target="[data-home-movement=built]">
-    <header class="cell step__head"><p class="label">The example · 4 of 8</p><p class="step__num">04</p><h2>Let the reader inspect the work.</h2></header>
-    <div class="cell step__copy"><dl class="think"><dt>Starting point</dt><dd>I’m asking the reader to understand an application package.</dd><dt>What I saw</dt><dd>Describing the formats leaves their relationship abstract. A shared role gives the reader something concrete to examine.</dd><dt>Decision</dt><dd>I show a CV, letter and website for one role, clearly labelled as a fictional example.</dd></dl></div>
+    <header class="cell step__head"><p class="label">Making it concrete · 4 of 8</p><h2>Let the reader inspect the work.</h2></header>
+    <div class="cell step__copy"><dl class="think"><dt>Design challenge</dt><dd>Descriptions alone leave the relationship between the formats abstract.</dd><dt>Design reasoning</dt><dd>Using the same candidate and role lets readers compare how each format answers the same need.</dd><dt>Decision</dt><dd>I show an inspectable CV, letter and website for one role, clearly labelled as a fictional example.</dd></dl></div>
+    <p class="cell pin__credits">One candidate. One role. Three connected formats.</p>
   </article>
   <article class="panel" data-target="[data-home-movement=process]">
-    <header class="cell step__head"><p class="label">The process · 5 of 8</p><p class="step__num">05</p><h2>Make the checks visible.</h2></header>
-    <div class="cell step__copy"><dl class="think"><dt>Starting point</dt><dd>I’m explaining the work behind the finished package.</dd><dt>What I saw</dt><dd>A polished example leaves questions about missing evidence, corrections and permission to send.</dd><dt>Decision</dt><dd>I show six steps from finding a role to recording the outcome, including the checks before submission.</dd></dl></div>
+    <header class="cell step__head"><p class="label">Process transparency · 5 of 8</p><h2>Make the checks visible.</h2></header>
+    <div class="cell step__copy"><dl class="think"><dt>Design challenge</dt><dd>A polished example does not explain how unsupported claims or missing information are handled.</dd><dt>Design reasoning</dt><dd>Visible stage headings provide an overview. Expandable details explain exceptions without asking every reader to work through the full process.</dd><dt>Decision</dt><dd>I show six stages with expandable explanations, including evidence gaps, corrections and checks before submission.</dd></dl></div>
+    <p class="cell pin__credits">Explain the exceptions as clearly as the intended path.</p>
   </article>
   <article class="panel" data-target="[data-home-movement=modes]">
-    <header class="cell step__head"><p class="label">Submission · 6 of 8</p><p class="step__num">06</p><h2>Show who sends.</h2></header>
-    <div class="cell step__copy"><dl class="think"><dt>Starting point</dt><dd>I offer two ways to use the service.</dd><dt>What I saw</dt><dd>Preparing an application and submitting it are separate responsibilities. The difference needs to be explicit.</dd><dt>Decision</dt><dd>I distinguish candidate submission from an invitation-only service with a named sender and written permission.</dd></dl></div>
+    <header class="cell step__head"><p class="label">User control · 6 of 8</p><h2>Make responsibility explicit.</h2></header>
+    <div class="cell step__copy"><dl class="think"><dt>Design challenge</dt><dd>Preparing an application and sending it are different responsibilities.</dd><dt>Design reasoning</dt><dd>Candidates need to compare the services by who acts on their behalf, not only by what is included.</dd><dt>Decision</dt><dd>I place the two services side by side and name the sender in each: the candidate, or a named person acting within written permission.</dd></dl></div>
+    <p class="cell pin__credits">Who sends is a core service choice.</p>
   </article>
   <article class="panel" data-target="[data-home-movement=trust-access]">
-    <header class="cell step__head"><p class="label">Access · 7 of 8</p><p class="step__num">07</p><h2>Finish with the candidate’s control.</h2></header>
-    <div class="cell step__copy"><dl class="think"><dt>Starting point</dt><dd>I’m closing a page about preparing applications on someone’s behalf.</dd><dt>What I saw</dt><dd>Requesting access and authorising a submission are separate decisions.</dd><dt>Decision</dt><dd>I end with limited access, approval boundaries and direct answers about what can be sent.</dd></dl></div>
+    <header class="cell step__head"><p class="label">Trust and access · 7 of 8</p><h2>Address uncertainty before action.</h2></header>
+    <div class="cell step__copy"><dl class="think"><dt>Design challenge</dt><dd>Requesting access should not be confused with permission to submit an application.</dd><dt>Design reasoning</dt><dd>Questions about fit, inaccurate information and sending deserve direct answers near the access request.</dd><dt>Decision</dt><dd>I close with approval boundaries and an FAQ that explains what happens when information is missing or disputed.</dd></dl></div>
+    <p class="cell pin__credits">Make the limits visible where the candidate decides.</p>
   </article>
   <article class="panel is-last" data-target="main + footer">
-    <header class="cell step__head"><p class="label">Result · 8 of 8</p><p class="step__num">08</p><h2>The page shows the package, its checks and who controls submission.</h2></header>
-    <div class="cell step__copy"><dl class="think"><dt>Result</dt><dd>Next, I would test whether candidates can explain who sends in each service.</dd></dl>
-    <p class="cta"><a href="https://www.nymestudio.no" target="_blank" rel="noopener">Open nymestudio.no <span class="arrow" aria-hidden="true">→</span></a><br><a href="/contact.html">Contact <span class="arrow" aria-hidden="true">→</span></a></p></div>
+    <header class="cell step__head"><p class="label">Validation · 8 of 8</p><h2>Test understanding, not just appearance.</h2></header>
+    <div class="cell step__copy"><dl class="think"><dt>What the design provides</dt><dd>An inspectable package, an explanation of its checks and an explicit distinction between senders.</dd><dt>What needs testing</dt><dd>Whether candidates can explain the service, understand the timing claim and identify what requires their approval.</dd><dt>Next test</dt><dd>Ask candidates to compare the formats and explain who sends in each service. Observe where they hesitate or draw the wrong conclusion.</dd></dl></div>
+    <p class="cell pin__credits">The next test is whether candidates can explain their choices.</p>
   </article>
 
 </div>
@@ -133,11 +145,18 @@
   var frame = pin.querySelector('iframe');
   var panels = Array.prototype.slice.call(pin.querySelectorAll('.panel'));
   var steps = Array.prototype.slice.call(pin.querySelectorAll('[data-step]'));
-  var desktop = function () { return matchMedia('(min-width: 1024px)').matches; };
+  var desktopQuery = matchMedia('(min-width: 1024px)');
+  var desktop = function () { return desktopQuery.matches; };
+  var scrollBehavior = function () { return matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth'; };
   var doc = null, targets = [], current = -1;
   var setPanel = function (i) {
     if (i === current) return; current = i;
-    panels.forEach(function (p, k) { p.classList.toggle('is-active', k === i); });
+    panels.forEach(function (p, k) {
+      var visible = !desktop() || k === i;
+      p.classList.toggle('is-active', visible);
+      p.inert = !visible;
+      if (visible) p.removeAttribute('aria-hidden'); else p.setAttribute('aria-hidden', 'true');
+    });
     steps.forEach(function (b, k) { if (k === i) b.setAttribute('aria-current', 'step'); else b.removeAttribute('aria-current'); });
     targets.forEach(function (t, k) { if (t) t.classList.toggle('is-current', k === i); });
   };
@@ -152,7 +171,7 @@
   };
   var resolve = function () {
     targets = panels.map(function (p, k) {
-      var t = targets[k] && targets[k].isConnected ? targets[k] : doc.querySelector(p.getAttribute('data-target'));
+      var t = doc.querySelector(p.getAttribute('data-target')); // Re-resolve after runtime inserts or replaces sections.
       if (t && !t.hasAttribute('data-rn')) t.setAttribute('data-rn', String(k + 1).padStart(2, '0'));
       return t;
     });
@@ -160,11 +179,11 @@
   var wire = function () {
     var d = frame.contentDocument; if (doc || !d || !d.body || !d.querySelector('main')) return;
     doc = d;
+    window.portfolioSnapshotLinks(d, pin.querySelector('.pin__site-link a').href);
     frame.parentNode.classList.add('is-loaded');
     var css = d.createElement('style');
     var hide = frame.getAttribute('data-hide'), extra = frame.getAttribute('data-css') || '';
     css.textContent = (hide ? hide + '{display:none!important}' : '') + extra + 'html{scrollbar-width:none}::-webkit-scrollbar{display:none}main>section{min-height:100vh;box-sizing:border-box;display:flex;flex-direction:column;justify-content:center}[data-rn]{position:relative;outline:1px solid transparent;outline-offset:-1px}' +
-      '[data-rn]::before{content:attr(data-rn);position:absolute;top:0;left:0;z-index:50;font:500 20px/1 ui-sans-serif,-apple-system,"Helvetica Neue",Arial,sans-serif;color:#000;background:rgba(255,255,255,.64);backdrop-filter:blur(18px) saturate(110%);-webkit-backdrop-filter:blur(18px) saturate(110%);padding:10px 14px}' +
       '[data-rn].is-current{outline-color:#000}@media (max-width:1023px){[data-rn]::before{display:none}}';
     d.head.appendChild(css);
     resolve();
@@ -173,13 +192,25 @@
     render();
   };
   var go = function (k) {
-    if (!desktop()) { panels[k].scrollIntoView({ behavior: 'smooth' }); return; }
+    if (!desktop()) { panels[k].scrollIntoView({ behavior: scrollBehavior() }); return; }
+    if (!doc) return;
+    resolve(); // The site's runtime may create sections after the iframe load event.
     var t = targets[k], w = frame.contentWindow; if (!t) return;
-    w.scrollTo({ top: k === 0 ? 0 : t.getBoundingClientRect().top + w.scrollY - w.innerHeight * 0.3, behavior: 'smooth' });
+    var se = doc.scrollingElement || doc.documentElement;
+    // The last panel is a reflection at the end of the page, even when the footer is short.
+    var top = k === panels.length - 1 ? se.scrollHeight - w.innerHeight :
+      k === 0 ? 0 : t.getBoundingClientRect().top + w.scrollY - w.innerHeight * 0.3;
+    w.scrollTo({ top: Math.max(0, top), behavior: scrollBehavior() });
+    render();
   };
   steps.forEach(function (b, k) { b.addEventListener('click', function () { go(k); }); });
   document.querySelectorAll('[data-panel]').forEach(function (a) { a.addEventListener('click', function (e) { if (!desktop()) return; e.preventDefault(); go(+a.getAttribute('data-panel')); }); });
-  if (!desktop()) panels.forEach(function (p) { p.classList.add('is-active'); });
+  // Mobile exposes every note; crossing the breakpoint restores the current desktop panel.
+  desktopQuery.addEventListener('change', function () {
+    var previous = Math.max(0, current); current = -1;
+    setPanel(previous); render();
+  });
+  setPanel(0);
   wire(); frame.addEventListener('load', wire);
 })();
 </script>

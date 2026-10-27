@@ -165,9 +165,8 @@ a:hover .arrow { transform: translateX(.5ch); }
 .pin .panel .cell { opacity: 0; transition: opacity .5s var(--ez); pointer-events: none; }
 .pin .panel.is-active .cell { opacity: 1; pointer-events: auto; }
 .pin .step__copy p + p, .pin .step__copy .fact-gap + p { margin-top: var(--cell); }
-/* Cell 4 hierarchy: label 6px over the step number, title 20px under; the intro mirrors the prelude. */
+/* Cell 4: numbers are secondary navigation; the decision title leads. The intro mirrors the prelude. */
 .pin .step__head .label { margin-bottom: var(--s-3); }
-.pin .step__num { font-size: var(--t-xl); font-weight: 500; line-height: 1; letter-spacing: -.04em; }
 .pin .step__head h2 { margin-top: var(--s-2); font-size: var(--t-h3); font-weight: 500; line-height: 1.1; letter-spacing: -.025em; }
 .pin .step__title { font-weight: 500; line-height: 1; letter-spacing: -.04em; }
 .pin .step__name { display: block; font-size: var(--t-xl); }
@@ -179,10 +178,10 @@ a:hover .arrow { transform: translateX(.5ch); }
 .think dd + dt { margin-top: var(--s-2); }
 .pin .step__copy .cta { margin-top: auto; padding-top: var(--s-3); }
 .pin .step__copy p + .think, .pin .step__copy .think + .think { margin-top: var(--s-3); }
-/* Step chooser at the foot of cell 4: 1 2 3 4, the active one white. */
+/* Step chooser: shared type and focus styling; case pages position it over cell 5 below. */
 .pin .pin__steps { grid-column: 4; grid-row: 1; align-self: end; display: flex; gap: var(--cell); padding: var(--cell); position: relative; z-index: 2; }
-.pin .pin__steps button { font: inherit; font-size: var(--t-h4); font-weight: 500; letter-spacing: -.02em; color: var(--ink-2); background: none; border: 0; padding: 0; cursor: pointer; transition: color .3s var(--ez); }
-.pin .pin__steps button[aria-current] { color: var(--ink); }
+.pin .pin__steps button { font: inherit; font-size: var(--t-meta); font-weight: 400; letter-spacing: -.02em; color: var(--ink-2); background: none; border: 0; padding: 0; cursor: pointer; transition: color .3s var(--ez); }
+.pin .pin__steps button[aria-current] { color: var(--ink); font-weight: 600; }
 .pin .pin__steps button:focus-visible { outline: 1px solid var(--paper); outline-offset: 4px; }
 /* Incoming cells rise 12px as they fade in. */
 .pin .panel .cell { transform: translateY(12px); transition: opacity .5s var(--ez), transform .5s var(--ez); }
@@ -283,3 +282,47 @@ html.has-prelude { overflow: hidden; }
   .prelude.is-leaving .prelude__body { transform: none; }
 }
 @media (max-width: 1023px) { .prelude__name { font-size: var(--t-xl); } .prelude__sub { font-size: var(--t-h4); } }
+
+/* Shared by NYME and KAIZEN: each panel supplies a summary at the foot of cell 4.
+   Reserve title space; the window controls are positioned separately below. */
+.pin--credits .pin__credits { grid-column: 4; grid-row: 1; align-self: end; padding: var(--cell); font-size: var(--t-h4); font-weight: 500; line-height: 1.1; letter-spacing: -.025em; color: var(--ink-2); }
+@media (min-width: 1024px) {
+  .pin--credits .pin__navigation { grid-column: 4; grid-row: 2; align-self: end; padding: var(--cell); position: relative; z-index: 2; }
+  .pin--credits .panel .step__head { padding-bottom: calc(var(--s-3) + var(--t-h4) * 4.4); }
+  .pin--credits .panel .step__copy { padding-bottom: calc(var(--s-3) + var(--s-2) + var(--t-meta) * 3.1); }
+}
+@media (max-width: 1023px) {
+  .pin--credits .pin__credits { order: 0; align-self: stretch; }
+  .pin--credits .panel:not(:first-of-type) { display: flex; flex-direction: column; }
+  .pin--credits .panel:not(:first-of-type) .pin__credits { order: 2; }
+}
+
+/* Shared case controls: base spacing before their window-overlay positioning. */
+.pin--credits .pin__navigation .pin__steps { padding: 0; }
+.pin--credits .pin__site-link { margin: 0 0 var(--s-2); font-size: var(--t-meta); line-height: 1.6; }
+@media (max-width: 1023px) {
+  .pin--credits .pin__navigation { order: 2; padding: var(--cell); }
+  .pin--credits .pin__site-link { margin: 0; }
+}
+
+
+/* Shared case controls occupy their own bottom area, separate from the scrollable notes. */
+@media (min-width: 1024px) {
+  .pin--credits .pin__navigation { display: grid; gap: var(--s-2); }
+  .pin--credits .pin__navigation .pin__steps { grid-column: 1; grid-row: 1; }
+  .pin--credits .pin__site-link { grid-column: 1; grid-row: 2; margin: 0; text-align: right; }
+  .pin--credits .panel .step__copy {
+    min-height: 0;
+    margin-bottom: 0;
+    padding-bottom: var(--cell);
+    overflow-y: auto;
+    scrollbar-width: thin;
+  }
+}
+
+/* External site link sits in cell 7, over the bottom-right of the full-height window. */
+.pin--credits .window .pin__site-link { position: absolute; bottom: 0; right: 0; z-index: 3; margin: 0; padding: calc(var(--s-1) * 1.5) calc(var(--s-2) * .75); text-align: right; }
+
+/* Shared section chooser replaces the single marker in cell 5, at the window's bottom-left. */
+.pin--credits .window .pin__navigation { position: absolute; bottom: 0; left: 0; z-index: 3; padding: calc(var(--s-1) * 1.5) calc(var(--s-2) * .75); display: block; }
+@media (max-width: 1023px) { .pin--credits .window .pin__navigation { display: none; } }
