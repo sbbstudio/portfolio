@@ -1,0 +1,688 @@
+/* Local opt-in experience only. Kai cyan is shared by navigation and card light. */
+html{--kai-cyan:#83dcea;--kai-ink:#292f2c;--kai-paper:#f4f4f0}
+.kai-skip{position:fixed;left:20px;top:16px;z-index:200;transform:translateY(-180%);background:#292f2c;color:#fff;padding:14px 20px;border-radius:12px;font:.875rem Arial}
+.kai-skip:focus{transform:none;outline:3px solid #238e9d;outline-offset:4px}
+.kai-hero-wrapper{display:contents}
+.kai-capability-track{position:relative;padding:70px 5%;background:var(--kai-paper)}
+.kai-capability-pin h2{font-size:clamp(2rem,3vw,2.875rem);font-weight:500;line-height:1.08;letter-spacing:-.045em;margin:0 0 var(--gap-title)}
+.kai-capability-intro{font-size:1rem;line-height:1.5;max-width:38ch;color:#59655e}
+.kai-capability-list{list-style:none;padding:0;margin:40px 0 0;display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.kai-capability-list li{padding:24px;border:1px solid #cbd8d2;border-radius:12px;background:rgba(255,255,255,.60);text-align:left;color:var(--kai-ink)}
+.kai-capability-list h3{font-size:clamp(1.375rem,2vw,1.875rem);line-height:1.1;font-weight:500;letter-spacing:-.035em;margin:0 0 12px}
+.kai-capability-list p{font-size:1rem;line-height:1.5;letter-spacing:0;color:#59655e;margin:0;max-width:30ch}
+.kai-capability-lines{display:none;pointer-events:none}
+.kai-capability-lines path{fill:none;stroke:#66b8c1;stroke-width:1.5;stroke-dasharray:1;vector-effect:non-scaling-stroke}
+@media(min-width:801px) and (prefers-reduced-motion:no-preference){
+ .kai-capability-track{grid-area:1/1;margin-top:230svh;height:240svh;padding:0;background:none;pointer-events:none;z-index:2}
+ .kai-capability-pin{position:sticky;top:0;height:100svh;padding:104px 3.5% 0}
+ .kai-capability-pin h2{max-width:none;font-size:clamp(2rem,3.2vw,3rem);text-align:center}
+ .kai-capability-intro{max-width:62ch;margin:0 auto;text-align:center;font-size:1rem}
+ .kai-capability-lines{display:block;position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+ .kai-capability-list{display:block;margin:0}
+ .kai-capability-list li{position:absolute;left:3.5%;top:39%;width:25%;min-height:148px}
+ .kai-capability-list li:nth-child(4n+2){left:auto;right:3.5%}
+ .kai-capability-list li:nth-child(4n+3){top:66%}
+ .kai-capability-list li:nth-child(4n+4){top:66%;left:auto;right:3.5%}
+}
+@media(min-width:801px) and (max-height:760px) and (prefers-reduced-motion:no-preference){
+ .kai-capability-pin{padding-top:88px}
+ .kai-capability-pin h2{font-size:2rem}
+ .kai-capability-intro{font-size:.875rem;max-width:76ch}
+ .kai-capability-list li{padding:20px;min-height:132px}
+ .kai-capability-list h3{font-size:1.5rem;margin-bottom:10px}
+ .kai-capability-list p{font-size:.9375rem}
+}
+@media(min-width:801px) and (max-width:1100px){
+ .kai-capability-list li{padding:18px}
+ .kai-capability-list h3{font-size:1.375rem}
+ .kai-capability-list p{font-size:.875rem;line-height:1.45}
+}
+@media(max-width:800px),(prefers-reduced-motion:reduce){
+ .kai-capability-list{gap:16px}
+ .kai-capability-list li{padding:22px}
+}
+@media(max-width:600px){.kai-capability-list{grid-template-columns:1fr}.kai-capability-track{padding:60px 22px}}
+@media(min-width:801px){
+ html[data-cyan-preview='ready'] .kai-hero-wrapper{display:grid;grid-template-columns:1fr;position:relative;isolation:isolate}
+ html[data-cyan-preview='ready'] .kai-hero-wrapper #topp{grid-area:1/1;position:sticky;top:0;height:100svh;min-height:0;align-self:start}
+ html[data-cyan-preview='ready'] .kai-hero-wrapper .hero-stage{position:relative;top:auto;height:100svh}
+ html[data-cyan-preview='ready'] .kai-hero-wrapper #avtalen{grid-area:1/1;position:relative;z-index:2;min-height:230svh;margin:0;padding:115svh 3.5% 35svh;background:transparent;display:grid;grid-template-columns:25% 1fr 25%;grid-template-rows:auto 1fr;gap:32px;align-content:start;pointer-events:none}
+ html[data-cyan-preview='ready'] .kai-hero-wrapper #avtalen>*{transform:none;pointer-events:auto;align-self:start}
+ .kai-hero-wrapper .agreement-intro{grid-column:1;grid-row:1}
+ .kai-hero-wrapper .agreement-copy{grid-column:3;grid-row:1;max-width:none;font-size:clamp(.875rem,1.05vw,1.0625rem);line-height:1.6}
+ .kai-hero-wrapper #avtalen-title{font-size:clamp(1.875rem,3.1vw,3rem);line-height:1.08;max-width:none}
+
+}
+@media(max-width:800px){html[data-cyan-preview='ready'] .kai-hero-wrapper #avtalen{padding-inline:44px}}
+body>.kai-header{padding:22px 3.5%;pointer-events:none;transform:none!important}
+.kai-header a,.kai-header button,.kai-header nav{pointer-events:auto}
+.kai-header .kai-brand{font-size:1rem;letter-spacing:.12em;font-weight:700;display:flex;align-items:center;gap:10px;min-height:48px}
+.kai-brand-dot{width:7px;height:7px;border-radius:50%;background:#238e9d;box-shadow:0 0 0 4px #83dcea30}
+.kai-header :focus-visible{outline:2px solid #238e9d;outline-offset:5px}
+html:has(.kai-header) section[id]{scroll-margin-top:100px}
+html[data-cyan-preview='ready'] #arbeidsflyter.has-kai-lights{padding:60px 5% 35px;display:block;min-height:0;background:var(--kai-paper)}
+.has-kai-lights .workflow-shapes{display:none}
+html[data-cyan-preview='ready'] .has-kai-lights #arbeidsflyter-title{position:relative;left:auto;top:auto;font-size:clamp(2rem,3.8vw,3.375rem);line-height:1.1;letter-spacing:-.04em;text-transform:none;margin:0 0 var(--gap-title)}
+.kai-workflows-intro{font-size:1rem;line-height:1.6;color:#58615a;max-width:590px;margin:0 0 48px}
+.has-kai-lights .workflow-cards{max-width:1440px;margin:auto;gap:48px;grid-template-columns:1.1fr .8fr 1.1fr}
+.has-kai-lights .workflow-cards{isolation:isolate}
+@media(min-width:801px){.has-kai-lights .workflow-cards{min-height:var(--kai-card-min-height,0px)}}
+.has-kai-lights .workflow-card{z-index:1}
+.cyan-agent[data-card-layer]{z-index:1}
+.has-kai-lights #arbeidsflyter-title,.has-kai-lights .kai-workflows-intro{position:relative;z-index:0!important}
+.has-kai-lights .workflow-card{--light:0;color:var(--kai-ink);background:#e5eae2;backdrop-filter:none;-webkit-backdrop-filter:none;border:1px solid #ccd5ca;box-shadow:0 12px 30px -24px #26392c44;min-height:445px;grid-template-rows:auto auto 1fr;transform:none;transition:background .5s,border-color .5s,box-shadow .5s}
+.has-kai-lights .workflow-card:before{background:radial-gradient(100% 80% at 50% 110%,#83dcea85,transparent 85%);opacity:var(--light);transition:opacity .5s}
+.has-kai-lights .workflow-card[data-lit]{--light:1;background:#e0f0e9;border-color:#7ebcc0;box-shadow:0 16px 45px -28px #329da060,inset 0 -2px 0 #83dcea}
+/* Only dim the animated desktop treatment after the model is ready. Static,
+   paused, reduced-motion and keyboard-focus alternatives remain readable. */
+.has-kai-lights .workflow-card>*{transition:opacity .5s}
+@media(min-width:801px){
+ html[data-cyan-preview='ready'][data-cyan-motion='full'] .has-kai-lights .workflow-card:not([data-lit]):not(:focus-within){background:rgba(229,234,226,.1);border-color:#b4c7b950;box-shadow:none}
+ html[data-cyan-preview='ready'][data-cyan-motion='full'] .has-kai-lights .workflow-card:not([data-lit]):not(:focus-within)>*{opacity:.16}
+}
+.has-kai-lights .workflow-card__head{gap:28px;padding:28px 28px 22px}
+.has-kai-lights .workflow-card__number{font:.6875rem monospace;letter-spacing:.1em;color:#5b6c62;display:flex;align-items:center;justify-content:space-between}
+.has-kai-lights .workflow-card__number:after{content:'';width:7px;height:7px;background:#96a99b;border-radius:50%;transition:background .4s,box-shadow .4s}
+.has-kai-lights .workflow-card[data-lit] .workflow-card__number:after{background:#237f88;box-shadow:0 0 0 5px #83dcea44}
+.has-kai-lights .workflow-card h3{font-size:clamp(2rem,3vw,2.875rem);line-height:1.05}
+.has-kai-lights .workflow-card__summary{padding:0 28px 25px;font-size:clamp(1.0625rem,1.4vw,1.3125rem);line-height:1.35}
+.has-kai-lights .workflow-card__narrative{padding:0 28px 28px;gap:28px}
+.has-kai-lights .workflow-card__details{font-size:.9375rem;line-height:1.6;color:#49584f}
+.has-kai-lights .workflow-card__label{border-color:#b4c7b9;font-size:.625rem}
+.has-kai-lights .workflow-card__outcome{font-size:1.0625rem;line-height:1.35}
+/* Three reassurances before the agreement, not three more process steps.
+   Keep the original Kai scale and illumination; contact is always available. */
+html[data-cyan-preview='ready'] #arbeidsflyter.has-first-conversation{padding-top:84px}
+.has-first-conversation #arbeidsflyter-title{text-align:center;width:100%}
+.has-first-conversation .kai-workflows-intro{text-align:center;margin-inline:auto}
+.has-kai-lights.has-first-conversation .workflow-cards{grid-template-columns:repeat(3,minmax(0,1fr));max-width:1180px;gap:48px}
+/* Shorter copy makes room for contact without shrinking Kai. His projected
+   bounds still fit inside the card row; keep that browser assertion. */
+@media(min-width:801px){.has-kai-lights.has-first-conversation .workflow-cards{min-height:calc(var(--kai-card-min-height,0px)*.87)}}
+.has-first-conversation .workflow-card{display:flex;flex-direction:column;min-width:0}
+.has-kai-lights.has-first-conversation .workflow-card__head{padding:28px 28px 22px;gap:28px}
+.has-first-conversation .conversation-label{font:.6875rem/1.5 monospace;letter-spacing:.1em;text-transform:uppercase;color:#59655e;margin:0}
+.has-kai-lights.has-first-conversation .workflow-card h3{font-size:clamp(1.625rem,2.4vw,2.125rem);line-height:1.1;max-width:12ch;letter-spacing:-.04em}
+.conversation-body{margin:0;padding:0 28px 28px;font-size:clamp(1.0625rem,1.25vw,1.125rem);line-height:1.55;color:#49584f}
+.conversation-contact{position:relative;z-index:3;text-align:center;margin:32px auto 0}
+.conversation-cta{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:14px 26px;border-radius:999px;background:#29332e;color:#fff;font-size:.9375rem;text-decoration:none}
+.conversation-cta:hover{background:#3b5149}
+.conversation-cta:focus-visible{outline:3px solid #197785;outline-offset:5px}
+.conversation-contact p{font-size:.8125rem;line-height:1.5;color:#49584f;margin:12px 0 0}
+.has-first-conversation .kai-card-hint{text-align:center}
+@media(min-width:801px) and (max-width:1100px){
+ .has-kai-lights.has-first-conversation .workflow-cards{gap:28px;width:94%}
+ .has-kai-lights.has-first-conversation .workflow-card__head{padding:24px 18px;gap:24px}
+ .has-kai-lights.has-first-conversation .workflow-card h3{font-size:1.75rem}
+ .conversation-body{padding:0 18px 28px;font-size:1rem}
+}
+@media(max-width:800px){
+ .has-kai-lights.has-first-conversation .workflow-cards{grid-template-columns:1fr;gap:24px;width:100%}
+ .has-first-conversation .workflow-card{min-height:0}
+}
+html[data-kai-card-static] .cyan-agent{visibility:hidden}
+.kai-card-track{position:relative}
+#arbeidsflyter[data-card-scrub]{position:sticky;top:var(--kai-card-pin-top,0px);overflow:visible;isolation:isolate}
+#arbeidsflyter[data-card-scrub] .workflow-cards{z-index:3}
+.kai-ambient-dim{position:fixed;inset:0;pointer-events:none;background:#182c30;opacity:var(--kai-dim,0);z-index:0}
+.kai-visor-light{position:fixed;inset:0;width:100vw;height:100vh;overflow:visible;pointer-events:none;z-index:2;opacity:0}
+.kai-card-hint{display:none;font:.6875rem/1.5 monospace;letter-spacing:.04em;color:#596761;margin:20px 0 0;position:relative;z-index:3}
+[data-card-scrub] .kai-card-hint{display:block}
+html[data-cyan-motion='full'] #arbeidsflyter[data-card-scrub] .workflow-card:not(:focus-within){
+ background:rgba(224,240,233,calc(.1 + var(--kai-reveal,0)*.9));
+ border-color:rgba(71,167,179,calc(.18 + var(--kai-edge-light,0)*.6));
+ box-shadow:0 0 30px rgba(89,216,229,calc(var(--kai-edge-light,0)*.2)),inset 0 -2px 0 rgba(131,220,234,var(--kai-reveal,0));
+ transition:none;
+}
+html[data-cyan-motion='full'] #arbeidsflyter[data-card-scrub] .workflow-card:not(:focus-within)>*{opacity:calc(.16 + var(--kai-reveal,0)*.84);transition:none}
+#arbeidsflyter[data-card-scrub] .workflow-card:before{opacity:var(--kai-reveal,0);transition:none}
+@media(max-width:1050px) and (min-width:761px){.has-kai-lights .workflow-cards{gap:14px}.has-kai-lights .workflow-card__head{padding:22px 18px}.has-kai-lights .workflow-card__summary{padding:0 18px 22px}.has-kai-lights .workflow-card__narrative{padding:0 18px 22px}.has-kai-lights .workflow-card__details{font-size:.875rem}}
+@media(max-width:760px){
+ html[data-cyan-preview='ready'] #arbeidsflyter.has-kai-lights{padding:76px 22px 28px}
+ .kai-workflows-intro{margin-bottom:30px;font-size:.9375rem}
+ .has-kai-lights .workflow-cards{grid-template-columns:1fr;gap:18px}
+ .has-kai-lights .workflow-card{min-height:0}
+ .has-kai-lights .workflow-card__head{gap:20px}
+ .has-kai-lights .workflow-card h3{font-size:2.25rem}
+ .has-kai-lights .workflow-card__summary{font-size:1.1875rem}
+}
+@media(prefers-reduced-motion:reduce){.kai-header *,.has-kai-lights *,.has-kai-lights *:before,.has-kai-lights *:after{transition:none!important;animation:none!important}html:has(.kai-header){scroll-behavior:auto}}
+/* Native contact dialog sits above canvas, pinned scenes and journey controls. */
+.kai-menu-close{display:inline-flex;align-items:center;justify-content:space-between;gap:28px;min-height:48px;padding:0 20px;border:1px solid #c5cdc2;border-radius:999px;background:#29332e;color:#f4f4f0;font:.875rem Arial,Helvetica,sans-serif;cursor:pointer}
+.kai-full-menu{box-sizing:border-box;inset:0;margin:0;width:100%;max-width:none;height:100dvh;max-height:none;border:0;padding:22px 3.5% 44px;background:#29332e;color:#f4f4f0;overflow:auto;overscroll-behavior:contain;font-family:Arial,Helvetica,sans-serif}
+.kai-full-menu::backdrop{background:#29332e}
+.kai-full-menu[open]{display:flex;flex-direction:column}
+.kai-full-menu a{color:inherit;text-decoration:none}
+.kai-full-menu__top{display:flex;justify-content:space-between;align-items:center;gap:24px}
+.kai-full-menu .kai-brand{display:flex;align-items:center;gap:10px;font-size:1rem;font-weight:700;letter-spacing:.12em;min-height:48px}
+.kai-full-menu .kai-menu-close{border-color:#83948a;background:transparent}
+.kai-full-menu__body{display:grid;grid-template-columns:1.3fr 1fr;align-items:center;gap:8vw;flex:1;padding:50px 5%}
+.kai-full-menu nav{display:flex;flex-direction:column;align-items:stretch;gap:8px;position:static}
+.kai-full-menu nav a{display:block;width:fit-content;font-size:clamp(2rem,4.7vw,4.5rem);font-weight:400;line-height:1.2;letter-spacing:-.045em;padding:8px 0;text-transform:none;position:relative}
+.kai-full-menu nav a:hover,.kai-full-menu nav a[aria-current]{color:#83dcea}
+.kai-full-menu__contact{border-left:1px solid #617369;padding-left:4vw;max-width:460px}
+.kai-menu-eyebrow{font:.6875rem/1.5 monospace;letter-spacing:.12em;color:#c2d2c7;margin:0 0 26px}
+.kai-full-menu__contact h2{font-size:clamp(1.75rem,3vw,2.75rem);line-height:1.15;letter-spacing:-.035em;font-weight:400;margin:0 0 var(--gap-title)}
+.kai-full-menu .kai-menu-cta{display:flex;align-items:center;justify-content:space-between;gap:24px;min-height:54px;padding:12px 22px;border-radius:999px;background:#83dcea;color:#21322d;font-size:1rem}
+.kai-full-menu__contact>p:last-child{font-size:.875rem;color:#c2d2c7;margin:16px 0 0}
+.kai-full-menu :focus-visible{outline:3px solid #83dcea;outline-offset:6px}
+.kai-contact-window__body{width:min(100%,960px);margin:auto;padding:48px 5%}
+.kai-contact-window__body h2{font-size:clamp(2.25rem,6vw,5rem);font-weight:400;letter-spacing:-.05em;line-height:1.06;margin:0 0 var(--gap-title)}
+.kai-contact-window__body>p{font-size:1.125rem;line-height:1.6;color:#c2d2c7}
+.kai-contact-window__actions{display:flex;flex-wrap:wrap;gap:16px;margin:36px 0 24px}
+.kai-contact-window__actions a{display:flex;align-items:center;justify-content:space-between;gap:36px;padding:18px 26px;border:1px solid #83dcea;border-radius:999px;font-size:1.125rem}
+.kai-contact-window__actions a:first-child{background:#83dcea;color:#21322d}
+.kai-contact-window__body .kai-contact-window__note{font-size:.875rem}
+@media(max-width:760px){
+ .kai-full-menu{padding:16px 22px 30px}
+ .kai-full-menu__body{grid-template-columns:1fr;gap:24px;padding:20px 0 0;align-content:start}
+ .kai-full-menu nav{gap:0}
+ .kai-full-menu nav a{padding:4px 0} /* strammere rytme så Ring/E-post står over folden ved 667 px (Designer P2-3); trinnet settes av .kai-full-menu nav a{font-size:var(--t-h2)} */
+ .kai-full-menu__contact{border-left:0;border-top:1px solid #617369;padding:24px 0 0;max-width:none}
+ .kai-menu-eyebrow{display:none}
+ .kai-full-menu__contact h2{font-size:1.625rem;margin-bottom:16px}
+ .kai-full-menu__contact>p:first-of-type{margin:0 0 16px}
+ .kai-contact-window__actions{margin:20px 0 16px}
+}
+/* Korte skjermer (iPhone SE 667): Ring/E-post skal stå over folden. Kompakt rytme, ingen tekst fjernes. */
+@media(max-width:760px) and (max-height:720px){
+ .kai-full-menu{padding:12px 22px 20px}
+ .kai-full-menu__body{gap:16px;padding:12px 0 0}
+ .kai-full-menu nav a{padding:2px 0}
+ .kai-full-menu__contact{padding-top:14px}
+ .kai-full-menu__contact h2{font-size:1.375rem;margin-bottom:10px}
+ .kai-full-menu__contact>p:first-of-type{margin-bottom:10px}
+ .kai-contact-window__actions{margin:12px 0 10px;gap:10px}
+ .kai-contact-window__actions a{padding:12px 20px}
+}
+
+/* Typografi-prøve (branch typo/syne-trial): Syne display + Instrument Sans brød + Geist Mono etiketter. Tokens i index.html :root. */
+.kai-full-menu,.kai-skip,.kai-menu-toggle,.kai-menu-close{font-family:var(--font-body)}
+.kai-capability-pin h2,.kai-capability-list h3,.kai-hero-wrapper #avtalen-title,html[data-cyan-preview='ready'] .has-kai-lights #arbeidsflyter-title,.has-kai-lights .workflow-card h3,.has-kai-lights.has-first-conversation .workflow-card h3,.kai-full-menu nav a,.kai-full-menu__contact h2,.kai-contact-window__body h2{font-family:var(--font-display);font-weight:var(--w-display);letter-spacing:var(--track-display)}
+.kai-header .kai-brand,.kai-full-menu .kai-brand{font-family:var(--font-display);font-weight:700;letter-spacing:.14em}
+.has-kai-lights .workflow-card__number,.has-first-conversation .conversation-label,.kai-card-hint,.kai-menu-eyebrow{font-family:var(--font-mono)}
+/* Lite eller stort: mellomtrinnene går ned til brødstørrelse */
+.kai-capability-list h3{font-size:var(--t-body);line-height:1.15}
+.has-kai-lights .workflow-card__summary,.conversation-body{font-size:var(--t-body);line-height:1.5}
+/* Tekstsystem: alle størrelser i Kai-laget på tokens fra index.html :root */
+.kai-capability-pin h2,.kai-hero-wrapper #avtalen-title,html[data-cyan-preview='ready'] .has-kai-lights #arbeidsflyter-title,.kai-full-menu nav a,.kai-full-menu__contact h2,.kai-contact-window__body h2{font-size:var(--t-h2);line-height:var(--lh-display)}
+.has-kai-lights .workflow-card h3,.has-kai-lights.has-first-conversation .workflow-card h3{font-size:var(--t-h3);line-height:var(--lh-display)}
+.kai-capability-intro,.kai-workflows-intro,.kai-hero-wrapper .agreement-copy,.has-kai-lights .workflow-card__details,.has-kai-lights .workflow-card__outcome,.conversation-cta,.conversation-contact p,.kai-full-menu .kai-menu-cta,.kai-full-menu__contact>p:last-child,.kai-contact-window__body>p,.kai-contact-window__actions a,.kai-contact-window__body .kai-contact-window__note{font-size:var(--t-body)}
+.has-kai-lights .workflow-card__number,.has-kai-lights .workflow-card__label,.has-first-conversation .conversation-label,.kai-card-hint,.kai-menu-eyebrow,.kai-header .kai-brand,.kai-full-menu .kai-brand,.kai-skip,.kai-menu-toggle,.kai-menu-close{font-size:var(--t-label)}
+@media(min-width:801px) and (max-height:760px) and (prefers-reduced-motion:no-preference){.kai-capability-pin h2{font-size:var(--t-h3)}}
+/* Avtalen: hierarki i brødkolonnen — innledning (blekk, 500), brød (dempet), vilkår (linje + tall), merknad (mono) */
+.kai-hero-wrapper .agreement-copy{display:grid;gap:1.1em;align-content:start}
+.kai-hero-wrapper .agreement-copy p{margin:0;color:#59655e}
+.kai-hero-wrapper .agreement-copy p:first-of-type{color:#29211f;font-weight:500}
+.kai-hero-wrapper .agreement-copy p:nth-of-type(3){color:#29211f;padding-top:1.1em;border-top:1px solid #cdd4cb}
+.kai-hero-wrapper .agreement-copy strong{font-weight:600;font-variant-numeric:tabular-nums}
+.kai-hero-wrapper .agreement-copy p:last-of-type{font-family:var(--font-mono);font-size:var(--t-label);letter-spacing:.03em;line-height:1.6;margin-top:.5em}
+
+/* Tekstklasser (godkjent på Avtalen 09-11) mappet på Kai-flatene. Samme seks klasser overalt. */
+/* eyebrow */
+.has-first-conversation .conversation-label,.has-kai-lights .workflow-card__number,.kai-capability-list .t-eyebrow,.kai-menu-eyebrow{font-family:var(--font-mono);font-size:var(--t-label);font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0}
+/* lead: første avsnitt etter tittel */
+html[data-cyan-preview='ready'] .hero-copy p,.kai-capability-intro,.kai-workflows-intro,.has-first-conversation .conversation-body,.has-kai-lights .workflow-card__summary,.kai-contact-window__body>p:first-of-type,.kai-full-menu__contact>p:first-of-type{color:var(--ink);font-weight:500;font-size:var(--t-body);line-height:1.5}
+/* body */
+.has-kai-lights .workflow-card__details,.kai-contact-window__body>p:not(:first-of-type):not(.kai-contact-window__note){color:var(--muted);font-weight:400;font-size:var(--t-body);line-height:1.5}
+/* terms: hårlinje + eyebrow + blekk */
+.has-kai-lights .workflow-card__result{border-top:1px solid var(--hairline);padding-top:1.1em;margin-top:.4em}
+.has-kai-lights .workflow-card__label{display:block;border:0;border-radius:0;padding:0;margin:0 0 .6em;font-family:var(--font-mono);font-size:var(--t-label);font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.has-kai-lights .workflow-card__outcome{color:var(--ink);font-weight:400;font-size:var(--t-body);line-height:1.5}
+/* note: mono på label-trinn */
+.conversation-contact p,.kai-contact-window__body .kai-contact-window__note,.kai-full-menu__contact>p:last-child{font-family:var(--font-mono);font-size:var(--t-label);line-height:1.6;letter-spacing:.03em;color:var(--muted);text-transform:none}
+/* Ferdighetskort: eyebrow + Syne-tittel, samme klasser som de andre kortene */
+.kai-capability-list li{display:flex;flex-direction:column;gap:12px;color:var(--ink)}
+.kai-capability-list h3{font-family:var(--font-display);font-weight:var(--w-display);letter-spacing:var(--track-display);font-size:var(--t-h3);line-height:var(--lh-display);margin:0;color:var(--ink);max-width:none}
+/* Kortrytme: tittel → lead med samme avstand som Avtalen */
+/* Samtalekort: tittel→brødtekst = --gap-title. Tre klasser i selektoren, ellers vinner padding:28px 28px 22px over. */
+.has-kai-lights.has-first-conversation .workflow-card__head{padding-bottom:0}.has-first-conversation .conversation-body{padding-top:var(--gap-title)}
+/* Ferdighetskort: 25% -> 28% bredde så Syne h3 får plass (målt: «Kundeoppstart» = 328px ved 1440); mobil én kolonne */
+@media(min-width:801px){.kai-capability-list li{width:28%;container-type:inline-size}}
+/* Tokenet er tak. Under 1280 bredde og under 760 høyde tvinger geometrien tittelen ned (målt: ord-overflow ved 820, kortoverlapp ved 1280x720). */
+@media(min-width:801px) and (max-width:1280px){.kai-capability-list h3{font-size:min(var(--t-h3),9.5cqw)}}
+@media(min-width:801px) and (max-height:760px) and (prefers-reduced-motion:no-preference){.kai-capability-list h3{font-size:min(calc(var(--t-h3)*.8),9.5cqw)}}
+@media(max-width:800px){.kai-capability-list{grid-template-columns:1fr}}
+/* Ferdighetskort v3 (CEO 09-11): ned i hierarki og plass. eyebrow + lead, ingen Syne. Kortene hugger innholdet — bredde og høyde følger teksten. */
+.kai-capability-list h3{font-family:var(--font-body);font-weight:500;font-size:var(--t-body);line-height:1.5;letter-spacing:0;color:var(--ink);max-width:24ch;text-wrap:balance}
+.kai-capability-body{display:none}
+@media(min-width:801px){.kai-capability-list li{container-type:normal;width:max-content;max-width:28%;min-height:0;padding:18px 22px 20px;gap:8px}}
+@media(min-width:801px) and (max-width:1280px){.kai-capability-list h3{font-size:var(--t-body)}}
+@media(min-width:801px) and (max-height:760px) and (prefers-reduced-motion:no-preference){.kai-capability-list h3{font-size:var(--t-body)}.kai-capability-list li{min-height:0;padding:16px 20px 18px}}
+
+/* Tema (2026-09-11): alle farger via tokens i index.html :root (lys/mørk). Christines regler over står urørt;
+   disse reglene kommer sist og vinner på lik spesifisitet. */
+html{--kai-paper:var(--bg-kai);--kai-ink:var(--ink)}
+.kai-skip{background:var(--nav-fill);color:var(--nav-text)}
+.kai-capability-intro,.kai-capability-list p{color:var(--muted)}
+.kai-capability-list li{border-color:var(--hairline);background:var(--surface-glass)}
+.kai-header .kai-brand{margin-right:auto}
+body>.kai-header{gap:18px}
+.kai-workflows-intro{color:var(--muted)}
+.has-kai-lights .workflow-card{background:var(--surface-2);border-color:var(--hairline)}
+.has-kai-lights .workflow-card[data-lit]{background:var(--surface-3)}
+html[data-cyan-preview='ready'][data-cyan-motion='full'] .has-kai-lights .workflow-card:not([data-lit]):not(:focus-within){background:color-mix(in srgb,var(--surface-2) 10%,transparent);border-color:color-mix(in srgb,var(--hairline) 60%,transparent)}
+.has-kai-lights .workflow-card__number{color:var(--muted)}
+.has-kai-lights .workflow-card__number:after{background:var(--hairline)}
+.has-kai-lights .workflow-card__details,.conversation-body,.conversation-contact p,.has-first-conversation .conversation-label,.kai-card-hint{color:var(--muted)}
+.has-kai-lights .workflow-card__label{border-color:var(--hairline)}
+.conversation-cta{background:var(--nav-fill);color:var(--nav-text)}
+.conversation-cta:hover{background:var(--nav-fill-hover)}
+.kai-ambient-dim{background:var(--dim)}
+html[data-cyan-motion='full'] #arbeidsflyter[data-card-scrub] .workflow-card:not(:focus-within){background:color-mix(in srgb,var(--surface-3) calc((.1 + var(--kai-reveal,0)*.9)*100%),transparent)}
+.kai-full-menu,.kai-full-menu::backdrop,.kai-menu-close{background:var(--menu-bg)}
+.kai-full-menu .kai-menu-close{background:transparent}
+.kai-hero-wrapper .agreement-copy p{color:var(--muted)}
+.kai-hero-wrapper .agreement-copy p:first-of-type{color:var(--ink)}
+.kai-hero-wrapper .agreement-copy p:nth-of-type(3){color:var(--ink);border-top-color:var(--hairline)}
+.kai-full-menu{color:var(--menu-ink)}
+.kai-full-menu .kai-menu-eyebrow,.kai-contact-window__body>p,.kai-contact-window__note,.kai-full-menu__contact>p:last-child{color:var(--menu-muted)}
+.kai-full-menu h2,.kai-full-menu .kai-brand{color:var(--menu-ink)}
+.kai-contact-window .kai-contact-window__body>p,.kai-contact-window .kai-contact-window__body>p:not(:first-of-type):not(.kai-contact-window__note),.kai-contact-window .kai-contact-window__body .kai-contact-window__note{color:var(--menu-muted)}
+/* Karbon-palett (CEO 2026-09-11): prikk og fokusringer på aksent-token, ikke hardkodet grønn-cyan. */
+.kai-brand-dot{background:var(--accent);box-shadow:0 0 0 4px color-mix(in srgb,var(--cyan) 20%,transparent)}
+.kai-skip:focus,.kai-header :focus-visible{outline-color:var(--accent)}
+
+/* ============================================================
+   Gooey (2026-09-11, CEO-godkjent på lab-flaten docs/nav-forslag.html):
+   pillen, prefs-boksen og CTA-ene deler én motor (gooey-engine.js) og ett mål-sett.
+   Geometri fra Framer-originalen: 0px i hvile, push rundt aktiv/hovret, sirkel-tangent-fillet, halo.
+   Registrert som <length> så calc() blir px før motoren leser verdiene.
+   ============================================================ */
+@property --g-waist{syntax:'<length>';inherits:true;initial-value:18px}
+@property --g-push{syntax:'<length>';inherits:true;initial-value:27px}
+@property --g-gap{syntax:'<length>';inherits:true;initial-value:0px}
+@property --island-h{syntax:'<length>';inherits:true;initial-value:40px}
+@property --kai-dock-inset{syntax:'<length>';inherits:true;initial-value:16px} /* registrert så JS leser px (env() løses i CSS) */
+html{--kai-dock-inset:max(16px,env(safe-area-inset-bottom))}
+@property --island-r{syntax:'<length>';inherits:true;initial-value:12px}
+html{--island-h:40px;--island-r:12px;--bar-pad:10px;--g-gap:0px;--g-push:27px;--g-waist:18px;--g-stiffness:620;--g-damping:66}
+/* Toppstripen: mindre luft (var 22px), pille 40px (var 48px). */
+body>.kai-header{padding:var(--bar-pad) 3.5%;gap:18px;align-items:center}
+.kai-header .kai-brand{min-height:var(--island-h)}
+.kai-header .g{pointer-events:auto}
+/* Motor-beholder og blobber */
+.g{position:relative;display:block;height:var(--island-h);flex:none;max-width:100%}
+.g>svg.gooey-surface{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none;fill:var(--nav-fill)}
+.g>svg .gooey-halo{opacity:0;transition:opacity .25s}
+.g[data-hot]>svg .gooey-halo{opacity:1}
+.g>.g-item{position:absolute;left:0;top:0;height:var(--island-h);display:inline-flex;align-items:center;white-space:nowrap;color:var(--nav-text);border-radius:var(--island-r);will-change:transform}
+/* Lenkepillen (overstyrer 48px-reglene over) */
+
+/* Prefs-boksen: NO/EN · Lys/Mørk · Meny — mono versaler som eyebrow, cyan prikk under valget */
+.kai-prefs{font-family:var(--font-mono);font-size:var(--t-label);font-weight:500;letter-spacing:.1em;text-transform:uppercase}
+.kai-prefs .kai-seg{padding:0 6px}
+.kai-prefs .kai-seg button{all:unset;cursor:pointer;box-sizing:border-box;display:inline-flex;align-items:center;height:var(--island-h);padding:0 8px;color:var(--nav-muted,#8d9596);position:relative;transition:color .2s;font:inherit;letter-spacing:inherit;text-transform:inherit}
+.kai-prefs .kai-seg button[aria-pressed="true"]{color:var(--nav-text)}
+.kai-prefs .kai-seg button[aria-pressed="true"]:after{content:'';position:absolute;bottom:5px;left:calc(50% - 2px);width:4px;height:4px;border-radius:50%;background:var(--nav-accent)}
+.kai-prefs .kai-seg button:hover,.kai-prefs .kai-seg button:focus-visible{color:var(--nav-accent)}
+.kai-prefs .kai-seg button:focus-visible{outline:2px solid var(--nav-accent);outline-offset:-4px;border-radius:8px}
+.kai-prefs .kai-seg--menu{padding:0}
+.kai-prefs .kai-seg--menu .kai-menu-toggle{display:inline-flex;align-items:center;gap:12px;padding:0 14px;height:var(--island-h);color:var(--nav-text);background:none;border:0;min-height:0;border-radius:var(--island-r);font:inherit;letter-spacing:inherit;text-transform:inherit;cursor:pointer}
+.kai-prefs .kai-seg--menu .kai-menu-toggle span{font-size:1em}
+.kai-prefs .kai-seg--menu .kai-menu-toggle:hover,.kai-prefs .kai-seg--menu .kai-menu-toggle:focus-visible{color:var(--nav-accent)}
+/* CTA i samme stoff: tekst-blobb + pil-blobb (kvadrat h×h). Alt måles fra h og em: pil 1.1em, strek 0.11em = tekststammen. */
+.kai-cta{display:inline-block;vertical-align:middle;--g-waist:calc(var(--island-h) * .56);--cta-fs:var(--t-label)}
+.kai-cta--lg{--island-h:48px;--island-r:14px;--g-push:32px;--cta-fs:calc(var(--t-label) * 1.15)}
+.g.kai-cta>.g-item{font-family:var(--font-body);font-size:var(--cta-fs);font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--nav-text);text-decoration:none;padding:0 calc(var(--island-h) * .5)}
+.g.kai-cta>.kai-cta__arrow{width:var(--island-h);padding:0;justify-content:center;color:var(--nav-accent)}
+.g.kai-cta>.kai-cta__arrow svg{width:1.1em;height:1.1em;display:block}
+.g.kai-cta:hover>a.g-item,.g.kai-cta:focus-within>a.g-item{color:var(--nav-accent)}
+.g.kai-cta>a.g-item:focus-visible{outline:2px solid var(--nav-accent);outline-offset:-4px}
+/* Sekundær: kontur i stedet for fyll; tekst/pil i blekk (cyan hører hjemme inne i den sorte pillen). */
+.kai-cta--secondary{--nav-fill-hover:color-mix(in srgb,var(--ink) 9%,transparent)}
+.kai-cta--secondary>svg.gooey-surface{fill:var(--bg)}
+.kai-cta--secondary>svg .gooey-outline{fill:none;stroke:var(--ink);stroke-width:calc(var(--cta-fs) * .22)}
+.g.kai-cta--secondary>.g-item,.g.kai-cta--secondary>.kai-cta__arrow,.g.kai-cta--secondary:hover>a.g-item{color:var(--ink)}
+/* Første samtale: CTA-en er nå gooey; den gamle pillen (.conversation-cta) er tekst-blobben. */
+.conversation-contact .kai-cta{margin:0 auto}
+.conversation-contact .conversation-cta{min-height:0;padding:0 calc(var(--island-h) * .5);border-radius:var(--island-r);background:none;font-size:var(--cta-fs)}
+.conversation-contact .conversation-cta:hover{background:none}
+/* Menyen (100dvh): lenker + kontakt. Lukk-knappen i boksens geometri. */
+.kai-full-menu{padding:var(--bar-pad) 3.5% 44px}
+.kai-full-menu .kai-brand{min-height:var(--island-h)}
+.kai-menu-close{min-height:var(--island-h);border-radius:var(--island-r);padding:0 14px;gap:12px;font-family:var(--font-mono);font-size:var(--t-label);font-weight:500;letter-spacing:.1em;text-transform:uppercase}
+.kai-menu-close span{font-size:1em}
+.kai-full-menu__body{padding:6vh 0 0}
+.kai-full-menu nav a{font-size:var(--t-h2);line-height:var(--lh-display);padding:.1em 0}
+.kai-full-menu nav a[aria-current]{padding-right:.6em}
+.kai-full-menu nav a[aria-current]:after{content:'';position:absolute;right:0;top:calc(50% - 3px);width:6px;height:6px;border-radius:50%;background:var(--cyan)}
+.kai-full-menu__contact .kai-contact-window__note{font-family:var(--font-mono);font-size:var(--t-label);line-height:1.6;letter-spacing:.03em;color:var(--menu-muted)}
+.kai-full-menu__contact>p:first-of-type{color:var(--menu-ink)}
+/* Mobil: lenkene bor i menyen; boksen viser bare det som ikke er valgt (EN · Mørk · Meny). */
+@media(max-width:760px){
+ body>.kai-header{padding:var(--bar-pad) 16px;gap:10px;align-items:center}
+ .kai-prefs .kai-seg{padding:0 2px}
+ .kai-prefs .kai-seg button[aria-pressed="true"]{display:none}
+ .kai-prefs .kai-seg button{color:var(--nav-text)}
+ .kai-prefs .kai-seg--menu .kai-menu-toggle{padding:0 10px;gap:8px}
+ .kai-full-menu{padding:var(--bar-pad) 16px 30px}
+}
+@media(prefers-reduced-motion:reduce){.g>svg .gooey-halo{transition:none}}
+
+/* CTA-hero (2026-09-11): «La oss ta en prat» som egen seksjon etter metoden. Samme radial som Kai-heroen øverst,
+   én display-linje, den godkjente pillen (48px) og mono-linjen står urørt. Base-siden får ikke seksjonen (Kai-laget setter den inn). */
+.kai-cta-hero{position:relative;z-index:3;isolation:isolate;min-height:100svh;display:grid;place-content:center;justify-items:center;gap:48px;padding:calc(var(--island-h) + var(--bar-pad)*2 + 24px) 5% 72px;text-align:center;color:var(--ink);background:radial-gradient(ellipse at 50% 48%,var(--hero-a) 0%,var(--hero-b) 75%,var(--hero-c) 100%)}
+.kai-cta-hero h2{margin:0;max-width:14ch;font-family:var(--font-display);font-weight:var(--w-display);letter-spacing:var(--track-display);line-height:var(--lh-display);font-size:var(--t-h1);text-wrap:balance}
+.kai-cta-hero .conversation-contact{margin:0}
+@media(max-width:760px){.kai-cta-hero{gap:36px;padding:calc(var(--island-h) + 32px + 24px) 16px 56px}}
+
+/* Footer-stripe (2026-09-11): Kontakt er det laveste trinnet etter CTA-heroen og tar ikke lenger full høyde.
+   Venstre tittel + én linje, høyre Ring/E-post, nederst mono-linje + ©. Base-siden uten Kai-lag beholder full høyde. */
+/* To like kolonner (CEO 2026-09-12, referansebilde): rad 1 er tittel venstre og introavsnittet
+   høyre, på samme linje. Rad 2 er to formlike moduler med identisk hode (↘ + navn + hårlinje):
+   Ring venstre, Melding-skjemaet høyre. Begge kolonner starter på rad 2, så ingen av dem slutter
+   midt i en rad den ikke fyller — det var kilden til det døde rommet i tre-raders-oppsettet. */
+/* padding-inline eies IKKE av regelen under. `.kai-tail>section:not(#topp)` (nederst i fila) er
+   (1,2,2) — id-en kommer fra :not(#topp) — mot #kontakt sin (1,1,1), og ligger dessuten senere i
+   fila. Den vinner på begge. clamp(1rem,2vw,2rem) er derfor død for venstre og høyre: målt
+   computed padding-inline på Kai-flaten er 64 px over 800 px og 44 px på 800 og under, i alle
+   tre språk — aldri clamp-ens 16..32 px. Det samme gjelder `16px` i @media(max-width:800) lenger
+   nede. padding-block (72/32, og 56/24 under 800) er det eneste shorthanden faktisk leverer her.
+   Ikke ryddet med vilje: å fjerne clamp-en krever å skrive shorthanden om til longhands, og det
+   setter padding-block i spill for null piksler.
+   Vakt: tests/cyan-contact-form.test.mjs låser 64/44 der de faktisk bor. */
+html[data-cyan-preview='ready'] #kontakt{min-height:0;align-content:start;column-gap:clamp(5rem,8vw,8rem);row-gap:40px;padding:72px clamp(1rem,2vw,2rem) 32px;grid-template-rows:auto auto} /* clamp-en er død for padding-inline, se over */
+/* Tittelraden: begge tekstene i bunn (CEO 2026-09-12). Tittel og intro står i samme rad med
+   ulik font-size og line-height, og `align-self:start` stilte dem på toppen — målt lå intro-ens
+   blekk-bunn 44,57 px (nb) / 44,90 (da) / 32,12 (en) OVER titlenes ved 1440. Det er nøyaktig det
+   CEO peker på.
+   `align-self:end` bunnstiller BOKSENE, ikke teksten: halvledingen under siste grunnlinje er
+   ulik i de to boksene, så grunnlinjene ble liggende 1,27..3,84 px fra hverandre — og det tallet
+   henger på --lh-display og 1.5, altså på to tokens som når som helst kan endres.
+   `last baseline` stiller siste grunnlinje mot siste grunnlinje. Målt 0,00 px avvik på alle ni
+   to-kolonneflater (1440/1024/801 x nb/da/en), også der introen brekker til to linjer (1024/801)
+   — der ville `baseline` (første grunnlinje) stilt FEIL linje.
+   Radhøyden: raden blir max(over grunnlinja) + max(under grunnlinja). Målt 1440 uendret
+   (65,84 px), 1024 53,61 -> 55,25, 801 51,59 -> 52,86, altså +1,64 og +1,27 px som skyver rad 2
+   like mye ned. Dødt rom i venstre kolonne er fortsatt 0 på alle ni.
+   Blekk-resten: siste blekk-kant står ikke likt, og kan ikke gjøre det — den er grunnlinja pluss
+   glyfens egen underlengde, og «p» i «spør» på 67,2 px går 13,44 px ned mens «q» i «question» på
+   18 px går 3,87 px ned. Målt rest etter justeringen: -9,57 (nb) / -9,90 (da) / +2,88 (en) ved
+   1440. Å nulle DEN ville gitt tre forskjellige grunnlinjeforskyvninger for tre språk.
+   Under 800 px er seksjonen én kolonne (grid-row:auto lenger nede): hvert element er alene i sin
+   rad, så baseline-gruppa har ett medlem og erklæringen er uvirksom. Målt bit-identisk med
+   f33d98d på alle seks stablede flater.
+   `align-self:start` står først med vilje: en nettleser uten `last baseline` faller tilbake på
+   nøyaktig dagens flate i stedet for på grid-ens `stretch`. */
+html[data-cyan-preview='ready'] #kontakt-title{grid-column:1;grid-row:1;align-self:start;align-self:last baseline;font-size:var(--t-h2)}
+html[data-cyan-preview='ready'] .contact-copy{grid-column:2;grid-row:1;align-self:start;align-self:last baseline;padding-top:0;max-width:46ch}
+html[data-cyan-preview='ready'] .contact-actions{grid-column:1;grid-row:2;align-self:stretch} /* strekker seg over raden: e-postlinja lukker kolonnen på skjemaets grunnlinje */
+html[data-cyan-preview='ready'] .kai-form{grid-column:2;grid-row:2;align-self:start;margin-top:0}
+/* «Send en e-post» kopierer adressen (CEO 2026-09-12, mail-copy.js). To noder, to jobber:
+   .contact-actions__copied er det synlige merket, .kai-sr-live er kunngjøringen.
+   :empty{display:none} holder merket helt ute av boksmodellen i hvilemodus. Målt: pila står
+   686..704 px (1440) og 329,83..346 px (390) MED og UTEN vakta, også med en etikett som er
+   kunstig forlenget — lenka er justify-content:space-between med ledig plass i raden, så det
+   siste barnet ligger låst mot høyre kant. Vakta er derfor hygiene, ikke en målt reparasjon;
+   det den faktisk forhindrer er at en tom, vist flex-rute spiser 16 px (ett gap) av den ledige
+   plassen i en rad som en dag ikke har noe å gi. Den virker først når pil-regelen i index.html
+   er smalnet til `> span:not([class])` — den brede (1,1,1)-regelen slo vakta (0,2,0).
+   color:inherit i stedet for --muted fordi nøyaktig samme node lever to steder — i den lyse
+   #kontakt-kolonnen og i den mørke menyen (fullpage-nav.js kloner lenka). Merket arver derfor
+   lenkas egen farge begge steder i stedet for å ta med seg seksjonens.
+   margin-left:auto spiser den ledige plassen før justify-content:space-between rekker å
+   fordele den, så etiketten blir stående til venstre og merket legger seg inntil pila. */
+.contact-actions__copied{margin-left:auto;font-family:var(--font-mono);font-size:var(--t-label);line-height:1.6;letter-spacing:.03em;color:inherit}
+.contact-actions__copied:empty{display:none}
+/* Kunngjøringen: alltid i DOM-en, aldri display:none (en live-region som skjules og vises igjen
+   er nettopp det skjermlesere annonserer upålitelig). position:absolute holder den utenfor
+   flex-flyten, så den koster ingenting i layout. */
+.kai-sr-live{position:absolute;width:1px;height:1px;margin:-1px;padding:0;border:0;overflow:hidden;white-space:nowrap;clip-path:inset(50%)}
+/* Én rad, space-between (CEO 2026-09-12): tekstlinjen venstre, © helt til høyre, på samme
+   grunnlinje. Var to rader (tekst i full bredde over, © i høyre 1fr under).
+   `1fr auto` i stedet for `space-between` på en flex-boks: © får nøyaktig sin egen bredde og
+   lander på seksjonens høyre kant (= .kai-form sin høyre kant, målt 1376/960/737 px), mens
+   tekstlinjen eier resten. Skulle en linje med PROSA en dag bli for lang for sporet, bryter den
+   INNE i 1fr-en i stedet for å skyve © ut av flaten — det er forskjellen fra space-between, og
+   grunnen til at R-E-fellen (notatlinja som brakk til tre linjer) ikke kan gjenta seg her.
+   Presisert (Reviewer 2026-09-12): det gjelder prosa, ikke et ubrytelig token. Målt på nytt her
+   ved 801 px med 'a'×56 i sporet: linjen blir 571,95 px (én linje, ikke to) og presser ©-sporet
+   fra 105,41 til 69,05 px — 571,95 + 32 gap + 69,05 = 673, hele sporet. Ingen overflyt, © blir
+   stående på flaten, men © krymper i stedet for at linjen bryter. Prosa bryter; et token gjør
+   ikke det, og da er det © som gir etter.
+   Målt smaleste desktop-flate 801 px: sporet er 673 px, linjen + © + 32 px gap krever 518,58 px
+   på nb (45 tegn, den lengste av tre språk) — 154,42 px klaring. 1024: 351,64. 1440: 756,48.
+   max-width er borte med vilje: den gamle `.kai-footer-copy{max-width:35ch}` (~262 px) var
+   allerede død — `max-width:none` her overstyrte den på hver eneste flate — og 35ch ville brutt
+   45-tegnslinja i to og dermed sprengt den ene raden. Under 800 px står footeren i én kolonne
+   som før; der bryter linjen naturlig i sporets bredde (390 px: 2 linjer nb/da, 1 linje en). */
+html[data-cyan-preview='ready'] .site-footer{grid-column:1/-1;position:static;min-height:0;margin:0;padding:24px 0 0;border-top:1px solid color-mix(in srgb,var(--ink) 28%,transparent);grid-template-columns:1fr auto;column-gap:2rem}
+html[data-cyan-preview='ready'] .site-footer .kai-footer-copy{grid-column:1}
+html[data-cyan-preview='ready'] .site-footer p:not(.kai-footer-copy){grid-column:2}
+@media(max-width:800px){ /* samme brytepunkt som #kontakt{grid-template-columns:1fr} i index.html (Reviewer PR #11 B0) */
+ html[data-cyan-preview='ready'] #kontakt{row-gap:var(--gap-title);padding:56px 16px 24px;grid-template-rows:none} /* én kolonne: radgapet er tittel→avsnitt-gapet (CEO 2026-09-11) */
+ html[data-cyan-preview='ready'] #kontakt-title,html[data-cyan-preview='ready'] .contact-copy,html[data-cyan-preview='ready'] .contact-actions,html[data-cyan-preview='ready'] .kai-form{grid-column:1;grid-row:auto} /* én kolonne: slipp de faste radene fra to-kolonners-oppsettet */
+ html[data-cyan-preview='ready'] #kontakt .kai-form{margin-top:3rem} /* Ring → Melding: 48px + title row-gap; title/copy rhythm stays intact. */
+ html[data-cyan-preview='ready'] .site-footer{grid-template-columns:1fr;gap:10px;margin-top:8px}
+ html[data-cyan-preview='ready'] .site-footer .kai-footer-copy,html[data-cyan-preview='ready'] .site-footer p:not(.kai-footer-copy){grid-column:1}
+}
+
+/* Halen: #kontakt + siste seksjon i én vask (samme gradient som #kontakt hadde i index.html), så fargen løper sømløst.
+   Siste seksjon er 100 svh med bare en stor «>»-vinkel vendt opp; hopper rett til heroen (top-arrow.js). */
+html[data-cyan-preview='ready'] .kai-tail{background:linear-gradient(110deg,var(--wash-a) 0%,var(--wash-b) 48%,var(--wash-c) 100%)}
+html[data-cyan-preview='ready'] .kai-tail>#kontakt{background:none}
+html[data-cyan-preview='ready'] .kai-tail>section:not(#topp){padding-inline:64px} /* speiler main>section i preview.css (#kontakt er ikke lenger direkte barn av main) */
+.kai-top{position:relative;z-index:3;min-height:100svh;display:grid;place-content:center;color:var(--ink)}
+.kai-top__link{display:block;width:clamp(160px,24vw,320px);padding:6%;color:var(--ink);transition:color .25s ease}
+.kai-top__link svg{display:block;width:100%;height:auto}
+.kai-top__link:hover,.kai-top__link:focus-visible{color:var(--accent)}
+.kai-top__link:focus-visible{outline:2px solid var(--accent);outline-offset:8px;border-radius:4px}
+@media(max-width:760px){.kai-top__link{width:clamp(120px,40vw,200px)}}
+@media(max-width:800px){html[data-cyan-preview='ready'] .kai-tail>section:not(#topp){padding-inline:44px}} /* samme brytepunkt som preview.css */
+@media(prefers-reduced-motion:reduce){.kai-top__link{transition:none}}
+/* Touch-mål ≥44px i toppstripen uten å endre den låste geometrien (Designer P2-4): usynlig treffflate på merket og knappene. */
+@media(max-width:800px){
+ .kai-header .kai-brand,.kai-prefs .kai-seg button,.kai-prefs .kai-seg--menu .kai-menu-toggle{position:relative}
+ .kai-header .kai-brand::before,.kai-prefs .kai-seg button::before,.kai-prefs .kai-seg--menu .kai-menu-toggle::before{content:'';position:absolute;inset:-4px 0}
+}
+
+/* Steg-linje i kapabilitetsseksjonen (CEO 2026-09-11): tre segmenter = tre kortgrupper. Fylte = passert,
+   det aktive fylles med scroll (--kai-step fra capability-scene). Skjult i statisk modus (mobil / redusert bevegelse),
+   der alle tolv kortene står samtidig. Tilgjengelig navn: UI.stepOf → «Steg 1 av 3». */
+.kai-capability-steps{display:none;margin:0;gap:8px}
+@media(min-width:801px) and (prefers-reduced-motion:no-preference){
+ /* Nederst i den festede seksjonen, sentrert under Kai: fri for figuren (som dekker midten fra intro til kort) og for kortene. */
+ .kai-capability-track:not([data-static]) .kai-capability-steps{display:flex;position:absolute;left:50%;bottom:48px;transform:translateX(-50%)}
+ .kai-capability-steps span{position:relative;display:block;width:40px;height:2px;background:var(--hairline);overflow:hidden}
+ .kai-capability-steps span::before{content:'';position:absolute;inset:0;background:var(--ink);transform-origin:left;transform:scaleX(0)}
+ .kai-capability-track[data-group='1'] .kai-capability-steps span:nth-child(1)::before,
+ .kai-capability-track[data-group='2'] .kai-capability-steps span:nth-child(-n+2)::before{transform:scaleX(1)}
+ .kai-capability-track[data-group='0'] .kai-capability-steps span:nth-child(1)::before,
+ .kai-capability-track[data-group='1'] .kai-capability-steps span:nth-child(2)::before,
+ .kai-capability-track[data-group='2'] .kai-capability-steps span:nth-child(3)::before{transform:scaleX(var(--kai-step,0))}
+}
+
+/* ============================================================
+   Mobil spacing-standard (CEO 2026-09-12, godkjent på flaten).
+   Etikett→tittel er ALLTID dobbelt av tittel→brødtekst. Forholdet står
+   som calc, ikke som to tall som kan skli fra hverandre: endrer du basen,
+   følger etikettgapet etter av seg selv.
+
+   --gap-title er husets token (index.html :root, 1.25rem). Den redefineres
+   her inne i mobilblokka, ikke ved siden av. Målt blast-radius, base mot
+   branch, hvert element: 28 elementer flytter seg ved 390px, 20 ved 770px,
+   alle tittel→avsnitt-par. Footeren står på 10px i begge og rører seg ikke.
+
+   Menyens kontakt-h2 gjør det derimot IKKE overalt. Den påstanden sto her og
+   var feil i båndet 761–800; se reset-blokka rett under mobilblokka. Desktop
+   over 800 er urørt.
+   ============================================================ */
+@media(max-width:800px){
+ :root{--gap-title:15px;--gap-label:calc(var(--gap-title)*2);--kort-pad:28px}
+
+ /* Begge korttypene er flex-kolonner med gap. Gapet ville lagt seg OPPÅ
+    etikettens margin og doblet avstanden — 24 + 30 = 54 der vi vil ha 30.
+    Derfor nulles det, og marginen eier hele gapet alene. */
+ .kai-capability-list li,
+ .has-kai-lights.has-first-conversation .workflow-card__head{gap:0}
+
+ /* Én universell etikettregel på klassene — ikke tre kortspesifikke.
+    .eyebrow på metodekortet får sin i stack-component.css, samme token. */
+ .kai-capability-list .t-eyebrow,
+ .has-first-conversation .conversation-label{margin:0 0 var(--gap-label)}
+
+ /* Tittel → brødtekst. Kapabilitetskortet har live ingen brødtekst under h3
+    (capability-scene.js bygger bare etikett + h3), så regelen står klar til
+    kortstrukturen kommer — den har ingenting å virke på ennå. */
+ .kai-capability-list h3{margin:0 0 var(--gap-title)}
+
+ /* Kortpadding, felles tall. */
+ .kai-capability-list li{padding:var(--kort-pad)}
+ .has-kai-lights.has-first-conversation .workflow-card__head{padding:var(--kort-pad) var(--kort-pad) 0}
+ .has-first-conversation .conversation-body{padding:var(--gap-title) var(--kort-pad) var(--kort-pad)}
+
+ /* Uten denne lyver CSS-en om synlig avstand: halv linjeavstand ligger i
+    toppen og bunnen av hver tekstboks, så «lik margin» målte 25px blekk på
+    ett kort og 24 på et annet. Chrome 133+/Safari 18.4+; eldre nettlesere
+    ignorerer den og får dagens oppførsel. */
+ .kai-capability-list .t-eyebrow,.kai-capability-list h3,
+ .has-first-conversation .conversation-label,
+ .has-first-conversation .conversation-body{text-box:trim-both cap alphabetic}
+}
+
+/* Menyoverlegget har sitt eget brytepunkt (760, :178-185), men --gap-title settes
+   til 15px i denne filas mobil-lane, som går til 800. Tokenet lakk derfor inn i
+   båndet 761-800 og ga menyen skrivebordsoppsett med mobilt tittelgap: målt 20px
+   -> 15px på .kai-full-menu__contact h2 ved 770 og 790, mens 16px-overstyringen
+   på :183 først slår inn ved 760. Nøyaktig samme klasse som #metode-lekkasjen i
+   stack-component.css — en komponent med egen grense, et token uten.
+   Skopet til overlegget alene, ikke til :root: alt annet i båndet er i mobil-lane
+   og skal beholde 15. Hver komponent følger sin egen grense, også i tokenet. */
+@media(min-width:761px) and (max-width:800px){
+ .kai-full-menu{--gap-title:1.25rem}
+}
+
+/* ============================================================
+   Mobilstokken i seksjon 2 (CEO 2026-09-12). Gjelder kun <=800px,
+   og kun når capability-scene.js har satt [data-deck]: uten JS står
+   de tolv kortene som den vanlige lista, med all tekst lesbar.
+   ============================================================ */
+
+/* Vannmerkets farge er CEO-valgt på den lyse flaten. Den er ikke blekk med
+   opasitet, men en egen farge, og trenger derfor et eget trinn i mørkt tema —
+   der er husets hårlinje det samme optiske trinnet. Tre tilstander, som resten
+   av flaten: bar :root, systemmørk uten eksplisitt lyst valg, eksplisitt mørk. */
+html{--deck-vann:#ccd6d8}
+@media(prefers-color-scheme:dark){html:not([data-theme='light']){--deck-vann:#313737}}
+html[data-theme='dark']{--deck-vann:#313737}
+
+/* Kortnummeret, figuren, telleren, bruksanvisningen og skinnen finnes i DOM-en på
+   alle bredder, men er stokkens deler. Skrivebordskortet er etikett + tittel, uendret. */
+.deck-index,.deck-fig,.deck-foot,.deck-hint,.deck-rail{display:none}
+
+@media(max-width:800px){
+ :root{
+  --gap-stabel-over:60px;  /* 180 bildepiksler ved 3× mobilskala */
+  --gap-stabel-under:30px; /* 90 bildepiksler ved 3× mobilskala */
+  --deck-peek:14px;    /* kortkanten bak fronten; speiles av [data-deck-pos] under */
+  /* Ulik korthøyde får stabelkanten til å hoppe ved hvert kast. Boksen låses derfor
+     til det HØYESTE kortet, og luften i midten varierer i stedet.
+     Målt naturlig høyde med kortets innhold slik det står nå — etikett, tittel,
+     teller; brødteksten hører til PR B2 — over båndet 320/390/430/800px:
+       320: 155–179   390: 156–180   430: 156–181   800: 159–185
+     Låsen ligger rett over det høyeste, med slakk til font-metrikk-drift. Den
+     godkjente høyden clamp(340px,42svh,368px) forutsetter brødteksten: uten den
+     står kortet med 200px død luft i midten. Når B2 lander teksten, settes
+     høyden tilbake dit — samme token, ett tall.
+     CEO-LÅST 2026-09-12: godkjent som målt. Erstatter clamp(340px,42svh,368px)
+     for stokken uten brødtekst. Endres ikke uten ny CEO-beslutning. */
+  --deck-h:clamp(320px,45svh,560px);
+  /* Stokken er designet og godkjent på telefonbredde. experience.css sin mobil-lane
+     går til 800px, så uten et tak ble kortet 693px bredt ved 770 — en flat stripe
+     med vannmerket strandet ute til høyre, ikke et kort. Taket er bredden på den
+     bredeste telefonen (430px): under 474px viewport biter det aldri, så alt som
+     er målt og godkjent på 320–430 står urørt. Båndet 601–800 får kortets egne
+     proporsjoner i stedet for seksjonens fulle bredde.
+     CEO-LÅST 2026-09-12. Endres ikke uten ny CEO-beslutning. */
+  --deck-w:430px;
+ }
+
+ .kai-capability-track[data-deck] .kai-capability-list{
+  display:block;position:relative;padding:0;list-style:none;height:var(--deck-h);max-width:var(--deck-w);
+  /* Luften måles mot kortkanten, aldri mot beholderen: UL-boksen slutter 14px
+     innenfor det øyet ser, fordi kortet bak stikker ut i begge ender. */
+  margin:calc(var(--gap-stabel-over) + var(--deck-peek)) 0 0;
+  /* Loddrett scroll tilhører siden, vannrett drag tilhører stokken. */
+  touch-action:pan-y;-webkit-user-select:none;user-select:none;
+ }
+ .kai-capability-track[data-deck] .kai-capability-list:focus-visible{outline:3px solid var(--accent);outline-offset:6px}
+
+ .kai-capability-track[data-deck] .kai-capability-list li{
+  position:absolute;inset:0 0 auto 0;height:var(--deck-h);min-height:0;
+  border-radius:14px;background:var(--surface);
+  box-shadow:0 1px 2px rgba(24,44,48,.05),0 12px 30px -18px rgba(24,44,48,.35);
+  justify-content:flex-start;   /* topp-stabelen er tett; bunnen hentes av auto-margin */
+  overflow:hidden;              /* lar vannmerket blø ut i kanten uten å sprenge radien */
+  -webkit-tap-highlight-color:transparent;
+  transform:translate3d(var(--deck-x,0px),var(--deck-y,0px),0) scaleX(var(--deck-s,1)) rotate(var(--deck-r,0deg));
+  transition:transform .38s cubic-bezier(.2,.8,.2,1);
+  will-change:transform;
+ }
+ .kai-capability-track[data-deck] .kai-capability-body{
+  display:block;
+  margin:0;
+  color:var(--muted);
+  font-size:var(--t-body);
+  line-height:1.5;
+  max-width:34ch;
+ }
+ /* Kikket bor i CSS, ikke i JS: ett token bærer både kortkanten og marginen over
+    stabelen, så de to kan ikke skli fra hverandre. JS setter bare posisjonen. */
+ .kai-capability-list li[data-deck-pos='0']{--deck-y:0px;--deck-s:1}
+ .kai-capability-list li[data-deck-pos='1']{--deck-y:calc(var(--deck-peek) * -1);--deck-s:.94}
+ .kai-capability-list li[data-deck-pos='2']{--deck-y:var(--deck-peek);--deck-s:.88}
+ .kai-capability-list li[data-deck-deep]{display:none}
+ /* Disse to MÅ bære [data-deck]-prefikset. Uten det er de (0,2,1) og taper mot
+    .kai-capability-track[data-deck] .kai-capability-list li (0,3,1) på :597, som
+    eier transform-transisjonen. Målt konsekvens av at de tapte: et 90px dra ga
+    kortet 0px etter 50ms og 74px etter 200ms — kortet hang etter fingeren — og
+    kastet hadde ingen synlig animasjon i det hele tatt: opacity var 0 alt 51ms
+    etter slipp, uten overgang. Reglene var skrevet riktig og trådte aldri i kraft.
+    Kildelinten som skulle vokte de 340 ms leste CSS-teksten og var grønn hele
+    veien; oppførselen måles nå i verify-kai-capabilities.mjs i stedet. */
+ .kai-capability-track[data-deck] .kai-capability-list li[data-deck-drag]{transition:none}
+ /* 340 ms = DECK_THROW_MS i capability-deck.mjs. */
+ .kai-capability-track[data-deck] .kai-capability-list li[data-deck-gone]{transition:transform .34s ease-in,opacity .34s ease-in;opacity:0}
+
+ /* Teksten ligger over vannmerket; bare figuren blir liggende i grunnlaget. */
+ .kai-capability-track[data-deck] .kai-capability-list li>*:not(.deck-fig){position:relative;z-index:1}
+ .kai-capability-track[data-deck] .deck-fig{
+  display:block;position:absolute;top:20px;right:var(--kort-pad);margin:0;
+  z-index:0;pointer-events:none;color:var(--deck-vann);
+ }
+ /* Ikke non-scaling her: streken skal vokse med merket. 1,1 brukerenheter ganger
+    skalaen (~3,6 på 390px) blir ~4px — tykkere enn ikonets hårstrek, og prikkene
+    beholder forholdet til streken. Linjebaserte figurer feiler som vannmerke:
+    frittstående vannrette streker leses som streker gjennom brødteksten. */
+ .kai-capability-track[data-deck] .deck-fig svg{display:block;height:auto;width:clamp(30px,9vw,34px)}
+ .kai-capability-track[data-deck] .deck-fig svg *{vector-effect:none}
+
+ .kai-capability-track[data-deck] .deck-index{display:inline}
+
+ /* Telleren er en merkelapp av samme slag som «01 / CRM», ikke brødtekst: hele
+    etikettens typografi. Og hele innerbredden — den er en linjal, ikke en
+    tekstspalte, så en ch-basert maksbredde ville krympet hårstreken med skriften. */
+ .kai-capability-track[data-deck] .deck-foot{
+  display:block;margin:auto 0 0;padding-top:var(--gap-title);
+  border-top:1px solid var(--hairline);
+  font-family:var(--font-mono);font-size:var(--t-label);font-weight:500;
+  letter-spacing:.1em;line-height:1.5;text-transform:uppercase;
+  color:var(--muted);max-width:none;
+ }
+
+ /* Bruksanvisning og skinne er ett ledd under stabelen: hva fingeren kan gjøre,
+    og hvor i stokken du er. Samme kikk-korreksjon som over stabelen. */
+ .kai-capability-track[data-deck] .deck-hint{
+  display:block;margin:calc(var(--gap-stabel-under) + var(--deck-peek)) 0 0;
+  font-size:var(--t-label);line-height:1.5;color:var(--muted);max-width:var(--deck-w);
+ }
+ .kai-capability-track[data-deck] .deck-rail{display:flex;gap:4px;margin:var(--gap-title) 0 0;max-width:var(--deck-w)}
+ .kai-capability-track[data-deck] .deck-rail span{flex:1 1 0;height:2px;background:var(--hairline);transition:background .25s ease}
+ .kai-capability-track[data-deck] .deck-rail span[data-seen]{background:var(--ink)}
+}
+
+@media(max-width:800px) and (prefers-reduced-motion:reduce){
+ /* Stokken beholdes — den er en interaksjon, ikke en animasjon. Bare kastet går. */
+ .kai-capability-track[data-deck] .kai-capability-list li{transition:none}
+}

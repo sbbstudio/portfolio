@@ -4,7 +4,7 @@
   const nav = document.querySelector('.nav');
   if (!nav) return;
   const destinations = [
-    ['Nyme', '/nyme.html'], ['Kaizen', '/kaizen.html'],
+    ['Nyme', '/work/nyme/'], ['Kaizen', '/work/kaizen/'],
     ['How I work', '/how-i-work.html'], ['Technical', '/build/']
   ];
   const links = (items) => items.map(([label, href]) => {

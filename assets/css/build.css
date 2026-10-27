@@ -35,7 +35,7 @@
 .approach-photo { grid-column: 3; grid-row: 2; z-index: 1; min-width: 0; min-height: 0; background: url("../opt/approach-mountain.webp") 50% 75% / cover no-repeat; }
 .approach-color { grid-column: 1 / 5; grid-row: 1 / 3; background: #888C8F; }
 .system-title { grid-column: 1 / 5; grid-row: 1; z-index: 1; color: #fff; text-align: left; align-self: start; }
-.system-title h2 { margin: 0; font-size: min(8vw, calc(var(--row) / 2.4)); font-weight: 500; line-height: 1; letter-spacing: -.04em; text-transform: uppercase; text-wrap: balance; }
+.system-title h2 { margin: 0; font-size: var(--t-xxl); /* CEO 10-27: samme trinn som NYME-statementet */ font-weight: 500; line-height: 1; letter-spacing: -.04em; text-transform: uppercase; text-wrap: balance; }
 .system-label { grid-column: 1; grid-row: 2; align-self: end; font-size: var(--t-meta); }
 .system-copy { grid-column: 1; grid-row: 2; display: flex; flex-direction: column; gap: var(--cell); text-align: left; align-self: stretch; }
 .system-copy.card__box { justify-content: space-between; }

@@ -3,7 +3,7 @@
 // photographs available without JavaScript and uses root-relative URLs on nested pages.
 import { readFile, writeFile } from 'node:fs/promises'
 const root = new URL('../', import.meta.url)
-const pages = ['grid-video.html', 'build/index.html', 'work/sitter/index.html', 'nyme.html', 'kaizen.html', 'how-i-work.html', 'contact.html', 'legal-casework.html']
+const pages = ['grid-video.html', 'build/index.html', 'work/sitter/index.html', 'work/nyme/index.html', 'work/kaizen/index.html', 'how-i-work.html', 'contact.html', 'legal-casework.html']
 const template = (await readFile(new URL('tools/templates/portfolio-footer.html', root), 'utf8')).trim()
 const pattern = /<!-- portfolio-footer:start -->[\s\S]*?<!-- portfolio-footer:end -->/g
 // Validate every insertion point before writing, so a missing marker cannot leave

@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NYME — Website design decisions | Rune Øverland</title>
+<meta name="description" content="My design decisions behind NYME’s website: explaining the application package, making the checks visible and showing who controls submission.">
+<link rel="icon" href="/favicon.ico?v=r1" sizes="16x16 32x32 48x48">
+<link rel="stylesheet" href="/assets/css/module-system.css">
+
+<link rel="stylesheet" href="/cta-system.css">
+<link rel="stylesheet" href="/nav-system.css?v=20261025-scroll-nav">
+<link rel="stylesheet" href="/assets/css/portfolio-footer.css">
+<script src="/assets/js/portfolio-footer.js" defer></script>
+</head>
+<body>
+<div class="page" id="top">
+
+<nav class="nav" data-variant="compact" aria-label="Main">
+  <div class="cell nav__name"><a href="/grid-video.html">Rune &Oslash;verland</a></div>
+  <div class="cell nav__links"><a href="/work/nyme/">Nyme</a><a href="/work/kaizen/">Kaizen</a><a href="/how-i-work.html">How I work</a></div>
+  <div class="cell nav__jumps" aria-label="Sections on this page"><a href="#intro" data-panel="0"><span>01</span>Start</a><a href="#story" data-panel="2"><span>03</span>Timing</a><a href="#story" data-panel="7"><span>08</span>Result</a></div>
+  <div class="cell nav__cta"><a href="/contact.html">Contact</a></div>
+</nav>
+
+<main id="hero">
+
+<!-- ══ PRELUDE — a glass over the module while the site loads in the window.
+     Same glass as the nav component. It clears when the frame is ready and
+     leaves on the first scroll. ══ -->
+<div class="prelude is-loading" id="prelude" data-glass="dark" role="dialog" aria-modal="true" aria-labelledby="nyme-title">
+  <button type="button" class="prelude__close" data-dismiss aria-label="Close and go to the page">×</button>
+  <div class="prelude__body">
+    <p class="label">Design process</p>
+    <h1 class="prelude__title" id="nyme-title"><span class="prelude__name">NYME</span><span class="prelude__sub">How I designed it.</span></h1>
+    <p class="prelude__lead">I designed and built NYME’s website to explain a job application service: what candidates receive, how the work is checked and who controls submission. Follow the site in the window, with my design decisions beside each section.</p>
+    <p class="prelude__status" aria-live="polite"><span class="prelude__state" data-loading>Loading nymestudio.no <span class="prelude__bar" aria-hidden="true"></span></span><span class="prelude__state" data-ready>nymestudio.no is running in the window.</span></p>
+  </div>
+</div>
+
+<!-- ══ PINNED WINDOW — one module that stays on screen for the whole read.
+     The site runs in cells 1–3/5–7. Cells 4 and 8 are a sequence of panels
+     driven by the page scroll: intro → problem → one panel per decision
+     (the window scrolls to the element it names) → result. ══ -->
+<section class="pin pin--live" id="story" style="--panels:1" aria-label="The design process">
+  <div class="mod step pin__stage">
+  <div class="mgrid" aria-hidden="true"><i style="--x:0%"><b></b></i><i style="--x:25%"><b></b></i><i style="--x:50%"><b></b></i><i style="--x:75%"><b></b></i><i style="--x:100%"><b></b></i></div>
+  <div class="cell step__window"><div class="window window--live window--notes" data-window="notes" style="--poster:url(/assets/opt/process/nyme-poster.jpg)">
+    <iframe src="/work/nyme/site/" title="nymestudio.no, as designed — October 2026"></iframe>
+  </div></div>
+
+  <!-- Section chooser in cell 4: one number per section of the site. It does not fade. -->
+  <nav class="cell pin__steps" aria-label="Sections"><button type="button" data-step="0" aria-current="step">1</button><button type="button" data-step="1">2</button><button type="button" data-step="2">3</button><button type="button" data-step="3">4</button><button type="button" data-step="4">5</button><button type="button" data-step="5">6</button><button type="button" data-step="6">7</button><button type="button" data-step="7">8</button></nav>
+
+  <article class="panel is-active" id="intro" data-target="[data-home-movement=role]">
+    <header class="cell step__head"><p class="label">Design process · 1 of 8</p><h1 class="step__title"><span class="step__name">NYME</span><span class="step__sub">How I designed it.</span></h1></header>
+    <div class="cell step__copy"><p>Product design, research and build. Solo, 2025–26.</p>
+    <dl class="think"><dt>Problem</dt><dd>I need to explain three application formats while making the service’s purpose clear.</dd><dt>Decision in this section</dt><dd>A promise about speed also needs to explain what the candidate receives. I lead with readiness for a new role and name the CV, letter and website beneath it.</dd></dl></div>
+  </article>
+  <article class="panel" data-target="[data-application-output-switcher]">
+    <header class="cell step__head"><p class="label">The package · 2 of 8</p><p class="step__num">02</p><h2>Give each format a job.</h2></header>
+    <div class="cell step__copy"><dl class="think"><dt>Starting point</dt><dd>I have three formats to explain within one application.</dd><dt>What I saw</dt><dd>The CV makes relevant experience easy to find. The letter explains the fit. The website gives the candidate’s proposed contribution more room.</dd><dt>Decision</dt><dd>I group them in one switcher, with a distinct purpose for each.</dd></dl></div>
+  </article>
+  <article class="panel" data-target="[data-home-movement=timing]">
+    <header class="cell step__head"><p class="label">Timing · 3 of 8</p><p class="step__num">03</p><h2>Explain when the work starts.</h2></header>
+    <div class="cell step__copy"><dl class="think"><dt>Starting point</dt><dd>I make readiness part of the opening promise.</dd><dt>What I saw</dt><dd>The headline makes a claim about speed; the page needs to explain its basis.</dd><dt>Decision</dt><dd>I place the timing section before the detailed process and show preparation alongside an example application timeline.</dd></dl></div>
+  </article>
+  <article class="panel" data-target="[data-home-movement=built]">
+    <header class="cell step__head"><p class="label">The example · 4 of 8</p><p class="step__num">04</p><h2>Let the reader inspect the work.</h2></header>
+    <div class="cell step__copy"><dl class="think"><dt>Starting point</dt><dd>I’m asking the reader to understand an application package.</dd><dt>What I saw</dt><dd>Describing the formats leaves their relationship abstract. A shared role gives the reader something concrete to examine.</dd><dt>Decision</dt><dd>I show a CV, letter and website for one role, clearly labelled as a fictional example.</dd></dl></div>
+  </article>
+  <article class="panel" data-target="[data-home-movement=process]">
+    <header class="cell step__head"><p class="label">The process · 5 of 8</p><p class="step__num">05</p><h2>Make the checks visible.</h2></header>
+    <div class="cell step__copy"><dl class="think"><dt>Starting point</dt><dd>I’m explaining the work behind the finished package.</dd><dt>What I saw</dt><dd>A polished example leaves questions about missing evidence, corrections and permission to send.</dd><dt>Decision</dt><dd>I show six steps from finding a role to recording the outcome, including the checks before submission.</dd></dl></div>
+  </article>
+  <article class="panel" data-target="[data-home-movement=modes]">
+    <header class="cell step__head"><p class="label">Submission · 6 of 8</p><p class="step__num">06</p><h2>Show who sends.</h2></header>
+    <div class="cell step__copy"><dl class="think"><dt>Starting point</dt><dd>I offer two ways to use the service.</dd><dt>What I saw</dt><dd>Preparing an application and submitting it are separate responsibilities. The difference needs to be explicit.</dd><dt>Decision</dt><dd>I distinguish candidate submission from an invitation-only service with a named sender and written permission.</dd></dl></div>
+  </article>
+  <article class="panel" data-target="[data-home-movement=trust-access]">
+    <header class="cell step__head"><p class="label">Access · 7 of 8</p><p class="step__num">07</p><h2>Finish with the candidate’s control.</h2></header>
+    <div class="cell step__copy"><dl class="think"><dt>Starting point</dt><dd>I’m closing a page about preparing applications on someone’s behalf.</dd><dt>What I saw</dt><dd>Requesting access and authorising a submission are separate decisions.</dd><dt>Decision</dt><dd>I end with limited access, approval boundaries and direct answers about what can be sent.</dd></dl></div>
+  </article>
+  <article class="panel is-last" data-target="main + footer">
+    <header class="cell step__head"><p class="label">Result · 8 of 8</p><p class="step__num">08</p><h2>The page shows the package, its checks and who controls submission.</h2></header>
+    <div class="cell step__copy"><dl class="think"><dt>Result</dt><dd>Next, I would test whether candidates can explain who sends in each service.</dd></dl>
+    <p class="cta"><a href="https://www.nymestudio.no" target="_blank" rel="noopener">Open nymestudio.no <span class="arrow" aria-hidden="true">→</span></a><br><a href="/contact.html">Contact <span class="arrow" aria-hidden="true">→</span></a></p></div>
+  </article>
+
+</div>
+</section>
+
+</main>
+
+<!-- portfolio-footer:start -->
+<footer class="portfolio-footer" id="footer" role="contentinfo" aria-label="Portfolio footer">
+  <div class="portfolio-footer__grid" aria-hidden="true"><i style="--x:0%;--y:0%"></i><i style="--x:0%;--y:50%"></i><i style="--x:0%;--y:100%"></i><i style="--x:25%;--y:0%"></i><i style="--x:25%;--y:50%"></i><i style="--x:25%;--y:100%"></i><i style="--x:50%;--y:0%"></i><i style="--x:50%;--y:50%"></i><i style="--x:50%;--y:100%"></i><i style="--x:75%;--y:0%"></i><i style="--x:75%;--y:50%"></i><i style="--x:75%;--y:100%"></i><i style="--x:100%;--y:0%"></i><i style="--x:100%;--y:50%"></i><i style="--x:100%;--y:100%"></i></div>
+  <img class="portfolio-footer__landscape" src="/assets/opt/intro-sunset-portrait.webp" alt="Rune on a beach at sunset." width="1333" height="2000" loading="lazy" decoding="async">
+  <div class="portfolio-footer__details">
+    <p class="portfolio-footer__name">Rune Øverland</p>
+    <nav class="portfolio-footer__links" aria-label="Footer">
+      <a href="/grid-video.html#approach">Approach</a><a href="/grid-video.html#work">Work</a>
+      <a href="/how-i-work.html">How I work</a><a href="/contact.html">Contact</a>
+    </nav>
+    <div class="portfolio-footer__contact"><a href="tel:+4741167940">+47 411 67 940</a><a href="mailto:rune@kaizenstudio.no">rune@kaizenstudio.no</a></div>
+  </div>
+  <div class="portfolio-footer__ticker" aria-hidden="true"><div class="portfolio-footer__track">
+    <span>ADS VIDEO DESIGN CODE AGENTS&nbsp;</span><span>ADS VIDEO DESIGN CODE AGENTS&nbsp;</span>
+  </div></div>
+  <img class="portfolio-footer__portrait" src="/assets/opt/footer-sunset-profile.webp" alt="Rune looking toward the sea at sunset." width="889" height="1334" loading="lazy" decoding="async">
+  <div class="portfolio-footer__end"><a class="portfolio-footer__top" href="#top">Back to top <span class="arrow">↑</span></a><span>© 2026</span></div>
+</footer>
+<!-- portfolio-footer:end -->
+
+</div>
+
+<script>
+/* Live window: render the site at --window-width and scale it to the cell. */
+(function () {
+  var W = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--window-width')) || 1440;
+  var wins = Array.prototype.slice.call(document.querySelectorAll('.window--live'));
+  if (!wins.length) return;
+  var fit = function (w) { w.style.setProperty('--scale', (w.clientWidth / W).toFixed(4)); };
+  wins.forEach(fit);
+  if (window.ResizeObserver) { var ro = new ResizeObserver(function (es) { es.forEach(function (e) { fit(e.target); }); }); wins.forEach(function (w) { ro.observe(w); }); }
+  else window.addEventListener('resize', function () { wins.forEach(fit); }, { passive: true });
+})();
+
+/* The framed site is the scroller, at 100%. One panel per section of the site:
+   the section whose top has passed the upper third of the window is the current one. */
+(function () {
+  var pin = document.querySelector('.pin'); if (!pin) return;
+  var frame = pin.querySelector('iframe');
+  var panels = Array.prototype.slice.call(pin.querySelectorAll('.panel'));
+  var steps = Array.prototype.slice.call(pin.querySelectorAll('[data-step]'));
+  var desktop = function () { return matchMedia('(min-width: 1024px)').matches; };
+  var doc = null, targets = [], current = -1;
+  var setPanel = function (i) {
+    if (i === current) return; current = i;
+    panels.forEach(function (p, k) { p.classList.toggle('is-active', k === i); });
+    steps.forEach(function (b, k) { if (k === i) b.setAttribute('aria-current', 'step'); else b.removeAttribute('aria-current'); });
+    targets.forEach(function (t, k) { if (t) t.classList.toggle('is-current', k === i); });
+  };
+  var render = function () {
+    if (!doc || !desktop()) return;
+    resolve();
+    var line = frame.contentWindow.innerHeight * 0.35, best = 0;
+    targets.forEach(function (t, k) { if (t && t.getBoundingClientRect().top <= line) best = k; });
+    if (frame.contentWindow.scrollY < 200) best = 0;
+      var w = frame.contentWindow, se = doc.scrollingElement || doc.documentElement; if (w.scrollY >= 200 && w.scrollY + w.innerHeight >= se.scrollHeight - 2) best = targets.length - 1; /* at the very bottom the Result panel wins */ /* the package card sits inside the hero */
+    setPanel(best);
+  };
+  var resolve = function () {
+    targets = panels.map(function (p, k) {
+      var t = targets[k] && targets[k].isConnected ? targets[k] : doc.querySelector(p.getAttribute('data-target'));
+      if (t && !t.hasAttribute('data-rn')) t.setAttribute('data-rn', String(k + 1).padStart(2, '0'));
+      return t;
+    });
+  };
+  var wire = function () {
+    var d = frame.contentDocument; if (doc || !d || !d.body || !d.querySelector('main')) return;
+    doc = d;
+    frame.parentNode.classList.add('is-loaded');
+    var css = d.createElement('style');
+    var hide = frame.getAttribute('data-hide'), extra = frame.getAttribute('data-css') || '';
+    css.textContent = (hide ? hide + '{display:none!important}' : '') + extra + 'html{scrollbar-width:none}::-webkit-scrollbar{display:none}main>section{min-height:100vh;box-sizing:border-box;display:flex;flex-direction:column;justify-content:center}[data-rn]{position:relative;outline:1px solid transparent;outline-offset:-1px}' +
+      '[data-rn]::before{content:attr(data-rn);position:absolute;top:0;left:0;z-index:50;font:500 20px/1 ui-sans-serif,-apple-system,"Helvetica Neue",Arial,sans-serif;color:#000;background:rgba(255,255,255,.64);backdrop-filter:blur(18px) saturate(110%);-webkit-backdrop-filter:blur(18px) saturate(110%);padding:10px 14px}' +
+      '[data-rn].is-current{outline-color:#000}@media (max-width:1023px){[data-rn]::before{display:none}}';
+    d.head.appendChild(css);
+    resolve();
+    var ticking = false;
+    frame.contentWindow.addEventListener('scroll', function () { if (ticking) return; ticking = true; requestAnimationFrame(function () { ticking = false; render(); }); }, { passive: true });
+    render();
+  };
+  var go = function (k) {
+    if (!desktop()) { panels[k].scrollIntoView({ behavior: 'smooth' }); return; }
+    var t = targets[k], w = frame.contentWindow; if (!t) return;
+    w.scrollTo({ top: k === 0 ? 0 : t.getBoundingClientRect().top + w.scrollY - w.innerHeight * 0.3, behavior: 'smooth' });
+  };
+  steps.forEach(function (b, k) { b.addEventListener('click', function () { go(k); }); });
+  document.querySelectorAll('[data-panel]').forEach(function (a) { a.addEventListener('click', function (e) { if (!desktop()) return; e.preventDefault(); go(+a.getAttribute('data-panel')); }); });
+  if (!desktop()) panels.forEach(function (p) { p.classList.add('is-active'); });
+  wire(); frame.addEventListener('load', wire);
+})();
+</script>
+<script>
+/* Prelude: the glass clears when the framed site has loaded (never before a
+   short beat, so the state is readable). It stays until the reader closes it. */
+(function () {
+  var pre = document.getElementById('prelude'), frame = document.querySelector('.pin iframe');
+  requestAnimationFrame(function () { requestAnimationFrame(function () { pre.classList.add('is-shown'); }); });
+  if (!pre || !frame) return;
+  var ready = false, left = false, t0 = Date.now();
+  document.documentElement.classList.add('has-prelude');
+  var setReady = function () {
+    if (ready) return; ready = true;
+    var wait = Math.max(0, 1400 - (Date.now() - t0));
+    setTimeout(function () { pre.classList.remove('is-loading'); pre.classList.add('is-ready'); }, wait);
+  };
+  var leave = function () {
+    if (left) return; left = true;
+    pre.classList.add('is-leaving');
+    document.documentElement.classList.remove('has-prelude');
+    var done = function () { if (pre.parentNode) pre.remove(); };
+    pre.addEventListener('transitionend', done, { once: true });
+    setTimeout(done, 1200);
+  };
+  var loaded = function () { try { return frame.contentDocument && frame.contentDocument.readyState === 'complete' && frame.contentDocument.querySelector('main'); } catch (e) { return true; } };
+  if (loaded()) setReady(); else frame.addEventListener('load', setReady);
+  setTimeout(setReady, 6000);
+  pre.querySelector('[data-dismiss]').addEventListener('click', leave);
+  window.addEventListener('keydown', function (e) { if (e.key === 'Escape') leave(); });
+})();
+</script>
+<script defer src="/assets/js/analytics.js"></script>
+<script defer src="/assets/js/portfolio-nav.js?v=20261025-scroll-nav"></script>
+</body>
+</html>

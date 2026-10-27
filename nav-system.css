@@ -138,3 +138,9 @@ body .nav[data-portfolio-nav].has-compact-menu:not(.is-menu-open) {
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
 }
+
+/* Wide screens: the root size grows with the viewport above 1440px, so every rem token follows.
+   16px at 1440, 20px at 2560. Loaded on every page, after the page's own CSS. */
+@media (min-width: 1441px) {
+  html { font-size: clamp(16px, calc(10.857px + .357vw), 20px); }
+}
