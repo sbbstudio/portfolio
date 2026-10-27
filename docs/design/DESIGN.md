@@ -27,7 +27,28 @@ Ved desktopbredde 1024–1279 px eller høyde under 761 px har hovedsidens modul
 
 Gridet eier seksjonslinjene; ikke legg ekstra border oppå. Desktoplinjene og mobilens `.mline` bruker `--line: rgba(255,255,255,.16)`. Nodene ligger over linjene, også ved ytterkantene. Mobilens vertikale rammelinjer er fortsatt hvit med .3 alfa.
 
-Celler har ingen radius. Naboceller har hver sin padding, ikke et ekstra grid-gap. `.cols` bruker på mobil gap 40 px og vertikal padding 72 px. Skjemaer, videokontroller og 3D-overlegg har egne avstander og skal ikke gjøres om til cellepadding.
+Celler har ingen radius. Naboceller har hver sin padding, ikke et ekstra grid-gap.
+
+### Rot-størrelse
+
+Under 1440 px: `clamp(13px, 100vw / 24.375, 18px)` per side. Fra 1441 px: `clamp(16px, 10.857px + .357vw, 20px)` i `nav-system.css`, altså 16 px ved 1440 og 20 px ved 2560, slik at alle rem-tokens vokser med skjermen. `--t-display` er 9.9vw uten tak.
+
+## Vertikal rytme i en celle
+
+Avstand sier hva som hører sammen. Fire trinn, alle avledet av `--cell`, og aldri like avstander mellom alt:
+
+| Token | Verdi | Brukes mellom |
+|---|---|---|
+| `--s-1` | 6 px | Etikett og tittelen den tilhører; lenke og avsnittet over |
+| `--s-2` | 20 px (`--cell`) | Elementer i samme blokk: tittel og ingress, avsnitt og avsnitt |
+| `--s-3` | 40 px (2 × `--cell`) | Blokker i samme celle: tekstblokk og faktaliste, tekst og statuslinje |
+| `--s-4` | 100 px (5 × `--cell`) | Dødrom: tekst og medie, tekst og neste seksjon i samme celle |
+
+Innenfor én celle skal minst to trinn være i bruk, ellers leses alt som én liste. Tokenene ligger i `assets/css/module-system.css`; forsidens 6 px lenkeavstand og 100 px dødrom er samme trinn. `.cols` bruker på mobil gap 40 px og vertikal padding 72 px. Skjemaer, videokontroller og 3D-overlegg har egne avstander og skal ikke gjøres om til cellepadding.
+
+## Glass
+
+Én oppskrift, to varianter, i `assets/css/module-system.css`: `[data-glass="dark"]` og `[data-glass="light"]`. Begge bruker nav-ens blur (`blur(18px) saturate(110%)`). Tinten er motsatt av teksten: mørkt glass (`rgba(0,0,0,.88)`) bærer hvit tekst, lyst glass (`rgba(255,255,255,.64)`) bærer svart. Velg varianten ut fra teksten som skal stå på den, ikke ut fra underlaget. `data-fade="top|bottom"` faser én kant ut over 80 px, slik at glasset slipper innholdet bak uten en hard linje. Ingen radius, ingen skygge, ingen kantlinje. Nav-komponentens eget glass (`nav-system.css`, hvit .18) er den eldre varianten og harmoniseres senere.
 
 ## Typografi
 
@@ -35,7 +56,7 @@ Systemfont: `ui-sans-serif, -apple-system, "Helvetica Neue", Arial, sans-serif`.
 
 | Token | Desktop |
 |---|---|
-| `--t-display` | `min(9.375rem, 9.9vw)` |
+| `--t-display` | `9.9vw` |
 | `--t-xxl` | `min(6.875rem, 7.3vw)` |
 | `--t-xl` | `5rem` |
 | `--t-h1` | `3.75rem` |
@@ -95,6 +116,26 @@ Technical (`/build/`) og Sitter (`/work/sitter/`) inngår i porteføljen, men ho
 Kjente harmoniseringsoppgaver: Technical bruker fast 16 px mobilpadding, Sitter beholder 10/20 px ramme/celle, flere undersider har egne nav-/footerkopier. Glassnav og de nye mediekortvariantene er avgrenset til hovedsiden; delte CTA-piler og fjerning av nav-dividere gjelder sider som laster de delte filene.
 
 Avklart videre: Technical er steget med 3D-modellen, ikke et prosjektkort eller en separat teknisk dokumentasjonsside. [FigJam-sitemap](https://www.figma.com/board/3mwhXw8SCggg33evk6Qjm2/Portefolio).
+
+## Vindu-modulen (`/work/nyme/`, `/work/kaizen/`)
+
+Én modul, `--box` høy, i `assets/css/module-system.css`. Rute 1–3/5–7 er ett vindu som kjører et speil av nymestudio.no (`work/nyme/site/`, samme opphav, Next.js-runtime hydrerer) i 100 %, uten skalering. Vinduet er scrolleren; porteføljesiden står. Rute 4 bærer etikett (`--t-meta`, 40 px over), seksjonsnummer (`--t-xl`), tittel (`--t-h3`, 20 px under) og en velger 1–N nederst (siste panel er Result og peker på nettstedets footer; det aktiveres når rammen står i bunnen); rute 8 bærer tankegangen som *Starting point → What I saw → Decision* (`.think`: etikett 6 px over linjen, 20 px mellom ledd). Én transformasjon per seksjon på nettstedet: seksjonen hvis topp har passert øvre tredjedel av vinduet er aktiv, og dens element får lys glasslapp (`data-rn`) i vinduet. Innkommende celler toner inn og løfter 12 px. Gridet over vinduet er fjernet; bare linjen mot kolonne 4 og linjen mellom rute 4 og 8 står. Mobil: tittelen fra rute 4 først, så vinduet i 4:5, så alle notater stablet, slik at nettstedets egen meny aldri ligger under hamburgerflisen; glasslappene i vinduet er skjult der, siden koblingen panel ↔ seksjon bare finnes på desktop. Et stillbilde av nettstedet (`--poster` på `.window`) ligger bak rammen til den er hydrert, så glasset har noe å gjøre uklart fra første tegning; `data-hide` og `data-css` på rammen skjuler nettstedets egne oppstartslag. Preluden foran er mørkt glass med NYME (`--t-xxl`), undertittel 6 px under, lukkes med kryss, og klarner når rammen er hydrert.
+
+## Ikke i dette designet
+
+Avvist av CEO. Står her så ingen må be om det to ganger. Et unntak må bes om, ikke antas.
+
+- **Egne streker.** Gridet eier linjene. Ingen hårlinje over lister, under titler, rundt kort eller som fremdriftsindikator. Trengs en linje, spør først.
+- **Like avstander mellom alt.** Vertikal rytme bruker minst to trinn i hver celle (se *Vertikal rytme i en celle*).
+- **Media som ikke fyller ruten.** Bilde, video og vindu går helt ut til gridlinjene, uten innrykk, hjørnemerker eller bildetekst under.
+- **Radius, skygge, kantlinje** på celler, glass, knapper og lapper.
+- **Gradienter og vignetter** på svart grunn. Grunnen er `#000`, ren.
+- **Bakgrunnsfarge bak navnet i nav.** Navnet står rett på flaten, og i kompakt nav er det skjult til menyen er åpen.
+- **Sentrert tekst i gridceller.** Tekst er venstrejustert og toppjustert med cellepadding. Preluden er unntaket: den er en dialog, ikke en celle.
+- **Interne navn, agentnavn og pipeline-diagrammer** på offentlige sider.
+- **Stockfoto** (håndtrykk og lignende).
+- **Stiplede `.fact-gap`-felt i produksjon.** De er utkastmarkører og skal være erstattet med sanne tall før merge.
+- **Egen lastelogikk som ikke er bundet til noe ekte.** En lasteskjerm venter på faktisk innlasting, ikke en timer.
 
 ## QA før levering
 

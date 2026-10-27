@@ -1,0 +1,210 @@
+/* Scoped version of the approved standalone scene. No styles leak into the hero. */
+#metode.has-kai-stack{display:block!important;padding:56px 0 48px!important;background:#f4f4f0;min-height:100vh}
+#metode.has-kai-stack .method-intro{margin:0 5%;padding:0;transform:none;text-align:center}
+#metode.has-kai-stack .method-intro h2{max-width:none;font-size:clamp(2.375rem,4.3vw,3.125rem);line-height:1.08;letter-spacing:-.05em}
+#metode.has-kai-stack .method-copy{margin:var(--gap-title) auto 0;width:90%;max-width:680px;padding:0;transform:none;text-align:center}
+#metode.has-kai-stack .method-copy p{font-size:1rem;line-height:1.6}
+.kai-scrub-track{position:relative}
+.kai-scrub-pin{position:relative;isolation:isolate}
+#metode.has-kai-stack .method-intro,#metode.has-kai-stack .method-copy{position:relative;z-index:0}
+.kai-scrub-pin .kai-stack{position:relative;z-index:2}
+.kai-scrub-hint{display:none;font:.6875rem/1.5 monospace;letter-spacing:.03em;color:#5d6a60;margin:8px 5% 0}
+#metode[data-scrub-enabled]{padding-top:0!important}
+#metode[data-scrub-enabled] .kai-scrub-track{height:calc(var(--kai-pin-height,100svh) + 360svh)}
+#metode[data-scrub-enabled] .kai-scrub-pin{position:sticky;min-height:100svh;padding:92px 0 24px}
+#metode[data-scrub-enabled] .kai-scrub-hint{display:block}
+#metode[data-scrub-enabled] .controls{display:none}
+#metode[data-scrub-enabled] .stage[data-ready]{height:clamp(550px,45vw,740px)}
+.kai-stack{--cyan:#83dcea;font-family:Arial,Helvetica,sans-serif;color:#29211f;max-width:1600px;margin:auto}
+.kai-stack *{box-sizing:border-box}
+.kai-stack a{color:inherit;text-underline-offset:.25em}
+.kai-stack :focus-visible,.kai-process :focus-visible{outline:3px solid #197785;outline-offset:6px}
+.kai-stack .eyebrow{font:.6875rem/1.5 monospace;letter-spacing:.12em;color:#56635b}
+.kai-stack .stage{position:relative;isolation:isolate;margin:10px 0 0;min-height:490px;overflow:clip;padding:60px 5%;display:flex;align-items:center;justify-content:center}
+.kai-stack .web-stack{background:#fff;border:1px solid #dce0d8;border-radius:18px;padding:40px;width:min(560px,100%);min-height:410px;box-shadow:0 16px 28px -25px #30463850;display:flex;flex-direction:column;user-select:text}
+.kai-stack .web-stack .eyebrow{margin:0 0 30px}
+.kai-stack .web-stack h3{margin:0 0 var(--gap-title);font-size:3.375rem;font-weight:500;letter-spacing:-.045em;line-height:1.05}
+.kai-stack .stack-copy{font-size:1.4375rem;line-height:1.55;margin:0;max-width:455px}
+.kai-stack .stack-bottom{margin-top:auto;padding-top:24px;border-top:1px solid #dce0d8;display:flex;justify-content:space-between;gap:14px;font-size:.9375rem}
+.kai-stack .stack-bottom>span{color:#657166}
+.kai-stack .stack-bottom a{white-space:nowrap}
+.kai-stack .stack-back,.kai-stack #grip-rail,.kai-stack #kai-view,.kai-stack #landing-slot{display:none}
+.kai-stack .stage[data-ready]{height:clamp(420px,calc(100svh - 360px),640px);min-height:calc(var(--card-height,454px) + 64px);padding:32px 5%;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(28px,3.34vw,48px);align-items:center}
+.kai-stack .stage[data-ready] #landing-slot{display:block;grid-column:1;grid-row:1;height:var(--card-height,454px);pointer-events:none}
+.kai-stack .stage[data-ready] .web-stack,.kai-stack .stage[data-ready] .stack-back{position:absolute;left:0;top:0;width:600px;height:454px;min-height:0;transform-origin:0 0;will-change:transform}
+.kai-stack .stage[data-ready] .web-stack{z-index:2;padding:42px;min-height:454px}
+.kai-stack .stage[data-ready] .stack-back{display:block;border-radius:18px;background:#c4d2c7;border:1px solid #aebfb2;z-index:0}
+.kai-stack .stage[data-ready] .back-one{background:#dae3da;z-index:1}
+.kai-stack .stage[data-ready] .back-three{background:#b4c9be;z-index:-1}
+.kai-stack .stage[data-ready][data-landed] .web-stack{position:relative;left:auto;top:auto;transform:none;will-change:auto;grid-column:1;grid-row:1}
+.kai-stack .stage[data-landed] .stack-back{visibility:hidden}
+.kai-stack .stage[data-ready] #kai-view{display:block;position:absolute;inset:0;z-index:4;pointer-events:none}
+.kai-stack .stage[data-ready] canvas{width:100%;height:100%;display:block;pointer-events:none}
+.kai-stack .stage[data-ready] #grip-rail{display:block;position:absolute;top:0;left:0;height:7px;border-radius:5px;background:var(--cyan);transform-origin:0 50%;z-index:3;pointer-events:none;box-shadow:0 0 8px #83dcea55}
+.kai-stack .controls{display:flex;align-items:center;gap:12px;padding:0 5%;margin:0}
+.kai-stack .controls button{background:transparent;border:1px solid #c5cdc2;border-radius:999px;font:inherit;font-size:.8125rem;min-height:44px;padding:10px 20px;cursor:pointer;white-space:nowrap;touch-action:manipulation}
+.kai-stack .controls button:hover:not(:disabled){background:#e4ebe2}
+.kai-stack .controls button:disabled{opacity:.45;cursor:default}
+.kai-stack [hidden]{display:none!important}
+.kai-stack .status{color:#6a7067;font-size:.75rem;line-height:1.6;margin:18px 5% 24px}
+.kai-stack:has(.stage[data-ready]) .status{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+.kai-process{margin:32px 5% 0;border-top:1px solid #c5cdc2;border-bottom:1px solid #c5cdc2;scroll-margin-top:90px}
+.kai-process summary{cursor:pointer;padding:22px 0;font-size:1rem;min-height:44px}
+#metode.has-kai-stack .kai-process .method-timeline{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:28px;margin:0;padding:20px 0 32px}
+#metode.has-kai-stack .kai-process .method-timeline:before{display:none}
+#metode.has-kai-stack .kai-process .method-step{opacity:1;transform:none;animation:none;padding:0}
+#metode.has-kai-stack .kai-process .method-step:before{display:none}
+#metode.has-kai-stack .kai-process .method-step h3{font-size:1.375rem;margin:16px 0 var(--gap-title)}
+#metode.has-kai-stack .kai-process .method-step p{font-size:.9375rem;line-height:1.6}
+html[data-kai-section-active] .cyan-agent{visibility:hidden}
+/* The pulled carrier stays identical to the approved HTML/Blender plane.
+   Its contents are four real cards; after landing, scroll advances the deck. */
+.kai-stack .web-stack.method-deck,
+.kai-stack .stage[data-ready] .web-stack.method-deck{padding:0;border:0;background:none;box-shadow:none;min-height:470px;overflow:visible;display:block}
+.method-deck .process-card{position:absolute;inset:0;display:flex;flex-direction:column;padding:42px;background:#fff;border:1px solid #dce0d8;border-radius:18px;box-shadow:0 16px 28px -25px #30463850;transform:translateY(calc(var(--depth,0)*12px)) scale(calc(1 - var(--depth,0)*.018));transform-origin:50% 100%;transition:transform .32s ease,background .32s ease}
+.method-deck .process-card[aria-hidden='true']{background:#e7ece6;pointer-events:none}
+.method-deck .process-card[aria-hidden='true']>*{visibility:hidden}
+.stage[data-ready]:not([data-landed]) .method-deck .process-card[aria-hidden='true']{visibility:hidden}
+.method-deck .stack-copy{font-size:clamp(1.25rem,1.7vw,1.5rem);line-height:1.5}
+.method-deck .stack-bottom{font:.75rem/1.5 monospace;letter-spacing:.12em;margin-bottom:0}
+.method-deck-progress{width:calc(45% - clamp(28px,3.34vw,48px)/2);height:3px;margin:14px 5% 12px;background:#d7dfd8;border-radius:3px;overflow:hidden}
+.method-deck-progress span{display:block;height:100%;background:#408c94;transform:scaleX(var(--progress,.25));transform-origin:left;transition:transform .25s ease}
+/* Height budget keeps the title inside the pin. Runtime still measures geometry. */
+@media(min-width:760px){
+ /* Denne fila har sitt eget brytepunkt (759), men --gap-title settes til 15px i
+    experience.css sin mobil-lane, som går til 800. Tokenet lakk derfor inn i båndet
+    760–800 og ga metodekortet skrivebordsoppsett med mobilt tittelgap: målt 20px
+    -> 15px på .web-stack h3 og .method-copy ved 770, mens .process-card beholdt
+    42px padding. En blandingstilstand ingen har designet, midt på iPad portrait (768).
+    Tilbakestillingen skopes til #metode alene, ikke til :root: kapabilitet- og
+    arbeidsflytkortene er i mobil-lane ved 770 og skal beholde 15. Hver komponent
+    følger dermed sin egen grense — også i tokenet, ikke bare i reglene. */
+ #metode{--gap-title:1.25rem}
+ #metode[data-scrub-enabled] .kai-scrub-pin{padding:82px 0 24px}
+ #metode[data-scrub-enabled] .method-intro h2{font-size:clamp(2rem,3.5vw,3rem);margin:0}
+ #metode[data-scrub-enabled] .method-copy{margin-top:var(--gap-title);max-width:800px}
+ #metode[data-scrub-enabled] .method-copy p{margin:0}
+ #metode[data-scrub-enabled] .stage[data-ready]{height:calc(100svh - 240px);min-height:calc(var(--card-height,400px) + 48px);padding-top:24px;padding-bottom:24px}
+ #metode[data-scrub-enabled] .web-stack.method-deck{min-height:clamp(340px,calc(100svh - 330px),470px)}
+ #metode[data-scrub-enabled] .process-card{padding:clamp(24px,3vh,36px)}
+ #metode[data-scrub-enabled] .web-stack .eyebrow{margin-bottom:20px}
+ #metode[data-scrub-enabled] .web-stack h3{font-size:clamp(2rem,4.5vh,3rem);margin-bottom:var(--gap-title)}
+ #metode[data-scrub-enabled] .stack-copy{font-size:clamp(1.125rem,2.4vh,1.4375rem)}
+ #metode[data-scrub-enabled] .kai-scrub-hint{display:none}
+}
+@media(prefers-reduced-motion:reduce){.method-deck-progress span{transition:none}}
+.kai-control-link{display:block;width:fit-content;margin:42px 5% 0;text-underline-offset:.25em}
+.method-deck[data-static]{display:grid!important;gap:20px;min-height:0!important}
+.method-deck[data-static] .process-card{position:relative;transform:none;min-height:320px}
+.method-deck[data-static] .process-card>*{visibility:visible}
+.kai-stack:has(.method-deck[data-static]) .method-deck-progress{display:none}
+.kai-stack:has(.method-deck[data-static]) #landing-slot,
+.kai-stack:has(.method-deck[data-static]) #grip-rail,
+.kai-stack:has(.method-deck[data-static]) .stack-back{display:none!important}
+@media(prefers-reduced-motion:reduce){
+ .method-deck .process-card{transition:none}
+ .kai-stack .stage[data-ready]{height:auto;display:block;padding:30px 5%}
+ .kai-stack .stage[data-ready] .web-stack.method-deck{position:relative;width:100%!important;height:auto!important;transform:none!important}
+ .kai-stack .stage[data-ready] #kai-view{display:none}
+}
+@media(max-width:759px){
+  #metode.has-kai-stack{padding-top:40px!important}
+  #metode.has-kai-stack .method-intro,#metode.has-kai-stack .method-copy{margin-left:22px;margin-right:22px}
+  #metode.has-kai-stack .method-copy{width:auto}
+  .kai-stack .stage,.kai-stack .stage[data-ready]{height:auto;min-height:0;padding:0 22px 32px;display:flex;flex-direction:column;margin-top:0;gap:0}
+  .kai-stack .stage[data-ready] #kai-view{position:relative;inset:auto;width:100%;height:260px;order:-1}
+  .kai-stack .stage[data-ready] .web-stack,.kai-stack .web-stack{position:relative;width:100%;height:auto;min-height:360px;transform:none!important;padding:28px;border-radius:14px}
+  .kai-stack .stage[data-ready] .stack-back,.kai-stack .stage[data-ready] #grip-rail,.kai-stack .stage[data-ready] #landing-slot{display:none}
+  .kai-stack .web-stack h3{font-size:2.5rem}
+  .kai-stack .web-stack .eyebrow{margin-bottom:24px}
+  .kai-stack .stack-copy{font-size:1.125rem}
+  .method-deck .process-card{padding:28px}
+  /* To stabler med luften imellom (CEO 2026-09-13). Kortet er en flex-kolonne, og
+     `.kai-stack .stack-bottom{margin-top:auto}` (:28) er ankeret som holder strek +
+     teller på kortets nederste linje. Et fast `margin-top:28px` her overkjørte det
+     ankeret på hele mobil-lanen: bunn-stabelen ble hengende rett under brødteksten,
+     og luften falt UNDER den i stedet for mellom de to stablene.
+     Målt på 390×844, .process-card (min-height 320, padding 28) før rettelsen:
+       kort 01  teller-bunn 246, død luft under 46px
+       kort 02  teller-bunn 222, død luft under 70px
+     Ulik luft per kort er selve tellingen: tallet er kortets resttekst, ikke et
+     designvalg. Med `auto` står telleren på 292 på begge, og luften havner i midten
+     der den varierer med tekstlengden — slik topp/bunn-komposisjonen er tegnet.
+     Målt som oppførsel i scripts/verify-kai-capabilities.mjs (metodeKortBunn), ikke
+     som kildetekst: en lint på denne fila ville vært grønn mens regelen tapte. */
+  .kai-stack .stack-bottom{margin-top:auto;flex-direction:column;font-size:.875rem;gap:16px}
+  .kai-stack .controls{display:none}
+  .kai-process{margin:0 22px}
+  #metode.has-kai-stack .kai-process .method-timeline{grid-template-columns:1fr;gap:24px}
+}
+
+/* Typografi-prøve (branch typo/syne-trial): se index.html :root */
+.kai-stack{font-family:var(--font-body)}
+#metode.has-kai-stack .method-intro h2,.kai-stack .web-stack h3,#metode.has-kai-stack .kai-process .method-step h3{font-family:var(--font-display);font-weight:var(--w-display);letter-spacing:var(--track-display)}
+.kai-scrub-hint,.kai-stack .eyebrow,.method-deck .stack-bottom{font-family:var(--font-mono)}
+.kai-stack .stack-copy,.method-deck .stack-copy,#metode[data-scrub-enabled] .stack-copy{font-size:var(--t-body);line-height:1.5}
+#metode.has-kai-stack .kai-process .method-step h3{font-size:var(--t-body);line-height:1.15}
+/* Tekstsystem: tokens fra index.html :root */
+#metode.has-kai-stack .method-intro h2,#metode[data-scrub-enabled] .method-intro h2{font-size:var(--t-h2);line-height:var(--lh-display)}
+.kai-stack .web-stack h3,#metode[data-scrub-enabled] .web-stack h3{font-size:var(--t-h3);line-height:var(--lh-display)}
+.kai-stack .stack-bottom,.kai-process summary,#metode.has-kai-stack .kai-process .method-step p,#metode.has-kai-stack .method-copy p{font-size:var(--t-body)}
+.kai-scrub-hint,.kai-stack .eyebrow,.method-deck .stack-bottom,.kai-stack .controls button,.kai-stack .status{font-size:var(--t-label)}
+
+/* Tekstklasser på metodekortene: eyebrow / h3 / lead / note-med-hårlinje */
+.kai-stack .eyebrow{font-family:var(--font-mono);font-size:var(--t-label);font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.method-deck .stack-copy,.kai-stack .stack-copy,#metode[data-scrub-enabled] .stack-copy{color:var(--ink);font-weight:500;font-size:var(--t-body);line-height:1.5}
+#metode.has-kai-stack .method-copy p{color:var(--ink);font-weight:500}
+.method-deck .stack-bottom,.kai-stack .stack-bottom{border-top:1px solid var(--hairline);padding-top:1.1em;font-family:var(--font-mono);font-size:var(--t-label);font-weight:400;letter-spacing:.03em;line-height:1.6;color:var(--muted)}
+.kai-scrub-hint,.kai-stack .status{font-family:var(--font-mono);font-size:var(--t-label);letter-spacing:.03em;color:var(--muted)}
+
+/* Tema: metodescenen via tokens (index.html :root). */
+#metode.has-kai-stack{background:var(--bg-kai)}
+.kai-stack{color:var(--ink)}
+.kai-stack .eyebrow{color:var(--muted)}
+.kai-stack .web-stack{background:var(--surface);border-color:var(--stack-border)}
+.kai-stack .stack-bottom{border-top-color:var(--stack-border)}
+.kai-stack .stack-bottom>span{color:var(--muted)}
+.kai-stack .stage[data-ready] .stack-back{background:var(--stack-back);border-color:var(--stack-border)}
+.kai-stack .stage[data-ready] .back-one{background:var(--stack-back-1)}
+.kai-stack .stage[data-ready] .back-three{background:var(--stack-back-3)}
+.kai-stack .controls button{border-color:var(--hairline);color:var(--ink)}
+.kai-stack .controls button:hover:not(:disabled){background:var(--surface-2)}
+.kai-stack .status{color:var(--muted)}
+.kai-process{border-color:var(--hairline)}
+.method-deck .process-card{background:var(--surface);border-color:var(--stack-border)}
+.method-deck .process-card[aria-hidden='true']{background:var(--deck-hidden)}
+.method-deck-progress{background:var(--progress-track)}
+.method-deck-progress span{background:var(--progress-fill)}
+
+/* ============================================================
+   Mobil spacing-standard (CEO 2026-09-12) for metodekortet.
+   Tokenene settes i experience.css sin 800px-blokk; her brukes de.
+   Brytepunktet er filas eget (759/760) — ikke 800 — slik at båndet
+   760–800px beholder skrivebordsoppsettet sitt uendret.
+   ============================================================ */
+@media(max-width:759px){
+ .kai-stack .web-stack .eyebrow{margin:0 0 var(--gap-label)}
+ .kai-stack .web-stack h3{margin:0 0 var(--gap-title)}
+ .method-deck .process-card{padding:var(--kort-pad)}
+
+ /* Telleren («01 — 04») er en etikett, ikke brødtekst: samme grad, vekt,
+    sperring, linjehøyde og versaler som etiketten øverst på kortet.
+    To feller, begge målt:
+    – padding-top var em-basert (1.1em) og fulgte skriftgraden, så luften
+      over hårstreken ble 17,6px på ett kort og 12,6px på et annet. Bundet
+      til --gap-title står den likt overalt.
+    – en ch-basert maksbredde på avsnitt i stokken følger også skriftgraden,
+      så da teksten krympet sluttet hårstreken midt på kortet. Telleren er
+      en linjal, ikke en tekstspalte — den skal ha hele innerbredden. */
+ .method-deck .stack-bottom,.kai-stack .stack-bottom{
+  padding-top:var(--gap-title);
+  font-weight:500;
+  letter-spacing:.1em;
+  line-height:1.5;
+  text-transform:uppercase;
+  max-width:none;
+ }
+
+ .kai-stack .web-stack .eyebrow,.kai-stack .web-stack h3,
+ .kai-stack .stack-copy,.method-deck .stack-copy{text-box:trim-both cap alphabetic}
+}

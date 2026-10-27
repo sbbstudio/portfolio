@@ -33,9 +33,9 @@ Pages:
 - `grid-video.html` — the rendered home page; shared visual rules live in `assets/css/`, `nav-system.css` and `cta-system.css`.
 - `how-i-work.html` — how I work.
 - `contact.html` — contact page.
-- `kaizen.html` — KAIZEN case.
+- `kaizen.html` — redirects to `/work/kaizen/`, kept so old links work.
 - `kaizen-ai.html` — KAIZEN AI case (Norwegian).
-- `nyme.html` — NYME case.
+- `nyme.html` — redirects to `/work/nyme/`, kept so old links work.
 - `legal-casework.html` — legal casework case.
 
 Styles and scripts:

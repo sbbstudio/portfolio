@@ -57,7 +57,7 @@ body { margin: 0; }
   /* ── TYPESKALA ─────────────────────────────────────────────
      CEOs skala, 1rem = 16px. Ingen font-size skrives fritt;
      alt plukkes herfra.                                       */
-  --t-display: min(9.375rem, 9.9vw); /* 150px / 1.0 — full skala-topp; vw-taket holder linjen ubrutt på smalere vinduer */
+  --t-display: 9.9vw; /* følger bredden hele veien; rem-taket på 150px stoppet veksten på brede skjermer */
   --t-xxl:     min(6.875rem, 7.3vw); /* 110px / 1.1 — samme trinn som how-i-work sec2-tittelen; vw-brems holder linjen ubrutt */
   --t-xl:      5rem;                 /*  80px / 1.1  */
   --t-h1:      3.75rem;              /*  60px / 1.1  */
@@ -499,7 +499,7 @@ body.ready .rl { opacity: 1; transform: none; }
    (nyme.html). Ny grid med heroens grammatikk: toppraden bærer
    grunnmerket i glass, alt tekstinnhold henger RETT UNDER
    midtstreken — samme system som Hero Section.                 */
-.card--nyme { background: #888C8F; }
+.card--nyme { background: #000; } /* CEO 10-27: prøver sort grunn; var #888C8F */
 .card--nyme::before { background: none; }
 .card--nyme::after { display: none; }
 /* Grunnmerket (rute 5) FJERNET fra forsiden (CEO 08-11) —
@@ -1641,8 +1641,8 @@ body.ready .rl { opacity: 1; transform: none; }
   <nav class="nav" aria-label="Main">
     <div class="cell nav__name"><a href="grid-video.html">Rune &Oslash;verland</a></div>
     <div class="cell nav__links">
-      <a href="nyme.html">Nyme</a>
-    <a href="kaizen.html">Kaizen</a>
+      <a href="/work/nyme/">Nyme</a>
+    <a href="/work/kaizen/">Kaizen</a>
       <a href="how-i-work.html">How I work</a>
     </div>
     <div class="cell nav__jumps" aria-label="Sections on this page">
@@ -1663,8 +1663,8 @@ body.ready .rl { opacity: 1; transform: none; }
   </div>
     <div class="cols">
       <div class="cell hero__display">
-        <h1 class="hero-roles" aria-label="UX Designer, Forward Deployment Engineer, Fullstack Engineer">
-          <span aria-hidden="true">UX Designer.</span>
+        <h1 class="hero-roles" aria-label="Product Designer, Forward Deployment Engineer, Fullstack Engineer">
+          <span aria-hidden="true">Product Designer.</span>
           <span aria-hidden="true">Forward Deployment Engineer.</span>
           <span aria-hidden="true">Fullstack Engineer.</span>
         </h1>
@@ -1763,7 +1763,7 @@ body.ready .rl { opacity: 1; transform: none; }
         <img src="assets/opt/nyme/placeholder-success.webp" alt="Placeholder: handshake over a laptop" loading="lazy" decoding="async" width="680" height="1020" />
       </div>
       <div class="cell nyme__cta iv" style="--d:240ms">
-        <a href="nyme.html">How NYME works&nbsp;<span class="arrow" aria-hidden="true">&rarr;</span></a>
+        <a href="work/nyme/">Design process&nbsp;<span class="arrow" aria-hidden="true">&rarr;</span></a>
       </div>
     </article>
 
@@ -1914,7 +1914,7 @@ body.ready .rl { opacity: 1; transform: none; }
         <p class="kz__sub captrim">The work still gets done.</p>
       </div>
       <div class="cell kz__cta iv" style="--d:240ms">
-        <a href="kaizen.html">How KAIZEN works&nbsp;<span class="arrow" aria-hidden="true">&rarr;</span></a>
+        <a href="work/kaizen/">Design process&nbsp;<span class="arrow" aria-hidden="true">&rarr;</span></a>
       </div>
       <div class="card__box iv" style="--d:120ms">
         <div class="card__lead">
