@@ -997,6 +997,7 @@ body.ready .rl { opacity: 1; transform: none; }
 .kai-toggle { position: absolute; top: var(--cell); right: var(--cell); z-index: 2; padding: 6px 0; color: var(--ink-2); background: none; border: 0; font: inherit; font-size: var(--t-meta); cursor: pointer; }
 .kai-toggle:hover { color: var(--ink); }
 .kai-toggle:focus-visible { outline: 1px solid currentColor; outline-offset: 6px; }
+.contact__cell { display: contents; }
 @media (max-width: 1023px) {
   #work-kzai { scroll-margin-top: calc(var(--cell) * 9); }
   .card--kzai.card--bleed .card__col { aspect-ratio: 1; }
@@ -1510,6 +1511,19 @@ body.ready .rl { opacity: 1; transform: none; }
   .card--kzai .card__box { order: 3; }
   .card--kzai .kz__cta { order: 4; padding-top: 0; }
   .card--jelsa .card__box { order: 10; }
+  /* CEO 10-28: tekstruter limes i topp og bunn som på desktop; midten puster.
+     Ruta er 4:5 som fotoruta, aldri høyere enn skjermen.                 */
+  .page { --mcell: min(calc(100vw * 5 / 4), 100svh); --mcta: calc(var(--cell) * 5 + 1.5rem); }
+  .card .card__box { justify-content: space-between; min-height: var(--mcell); }
+  .card--nyme .card__box, .card--kzai .card__box { min-height: calc(var(--mcell) - var(--mcta)); padding-bottom: 0; }
+  .card--nyme .nyme__cta, .card--kzai .kz__cta { padding-top: calc(var(--cell) * 2); padding-bottom: calc(var(--cell) * 3); }
+  .home-photo .hero .hero__aside.card__box { justify-content: space-between; min-height: calc(var(--mcell) - var(--mcta)); }
+  .card__note { display: flex; flex-direction: column; justify-content: space-between; min-height: var(--mcell); padding: calc(var(--cell) * 3) var(--cell); }
+  .contact .cols { justify-content: space-between; min-height: var(--mcell) !important; padding-top: calc(var(--cell) * 3); padding-bottom: calc(var(--cell) * 3); }
+  .contact__cell { display: flex; flex-direction: column; justify-content: flex-start; gap: calc(var(--cell) * 2); min-height: var(--mcell); padding: calc(var(--cell) * 3) 0; }
+  .contact__cta { margin-top: auto; }
+  .system-copy.card__box { display: flex; flex-direction: column; justify-content: space-between; min-height: calc(var(--mcell) - var(--mcta)); padding: calc(var(--cell) * 3) var(--cell) 0; }
+  .system-cta { padding: calc(var(--cell) * 2) var(--cell) calc(var(--cell) * 3); }
   .card--jelsa .jelsa-terreng, .card--jelsa .card__media { display: none; }
   .home-photo .card.card--sbb .card__box, .home-photo .card.card--jelsa .card__box { background: var(--ground); -webkit-backdrop-filter: none; backdrop-filter: none; }
   .card--kzai .kz__claim { padding: calc(var(--cell) * 3) var(--cell) calc(var(--cell) * 2); }
@@ -1981,6 +1995,7 @@ body.ready .rl { opacity: 1; transform: none; }
     <i class="mline" aria-hidden="true"></i>
     <div class="contact-bg" aria-hidden="true"></div>
     <div class="cols">
+      <div class="contact__cell">
       <div class="cell contact__h">
         <h2 class="split">I built the system alone. The next step is together.</h2>
       </div>
@@ -1989,6 +2004,7 @@ body.ready .rl { opacity: 1; transform: none; }
       <div class="cell contact__lede"><p>A way of working proves its value when it works for more than one person. The system is built. What it becomes next depends on the people I build it with.</p></div>
 
       <div class="cell contact__cta"><a href="contact.html">Contact <span class="arrow">→</span></a></div>
+      </div>
 
 <!-- portfolio-footer:start -->
 <footer class="portfolio-footer" id="footer" role="contentinfo" aria-label="Portfolio footer">

@@ -6,6 +6,7 @@ All notable changes to runeoverland.no are recorded here. The format follows [Ke
 
 ### Added
 
+- Mobile text cells glue to top and bottom like desktop: 4:5 minimum height, space between, 3 cells over and under. Applies to the hero, the card boxes, the system box, the contact cell and the How I work statement modules.
 - Mobile QA pass: NYME and KAIZEN statements at h1; SBB and Jelsa text boxes flat on black, Jelsa terrain off; home cards read statement, media, text box, CTA; SBB controls in one row under the film; Jelsa wall above its text box; contact CTA without its own line; How I work statement modules and the Contact title left-aligned.
 - Mobile hero on the home page: cells 1 and 2 stacked. The photo runs to the frame with the title in it; the statement, list and CTA sit on black ground below, with the module line between. The glass box is gone on mobile.
 - Mobile on the home page: the cards drop their side padding, so photos, video and the Jelsa glass run to the frame while the text blocks keep the cell padding. DESIGN.md has a mobile section.
