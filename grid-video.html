@@ -1434,11 +1434,13 @@ body.ready .rl { opacity: 1; transform: none; }
   .card {
     display: flex; flex-direction: column; gap: var(--cell);
     height: auto; min-height: 0;
-    padding: calc(var(--cell) * 3) var(--cell);
+    padding: calc(var(--cell) * 3) 0;
     overflow: visible;
   }
+  /* Media runs to the frame; only the text blocks carry the cell padding (DESIGN.md, Mobil). */
   .card__box { position: relative; }
-  .card__note { padding: var(--cell) 0 0; }
+  .card__note, .card--nyme .nyme__statement, .card--nyme .nyme__cta, .card--kzai .kz__cta { padding-left: var(--cell); padding-right: var(--cell); }
+  .card__note { padding: var(--cell) var(--cell) 0; }
   .card--nyme .nyme__cta { text-align: left; }
   .card--nyme .nyme__cta a { margin-left: 0; }
   .card--kzai .kz__cta { text-align: left; }
@@ -1463,7 +1465,7 @@ body.ready .rl { opacity: 1; transform: none; }
 
   /* Jelsa-veggen: hover finnes ikke på mobil — sidene VISES,
      to og to.                                                  */
-  .card--jelsa { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--cell); }
+  .card--jelsa { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0; }
   .card--jelsa .card__box { grid-column: 1 / -1; grid-row: auto; }
   .card--jelsa .jelsa-cell { grid-column: auto; grid-row: auto; aspect-ratio: 4 / 5; }
   .jelsa-cell img { opacity: 1; }
