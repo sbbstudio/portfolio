@@ -6,6 +6,7 @@ All notable changes to runeoverland.no are recorded here. The format follows [Ke
 
 ### Added
 
+- Mobile hero on the home page: cells 1 and 2 stacked. The photo runs to the frame with the title in it; the statement, list and CTA sit on black ground below, with the module line between. The glass box is gone on mobile.
 - Mobile on the home page: the cards drop their side padding, so photos, video and the Jelsa glass run to the frame while the text blocks keep the cell padding. DESIGN.md has a mobile section.
 - Mobile on the design-process pages: the window shows a still of the site's own mobile layout instead of the live frame (the frame loads from 1024px only), no prelude, and the sections stack with the grid's own rhythm.
 - Finished copy on both design-process pages (starting point, what I saw, decision per section, plus a Result panel at the end), written with the copywriter; no placeholders remain. On mobile the title comes before the window and all notes stack below it.
