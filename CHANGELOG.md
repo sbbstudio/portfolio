@@ -6,6 +6,7 @@ All notable changes to runeoverland.no are recorded here. The format follows [Ke
 
 ### Added
 
+- Mobile on the design-process pages: the window shows a still of the site's own mobile layout instead of the live frame (the frame loads from 1024px only), no prelude, and the sections stack with the grid's own rhythm.
 - Finished copy on both design-process pages (starting point, what I saw, decision per section, plus a Result panel at the end), written with the copywriter; no placeholders remain. On mobile the title comes before the window and all notes stack below it.
 - The design-process page at `/work/kaizen/`, built from the same window module: kaizenstudio.no runs in the window with one note per section. `nyme.html` and `kaizen.html` now redirect to `/work/nyme/` and `/work/kaizen/`, the Nyme and Kaizen links in the navigation point there, and the home page cards link to the design-process pages instead of "How NYME works" and "How KAIZEN works".
 - The design-process page at `/work/nyme/`: nymestudio.no runs in the window as a same-origin mirror, and the right column shows one note per section of the site (first draft, what I saw, decision). A dark-glass prelude with the title opens the page. Shared tokens for vertical rhythm (`--s-1`…`--s-4`) and glass (`data-glass`) in `assets/css/module-system.css`; DESIGN.md gains *Vertikal rytme*, *Glass*, *Vindu-modulen* and *Ikke i dette designet*. Decision 0005.

@@ -46,8 +46,8 @@
 <section class="pin pin--live pin--credits" id="story" style="--panels:1" aria-label="The design process">
   <div class="mod step pin__stage">
   <div class="mgrid" aria-hidden="true"><i style="--x:0%"><b></b></i><i style="--x:25%"><b></b></i><i style="--x:50%"><b></b></i><i style="--x:75%"><b></b></i><i style="--x:100%"><b></b></i></div>
-  <div class="cell step__window"><div class="window window--live window--notes" data-window="notes" style="--poster:url(/assets/opt/process/nyme-poster.jpg)">
-    <iframe src="/work/nyme/site/" title="nymestudio.no, as designed — October 2026"></iframe>
+  <div class="cell step__window"><div class="window window--live window--notes" data-window="notes" style="--poster:url(/assets/opt/process/nyme-poster.jpg);--poster-m:url(/assets/opt/process/nyme-poster-m.jpg)">
+    <iframe data-src="/work/nyme/site/" title="nymestudio.no, as designed — October 2026"></iframe>
   <div class="pin__navigation" data-glass="dark">
     <nav class="pin__steps" aria-label="Sections"><button type="button" data-step="0" aria-current="step">1</button><button type="button" data-step="1">2</button><button type="button" data-step="2">3</button><button type="button" data-step="3">4</button><button type="button" data-step="4">5</button><button type="button" data-step="5">6</button><button type="button" data-step="6">7</button><button type="button" data-step="7">8</button></nav>
   </div>
@@ -125,6 +125,19 @@
 <!-- portfolio-footer:end -->
 
 </div>
+
+<script>
+/* Mobile reads the still behind the window: the live frame loads from 1024px only,
+   so iOS cannot stretch it to the site's height and the page stays light. The
+   prelude belongs to the loading frame, so it goes with it. */
+(function () {
+  var f = document.querySelector('.pin iframe'); if (!f) return;
+  var mq = matchMedia('(min-width: 1024px)');
+  var load = function () { if (!f.src) f.src = f.getAttribute('data-src'); };
+  if (mq.matches) load();
+  else { var p = document.getElementById('prelude'); if (p) p.remove(); mq.addEventListener('change', function (e) { if (e.matches) load(); }); }
+})();
+</script>
 
 <script>
 /* Live window: render the site at --window-width and scale it to the cell. */
@@ -219,8 +232,8 @@
    short beat, so the state is readable). It stays until the reader closes it. */
 (function () {
   var pre = document.getElementById('prelude'), frame = document.querySelector('.pin iframe');
-  requestAnimationFrame(function () { requestAnimationFrame(function () { pre.classList.add('is-shown'); }); });
   if (!pre || !frame) return;
+  requestAnimationFrame(function () { requestAnimationFrame(function () { pre.classList.add('is-shown'); }); });
   var ready = false, left = false, t0 = Date.now();
   document.documentElement.classList.add('has-prelude');
   var setReady = function () {
