@@ -520,7 +520,10 @@ body.ready .rl { opacity: 1; transform: none; }
 .card--nyme .card__link { margin-top: 6px; border-bottom: none; padding-bottom: 0; }
 .card--kzai .card__body { margin-top: auto; color: var(--ink); }
 .card--kzai .card__link { margin-top: 6px; border-bottom: none; padding-bottom: 0; }
-/* CEO 08-12: placeholder-bildet tilbake — KUN i rute 7. */
+/* The approved NYME photograph fills its grid cell. */
+/* Desktop keeps its separate case CTA; mobile groups both actions inside the card. */
+.card__actions { display: contents; }
+.card__actions .card__process-link, .card__mobile-label { display: none; }
 .card--nyme .nyme__ph {
   grid-column: 3 / 4; grid-row: 2 / 3;
   position: relative;
@@ -530,6 +533,7 @@ body.ready .rl { opacity: 1; transform: none; }
   position: absolute; inset: 0;
   width: 100%; height: 100%;
   object-fit: cover;
+  object-position: center;
 }
 /* CEO 08-12: CTA til undersiden — rute 8, topp/høyre. */
 .card--nyme .nyme__cta {
@@ -1434,9 +1438,9 @@ body.ready .rl { opacity: 1; transform: none; }
      geometri; på mobil stables modulen: media i rutens
      proporsjon, kortboksen under.                              */
   .card {
-    display: flex; flex-direction: column; gap: var(--cell);
+    display: flex; flex-direction: column; gap: 0;
     height: auto; min-height: 0;
-    padding: calc(var(--cell) * 3) 0;
+    padding: 0;
     overflow: visible;
   }
   /* Media runs to the frame; only the text blocks carry the cell padding (DESIGN.md, Mobil). */
@@ -1455,13 +1459,18 @@ body.ready .rl { opacity: 1; transform: none; }
     padding-bottom: calc(var(--cell) * 2);
   }
   .hero__cta { margin-top: auto; }
-  .card--nyme .nyme__ph img { position: static; height: auto; }
+  .card--nyme .nyme__ph img { display: block; position: static; height: 100%; }
   /* Stablet statement på mobil: APPLICATION, i flyt rett etter
      THE (ikke absolutt mot 50 %-linja som på desktop), og hele
      setningen på 6.4vw så nowrap-linjene bor i flaten.        */
-  .card--nyme .nyme__statement p { font-size: var(--t-h1); line-height: 1.05; white-space: normal; }
-  .card--nyme .nyme__statement { padding-top: calc(var(--cell) * 3); padding-bottom: calc(var(--cell) * 2); }
-  .card--nyme .nyme__statement-lead { gap: .5ch; }
+  .card--nyme .nyme__statement { --t-xxl: min(3.75rem, 13.8vw); }
+  .card--nyme .nyme__statement p { font-size: var(--t-xxl); line-height: 1.05; white-space: normal; overflow-wrap: normal; }
+  .card--nyme .nyme__statement { height: 50svh; flex: none; justify-content: flex-end; padding: var(--cell); }
+  /* The statement and image form one screen; the product card owns the next. */
+  .card.card--nyme { gap: 0; padding: 0; }
+  .card--nyme .nyme__ph { height: 50svh; flex: none; }
+  .card--nyme .nyme__ph img { height: 100%; }
+  .card--nyme .nyme__statement-lead { flex-wrap: wrap; gap: 0 .5ch; }
   .card--nyme .nyme__statement-lead span:last-child { position: static; font-size: inherit; }
   /* CEO 08-16 (4): venstre på mobil — senter er desktop-geometri. */
   .card--nyme .nyme__statement-rest { text-align: left; }
@@ -1470,7 +1479,7 @@ body.ready .rl { opacity: 1; transform: none; }
      to og to.                                                  */
   .card--jelsa { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0; }
   .card--jelsa .card__box { grid-column: 1 / -1; grid-row: auto; }
-  .card--jelsa .jelsa-cell { grid-column: auto; grid-row: auto; aspect-ratio: 4 / 5; }
+  .card--jelsa .jelsa-cell { grid-column: auto; grid-row: auto; aspect-ratio: auto; height: 25svh; }
   .jelsa-cell img { opacity: 1; }
   /* CEO 08-16 (4): tre av artiklene skjult på mobil — desktop-
      rad 2 (--sr:2) ut, veggen blir ren 2×2.                    */
@@ -1506,35 +1515,47 @@ body.ready .rl { opacity: 1; transform: none; }
   .card--nyme .nyme__ph { order: 2; }
   .card--nyme .card__box { order: 3; }
   .card--nyme .nyme__cta { order: 4; padding-top: 0; }
-  .card--kzai .card__col { order: 1; }
-  .card--kzai .kz__claim { order: 2; }
+  .card--kzai .card__col { order: 2; height: 50svh; aspect-ratio: auto; max-height: none; flex: none; }
+  .card--kzai .kz__claim { order: 1; }
   .card--kzai .card__box { order: 3; }
   .card--kzai .kz__cta { order: 4; padding-top: 0; }
   .card--jelsa .card__box { order: 10; }
   /* CEO 10-28: tekstruter limes i topp og bunn som på desktop; midten puster.
      Ruta er 4:5 som fotoruta, aldri høyere enn skjermen.                 */
   .page { --mcell: min(calc(100vw * 5 / 4), 100svh); --mcta: calc(var(--cell) * 5 + 1.5rem); }
-  .card .card__box { justify-content: space-between; min-height: var(--mcell); }
-  .card--nyme .card__box, .card--kzai .card__box { min-height: calc(var(--mcell) - var(--mcta)); padding-bottom: 0; }
-  .card--nyme .nyme__cta, .card--kzai .kz__cta { padding-top: calc(var(--cell) * 2); padding-bottom: calc(var(--cell) * 3); }
+  .card .card__box { justify-content: space-between; min-height: 50svh; padding: var(--cell); gap: 0; }
+  .card .card__id { min-width: 0; }
+  .card .card__id h3 { font-size: var(--t-h1); overflow-wrap: anywhere; }
+  .card .card__facts { margin-top: auto; padding-top: var(--cell); }
+  /* Auto margin keeps body and link together; only the space above this group expands. */
+  .card--nyme .card__box { min-height: 50svh; padding: var(--cell); gap: 0; }
+  .card--nyme .card__id h3 { font-size: var(--t-h1); }
+  .card .card__actions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); margin-top: 6px; }
+  .card .card__actions .card__link { display: flex; align-items: center; min-height: 44px; margin: 0; padding: 0; }
+  .card .card__actions .card__link:last-child { justify-content: flex-end; }
+  .card__actions .card__desktop-label, .card--nyme .nyme__cta, .card--kzai .kz__cta { display: none; }
+  .card__actions .card__mobile-label { display: inline; }
+  .card--nyme .card__body { padding-top: var(--cell); }
+  .card--kzai .card__body { padding-top: var(--cell); }
+  .card--nyme .nyme__cta, .card--kzai .kz__cta { padding-top: var(--cell); padding-bottom: var(--cell); }
   .home-photo .hero .hero__aside.card__box { justify-content: space-between; min-height: calc(var(--mcell) - var(--mcta)); }
-  .card__note { display: flex; flex-direction: column; justify-content: space-between; min-height: var(--mcell); padding: calc(var(--cell) * 3) var(--cell); }
-  .contact .cols { justify-content: space-between; min-height: var(--mcell) !important; padding-top: calc(var(--cell) * 3); padding-bottom: calc(var(--cell) * 3); }
-  .contact__cell { display: flex; flex-direction: column; justify-content: flex-start; gap: calc(var(--cell) * 2); min-height: var(--mcell); padding: calc(var(--cell) * 3) 0; }
+  .card__note { display: flex; flex-direction: column; justify-content: space-between; min-height: var(--mcell); padding: var(--cell); }
+  .contact .cols { justify-content: space-between; min-height: var(--mcell) !important; padding-top: var(--cell); padding-bottom: var(--cell); }
+  .contact__cell { display: flex; flex-direction: column; justify-content: flex-start; gap: calc(var(--cell) * 2); min-height: var(--mcell); padding: var(--cell) 0; }
   .contact__cta { margin-top: auto; }
-  .system-copy.card__box { display: flex; flex-direction: column; justify-content: space-between; min-height: calc(var(--mcell) - var(--mcta)); padding: calc(var(--cell) * 3) var(--cell) 0; }
-  .system-cta { padding: calc(var(--cell) * 2) var(--cell) calc(var(--cell) * 3); }
+  .system-copy.card__box { display: flex; flex-direction: column; justify-content: space-between; min-height: calc(50svh - 44px - 2 * var(--cell)); padding: var(--cell); }
+  .system-cta { padding: var(--cell); }
   .card--jelsa .jelsa-terreng, .card--jelsa .card__media { display: none; }
   .home-photo .card.card--sbb .card__box, .home-photo .card.card--jelsa .card__box { background: var(--ground); -webkit-backdrop-filter: none; backdrop-filter: none; }
-  .card--kzai .kz__claim { padding: calc(var(--cell) * 3) var(--cell) calc(var(--cell) * 2); }
-  .card--kzai .kz__claim p { font-size: var(--t-h1); line-height: 1.05; }
+  .card--kzai .kz__claim { padding: var(--cell); height: 50svh; display: flex; flex-direction: column; justify-content: flex-end; flex: none; --t-xxl: 3.75rem; }
+  .card--kzai .kz__claim p { font-size: var(--t-xxl); line-height: 1.05; }
   .card--kzai .kz__claim .kz__sub { font-size: var(--t-h3); }
 
   /* SBB on mobile: the film fills the width in 9:16; the controls
      stand in one row under it, transport left and counter right. */
   .card--sbb .sbb__stage { display: grid; grid-template-columns: minmax(0, 1fr); grid-template-rows: auto auto; aspect-ratio: auto; }
   .card--sbb .card__col.is-selected-slot,
-  .card--sbb .sbb__still { grid-column: 1; grid-row: 1; width: 100%; aspect-ratio: 9 / 16; max-height: none; }
+  .card--sbb .sbb__still { grid-column: 1; grid-row: 1; width: 100%; height: 50svh; aspect-ratio: auto; max-height: none; }
   .card--sbb .sbb__still { position: relative; z-index: 2; }
   .card--sbb .card__col--ad video { object-fit: cover; }
   .card--sbb .sbb__controls {
@@ -1809,10 +1830,13 @@ body.ready .rl { opacity: 1; transform: none; }
           <p class="card__say">It finds the job, writes the application, builds the site.</p>
         </div>
         <p class="card__body">Every application is built for a single role: the company researched, its needs framed as hypotheses, not facts &mdash; then a tailored CV, a cover letter and a dedicated website that carries the whole argument. No mass sending, no invented experience. You keep the final decision.</p>
-        <a class="card__link" href="https://nymestudio.no" target="_blank" rel="noopener">nymestudio.no&nbsp;<span class="arrow" aria-hidden="true">&rarr;</span></a>
+        <div class="card__actions">
+          <a class="card__link card__process-link" href="work/nyme/">Design process&nbsp;<span class="arrow" aria-hidden="true">→</span></a>
+          <a class="card__link" href="https://nymestudio.no" target="_blank" rel="noopener"><span class="card__desktop-label">nymestudio.no →</span><span class="card__mobile-label">Visit NYME ↗</span></a>
+        </div>
       </div>
       <div class="nyme__ph iv" style="--d:180ms">
-        <img src="assets/opt/nyme/placeholder-success.webp" alt="Placeholder: handshake over a laptop" loading="lazy" decoding="async" width="680" height="1020" />
+        <img src="assets/opt/nyme/placeholder-success.webp" alt="Two people shaking hands across a laptop." loading="lazy" decoding="async" width="680" height="1020" />
       </div>
       <div class="cell nyme__cta iv" style="--d:240ms">
         <a href="work/nyme/">Design process&nbsp;<span class="arrow" aria-hidden="true">&rarr;</span></a>
@@ -1980,7 +2004,10 @@ body.ready .rl { opacity: 1; transform: none; }
           <p class="card__say">We build systems that do the routine work for you.</p>
         </div>
         <p class="card__body">New systems or existing tools. Routine work runs automatically, while you make the decisions that matter.</p>
-        <a class="card__link" href="https://kaizenstudio.no" target="_blank" rel="noopener">kaizenstudio.no&nbsp;<span class="arrow" aria-hidden="true">&rarr;</span></a>
+        <div class="card__actions">
+          <a class="card__link card__process-link" href="work/kaizen/">Design process&nbsp;<span class="arrow" aria-hidden="true">→</span></a>
+          <a class="card__link" href="https://kaizenstudio.no" target="_blank" rel="noopener"><span class="card__desktop-label">kaizenstudio.no →</span><span class="card__mobile-label">Visit KAIZEN ↗</span></a>
+        </div>
       </div>
     </article>
 
