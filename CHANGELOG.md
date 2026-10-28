@@ -6,6 +6,7 @@ All notable changes to runeoverland.no are recorded here. The format follows [Ke
 
 ### Added
 
+- Mobile on the home page: the cards drop their side padding, so photos, video and the Jelsa glass run to the frame while the text blocks keep the cell padding. DESIGN.md has a mobile section.
 - Mobile on the design-process pages: the window shows a still of the site's own mobile layout instead of the live frame (the frame loads from 1024px only), no prelude, and the sections stack with the grid's own rhythm.
 - Finished copy on both design-process pages (starting point, what I saw, decision per section, plus a Result panel at the end), written with the copywriter; no placeholders remain. On mobile the title comes before the window and all notes stack below it.
 - The design-process page at `/work/kaizen/`, built from the same window module: kaizenstudio.no runs in the window with one note per section. `nyme.html` and `kaizen.html` now redirect to `/work/nyme/` and `/work/kaizen/`, the Nyme and Kaizen links in the navigation point there, and the home page cards link to the design-process pages instead of "How NYME works" and "How KAIZEN works".

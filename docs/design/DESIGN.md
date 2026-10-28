@@ -131,6 +131,22 @@ Seksjonen hvis topp har passert øvre tredjedel av vinduet aktiverer tilhørende
 
 Mobil: introtittel og første oppsummering, 40 px luft, så vinduet i 4:5 helt ut til rammen, så begrunnelsene i normal flyt med 100 px dødrom mellom seksjonene. Vinduet viser der et stillbilde av nettstedets egen mobilversjon (`--poster-m`, 780×976) i stedet for rammen: rammen lastes bare fra 1024 px, så iOS ikke kan strekke den til nettstedets høyde, og preluden fjernes sammen med den. Senere oppsummeringer følger sin tittel. Tallvelgeren er skjult; nettsidelenken ligger nederst til høyre over vinduet. Et stillbilde (`--poster`) ligger bak rammen mens nettstedet lastes. `data-hide` og `data-css` tilpasser nettstedets oppstartslag i vinduet. Preluden bruker mørkt glass med prosjektnavn, undertittel og lukkekryss.
 
+## Mobil (til 1023 px)
+
+Samme grid, én kolonne. Ingen egen mobildesign og ingen «bruk desktop»-melding: sidene bygges om innenfor rammen, i samme rekkefølge som rutene leses på desktop.
+
+Regler:
+
+- **Rammen og cellen.** `--pad` 8 px rundt alt, `--cell` 1rem inne i tekstceller, rotstørrelse `clamp(13px, 100vw / 24.375, 18px)`. Modulhøyden er innholdsbestemt (`--box` og `--row` er `auto`); ingen `100vh`-flater med tomrom under.
+- **Media går helt ut til rammen.** Foto, video, vindu og stillbilde fyller bredden mellom ytterrammene, uten sideinnrykk. Kortmodulene på hovedsiden har derfor null sidepadding på mobil; bare tekstblokkene (`.card__box`, `.card__note`, statement og CTA) bærer cellepaddingen. Ingen boks inne i en rute: et glasskort over foto fyller rutens bredde.
+- **Rekkefølge per seksjon.** Tittel først, så media, så tekst og CTA. I vindu-modulen: introtittel og oppsummering, 40 px luft, vinduet i 4:5, så begrunnelsene stablet.
+- **Rytme mellom seksjoner.** Minst to trinn i bruk. Mellom tittel og media `--s-3` (40 px), mellom stablede seksjoner `--s-4` (100 px), kortmoduler har 3 × `--cell` over og under. Naboceller har hver sin padding, aldri et grid-gap.
+- **Vindu og tunge lag.** Live-rammen lastes bare fra 1024 px; mobil viser et stillbilde av nettstedets egen mobilversjon (`--poster-m`, 780 × 976) i samme rute. Preluden, glasslappene i vinduet og panelsynken finnes ikke på mobil. iOS Safari strekker ellers en iframe til innholdets høyde.
+- **Tekst.** Venstrejustert og toppjustert, display 13vw, xl 2.8125rem, h1/h2 1.875rem, h3 1.31rem, brødtekst meta. Nav bruker to kolonner og meta.
+- **Bevegelse.** Hover-tilstander erstattes av synlig sluttilstand (Jelsa-veggen viser sidene, kontaktbildet står statisk). Innfasing (`.iv`) beholdes.
+
+Status 2026-10-28 (headless Chrome, 390 px): hovedsiden, Contact, How I work, Legal casework, Sitter, `/work/nyme/` og `/work/kaizen/` følger reglene. Technical (`/build/`) og KAIZEN AI (`kaizen-ai.html`, ikke lenket fra nav) er ikke vurdert for mobil. Ikke bevist i headless: iOS Safari, WebGL-heroen og video-autoplay; de sjekkes på ekte telefon.
+
 ## Ikke i dette designet
 
 Avvist av CEO. Står her så ingen må be om det to ganger. Et unntak må bes om, ikke antas.
