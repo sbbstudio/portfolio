@@ -144,3 +144,50 @@ body .nav[data-portfolio-nav].has-compact-menu:not(.is-menu-open) {
 @media (min-width: 1441px) {
   html { font-size: clamp(16px, calc(10.857px + .357vw), 20px); }
 }
+
+/* Mobile uses one compact header and the existing links, preserving the no-JS fallback. */
+@media (max-width: 1023px) {
+  body .nav[data-portfolio-nav].has-compact-menu {
+    display: grid; grid-template-columns: minmax(0, 1fr) 44px;
+    padding-right: var(--cell, 16px);
+  }
+  body .nav[data-portfolio-nav].has-compact-menu .nav__name { align-self: center; padding: var(--cell, 16px); }
+  body .nav[data-portfolio-nav].has-compact-menu .portfolio-menu-toggle {
+    position: static; grid-column: 2; grid-row: 1; align-self: center;
+    margin: 0; color: inherit;
+  }
+  body .nav[data-portfolio-nav].has-compact-menu:not(.is-menu-open) {
+    background: rgba(255,255,255,.18);
+    backdrop-filter: blur(18px) saturate(110%); -webkit-backdrop-filter: blur(18px) saturate(110%);
+  }
+  body .nav[data-portfolio-nav].has-compact-menu.is-menu-open .nav__links {
+    grid-column: 1 / -1; grid-row: 2; flex-direction: column; gap: 0;
+    padding: calc(var(--cell, 16px) * 2) 0 0 var(--cell, 16px); align-items: stretch;
+  }
+  body .nav[data-portfolio-nav].has-compact-menu.is-menu-open .nav__cta {
+    grid-column: 1 / -1; grid-row: 3; margin-top: 60px; padding: 0 0 var(--cell, 16px) var(--cell, 16px); text-align: left;
+  }
+  body .nav[data-portfolio-nav].has-compact-menu.is-menu-open :is(.nav__links, .nav__cta) a {
+    display: flex; align-items: center; min-height: 30px;
+  }
+  body .nav[data-portfolio-nav].has-compact-menu.is-menu-open[data-ink="true"][data-glass="false"] { color: #000; }
+}
+
+@media (max-width: 1023px) {
+  /* Case pages use a dark desktop tile; mobile keeps the shared name-and-button header. */
+  body .nav.nav[data-portfolio-nav].has-compact-menu:not(.is-menu-open) .nav__name { display: block; }
+  body .nav.nav[data-portfolio-nav].has-compact-menu .portfolio-menu-toggle {
+    width: 44px; height: 44px; padding: 10px; background: transparent;
+    backdrop-filter: none; -webkit-backdrop-filter: none;
+  }
+}
+
+/* The personal wordmark is shared across desktop and mobile; navigation labels keep the system font. */
+@font-face {
+  font-family: 'Instrument Serif'; font-style: normal; font-weight: 400; font-display: swap;
+  src: url('/assets/fonts/instrument-serif-regular.ttf') format('truetype');
+}
+body .nav[data-portfolio-nav] .nav__name a {
+  font-family: 'Instrument Serif', Georgia, serif; font-weight: 400;
+  font-size: 1rem; line-height: 1; letter-spacing: 0;
+}

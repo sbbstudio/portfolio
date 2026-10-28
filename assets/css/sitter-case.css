@@ -88,7 +88,7 @@ a:focus-visible,summary:focus-visible,pre:focus-visible { outline:2px solid curr
 }
 @media (max-width:1023px) {
   html { font-size:clamp(13px,calc(100vw / 24.375),18px); }
-  :root { --pad:8px; --cell:16px; --t-xxl:13vw; --t-h1:1.875rem; --t-h2:1.875rem; --row:auto; }
+  :root { --pad:2px; --cell:16px; --t-xxl:13vw; --t-h1:1.875rem; --t-h2:1.875rem; --row:auto; }
   .case-hero,.case-section { display:flex; flex-direction:column; min-height:0; scroll-margin-top:100px; }
   .case-hero::after { display:none; }
   .case-grid i:not(:first-child):not(:last-child) { display:none; }

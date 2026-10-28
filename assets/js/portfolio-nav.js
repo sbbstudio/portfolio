@@ -21,6 +21,10 @@
   nav.dataset.portfolioNav = '';
   const inkAtTop = document.body.classList.contains('home-photo') || document.documentElement.dataset.navTheme === 'ink';
   nav.dataset.ink = String(inkAtTop);
+  // Keyboard focus pins the header; touch/click focus must not disable scroll hiding.
+  let keyboardNavigation = false;
+  document.addEventListener('keydown', event => { if (event.key === 'Tab') keyboardNavigation = true; });
+  document.addEventListener('pointerdown', () => { keyboardNavigation = false; });
   let lastY = scrollY, upward = 0, navFrame = 0;
   const updateNav = () => {
     navFrame = 0;
@@ -29,7 +33,7 @@
     const homeHero = document.body.classList.contains('home-photo') && document.querySelector('#hero');
     const heroVisible = homeHero && homeHero.getBoundingClientRect().bottom > 12;
     nav.dataset.glass = String(homeHero ? !heroVisible : y > 40);
-    if (y <= 40 || upward >= 120 || nav.contains(document.activeElement) || nav.classList.contains('is-menu-open')) nav.dataset.hidden = 'false';
+    if (y <= 40 || upward >= 120 || (keyboardNavigation && nav.contains(document.activeElement)) || nav.classList.contains('is-menu-open')) nav.dataset.hidden = 'false';
     else if (delta > 0) nav.dataset.hidden = 'true';
     lastY = y;
     document.documentElement.style.setProperty('--nav-height', `${nav.offsetHeight}px`);
@@ -41,7 +45,8 @@
   nav.addEventListener('focusout', scheduleNav);
   new ResizeObserver(scheduleNav).observe(nav);
   updateNav();
-  if (nav.dataset.variant !== 'compact') return;
+  const mobileMenu = matchMedia('(max-width: 1023px)');
+  const sceneMenu = nav.dataset.variant === 'compact';
 
 
   const toggle = document.createElement('button');
@@ -72,6 +77,7 @@
   nav.addEventListener('keydown', event => {
     if (event.key === 'Escape' && nav.classList.contains('is-menu-open')) {
       event.preventDefault();
+      keyboardNavigation = true;
       setOpen(false, true);
     }
   });
@@ -82,14 +88,14 @@
   document.addEventListener('pointerdown', event => {
     if (!nav.contains(event.target)) setOpen(false);
   });
-  // Compact navigation belongs to the 3D journey, not the rest of the page.
+  // Every mobile page uses the menu; desktop retains the scene-specific compact variant.
   const scene = document.querySelector('#hero');
   const studio = document.querySelector('#studio-root');
   let frame = 0;
   const updateVariant = () => {
     frame = 0;
     const bounds = scene?.getBoundingClientRect();
-    const compact = Boolean(bounds && bounds.bottom > 80 && bounds.top < innerHeight && studio?.dataset.mode !== 'static');
+    const compact = mobileMenu.matches || Boolean(sceneMenu && bounds && bounds.bottom > 80 && bounds.top < innerHeight && studio?.dataset.mode !== 'static');
     if (!compact) setOpen(false);
     nav.classList.toggle('has-compact-menu', compact);
     toggle.hidden = !compact;
@@ -98,5 +104,10 @@
   addEventListener('scroll', scheduleVariant, { passive: true });
   addEventListener('resize', scheduleVariant);
   if (studio) new MutationObserver(scheduleVariant).observe(studio, { attributes: true, attributeFilter: ['data-mode'] });
+  mobileMenu.addEventListener('change', () => {
+    setOpen(false);
+    updateVariant();
+    if (toggle.hidden && document.activeElement === toggle) nav.querySelector('.nav__name a')?.focus({ preventScroll: true });
+  });
   updateVariant();
 })();
