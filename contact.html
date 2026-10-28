@@ -725,6 +725,9 @@ a:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
     height: auto !important;
   }
   .intro .cols { padding-top: calc(var(--cell) * 8); }
+  /* Left and top aligned on mobile (DESIGN.md, Mobil); centre is desktop geometry. */
+  .chero .cols { padding-top: calc(var(--cell) * 8); }
+  .chero .chero__display { place-self: start; align-self: flex-start; text-align: left; }
 
   /* App-raden blir snap-spor — ett klipp i fokus, neste stikker
      inn fra kanten (mekanikken fra forrige versjon, bevart).   */

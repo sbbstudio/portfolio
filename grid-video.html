@@ -1416,6 +1416,7 @@ body.ready .rl { opacity: 1; transform: none; }
     color: var(--ink-2);
   }
   .contact__c { align-self: flex-start; text-align: left; }
+  .contact__cta { text-align: left; }
 
   /* MODULENE — innholdet definerer høyden på mobil (CEO rev 3:
      «alt innhold kommer med»); den faste --box-høyden ga tomme
@@ -1496,6 +1497,35 @@ body.ready .rl { opacity: 1; transform: none; }
   /* Tickerens desktop-størrelse er geometri (row/2 ≈ 200px) —
      på mobil finnes ikke modulen; ned på skalaen: 45.          */
   .ticker__seq { font-size: var(--t-xl); }
+
+  /* Card order on mobile: statement, media, text box, CTA (DESIGN.md, Mobil).
+     The CTA follows the text box directly; nothing floats after the media. */
+  .card--nyme .nyme__statement { order: 1; }
+  .card--nyme .nyme__ph { order: 2; }
+  .card--nyme .card__box { order: 3; }
+  .card--nyme .nyme__cta { order: 4; padding-top: 0; }
+  .card--kzai .card__col { order: 1; }
+  .card--kzai .kz__claim { order: 2; }
+  .card--kzai .card__box { order: 3; }
+  .card--kzai .kz__cta { order: 4; padding-top: 0; }
+  .card--jelsa .card__box { order: 10; }
+
+  /* SBB on mobile: the film fills the width in 9:16; the controls
+     stand in one row under it, transport left and counter right. */
+  .card--sbb .sbb__stage { display: grid; grid-template-columns: minmax(0, 1fr); grid-template-rows: auto auto; aspect-ratio: auto; }
+  .card--sbb .card__col.is-selected-slot,
+  .card--sbb .sbb__still { grid-column: 1; grid-row: 1; width: 100%; aspect-ratio: 9 / 16; max-height: none; }
+  .card--sbb .sbb__still { position: relative; z-index: 2; }
+  .card--sbb .card__col--ad video { object-fit: cover; }
+  .card--sbb .sbb__controls {
+    grid-column: 1; grid-row: 2;
+    position: static; z-index: auto;
+    display: flex; justify-content: space-between; align-items: center;
+    width: 100%; min-height: 0; padding: var(--cell);
+    pointer-events: auto;
+  }
+  .card--sbb .sbb__transport { order: 1; align-self: center; justify-self: start; }
+  .card--sbb .sbb__meta { order: 2; display: flex; gap: 10px; align-self: center; white-space: nowrap; }
 }
 
 @media (prefers-reduced-motion: reduce) {
