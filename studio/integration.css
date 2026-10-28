@@ -113,13 +113,14 @@ html[data-entry="leaving"] .entry-loader { opacity: 0; }
   .contact .cols { padding: 64px 20px 40px; gap: 0; min-height: 0 !important; }
   .contact .cell { padding: 0; align-self: stretch; }
   .contact__ticker { min-height: 0; margin-bottom: 48px; }
-  .contact__ticker .ticker__seq { font-size: 28px; color: #707070; }
+  .contact__ticker .ticker__seq { font-size: var(--t-h3); color: var(--ink-2); }
   .contact__h, .contact__lede { text-align: left; }
-  .contact__h h2 { margin: 0; max-width: 20ch; font-size: clamp(28px, 8vw, 36px); line-height: 1.12; }
-  .contact__lede { margin-top: 32px; }
-  .contact__lede p { margin: 0; max-width: 48ch; font-size: 16px; line-height: 1.55; font-weight: 400; color: #b5b5b5; }
-  .contact__cta { margin-top: 32px; margin-bottom: 48px; }
-  .contact__cta a { display: flex; justify-content: space-between; align-items: center; min-height: 48px; font-size: 18px; border-bottom: 1px solid #ffffff30; }
+  .contact__h h2 { margin: 0; max-width: 20ch; font-size: var(--t-h1); line-height: 1.12; }
+  .contact__lede { margin-top: calc(var(--cell) * 2); }
+  .contact__lede p { margin: 0; max-width: 48ch; font-size: var(--t-body); line-height: 1.55; font-weight: 400; color: var(--ink-2); }
+  .contact__cta { margin-top: calc(var(--cell) * 2); margin-bottom: calc(var(--cell) * 3); }
+  /* CTA in the shared voice (cta-system.css): no own line, no own size. */
+  .contact__cta a { display: inline-flex; align-items: center; min-height: 44px; border-bottom: 0; }
   .contact__colophon { gap: 28px; }
   .contact__colophon .footer__name { font-size: 11px; line-height: 1.5; letter-spacing: .1em; }
   .contact__colophon .colo__mid { width: 100%; }

@@ -799,8 +799,11 @@ a:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
     height: auto;
     padding: calc(var(--cell) * 5) 0;
   }
-  .sec2 .cols, .sec3 .cols { align-items: center; text-align: center; }
-  .sec2__title { padding: var(--cell); }   /* tilbake i ruta — kant-fit er desktop */
+  /* Left and top aligned on mobile (DESIGN.md, Mobil); centring is desktop geometry. */
+  .sec2 .cols, .sec3 .cols { align-items: stretch; text-align: left; }
+  .sec2 .sec-center, .sec3 .sec-center { align-items: flex-start; text-align: left; }
+  .sec2__title { padding: var(--cell); justify-content: flex-start; text-align: left; }
+  .sec2__title h2 { white-space: normal; }
   .sec2, .sec3 { height: auto; }
   .sec3 { position: relative; top: auto; overflow: visible; }
   .sec3::after { display: none; }   /* scrim er videoens instrument */
