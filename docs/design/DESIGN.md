@@ -1,6 +1,6 @@
 # DESIGN.md — Rune Portfolio
 
-Eier: Rune Øverland. Oppdatert 25. oktober 2026. Omfang: hele porteføljen, inkludert Technical og Sitter.
+Eier: Rune Øverland. Oppdatert 28. oktober 2026. Omfang: hele porteføljen, inkludert Technical og Sitter.
 
 ## Fasiten og kildene
 
@@ -14,7 +14,7 @@ Gjenbruk samme spacing, type og tilstander for samme komponentrolle. Undersidene
 
 | Rolle | Desktop fra 1024 px | Mobil til 1023 px |
 |---|---|---|
-| Ytterramme `--pad` | 10 px | 8 px |
+| Ytterramme `--pad` | 10 px | 2 px |
 | Cellepadding `--cell` | 20 px | 1rem |
 | Rotstørrelse | Nettleserstandard | `clamp(13px, calc(100vw / 24.375), 18px)` |
 | Kolonner | Fire like, uten gutter | Innholdsrekkefølge per seksjon |
@@ -44,7 +44,7 @@ Avstand sier hva som hører sammen. Fire trinn, alle avledet av `--cell`, og ald
 | `--s-3` | 40 px (2 × `--cell`) | Blokker i samme celle: tekstblokk og faktaliste, tekst og statuslinje |
 | `--s-4` | 100 px (5 × `--cell`) | Dødrom: tekst og medie, tekst og neste seksjon i samme celle |
 
-Innenfor én celle skal minst to trinn være i bruk, ellers leses alt som én liste. Tokenene ligger i `assets/css/module-system.css`; forsidens 6 px lenkeavstand og 100 px dødrom er samme trinn. `.cols` bruker på mobil gap 40 px og vertikal padding 72 px. Skjemaer, videokontroller og 3D-overlegg har egne avstander og skal ikke gjøres om til cellepadding.
+Innenfor én celle skal minst to trinn være i bruk, ellers leses alt som én liste. Tokenene ligger i `assets/css/module-system.css`; forsidens 6 px lenkeavstand og 100 px dødrom er samme trinn. Mobilens vanlige gridruter bruker ikke ekstra wrapperpadding eller grid-gap; innholdets cellepadding eier kantavstanden. Skjemaer, videokontroller og 3D-overlegg har egne avstander og skal ikke gjøres om til cellepadding.
 
 ### To grupper, ett fleksibelt mellomrom
 
@@ -78,7 +78,7 @@ Systemfont: `ui-sans-serif, -apple-system, "Helvetica Neue", Arial, sans-serif`.
 
 Mobil erstatter display med 13vw, xl med 2.8125rem, h1/h2 med 1.875rem og h3 med 1.31rem. Rolle, ikke HTML-tag, bestemmer størrelse.
 
-Kortbrødtekst bruker `--t-meta`, line-height 1.5 og tracking -.012em. Ingressen i Section 1 (`system-copy__intro`) bruker `--t-body`; nederste avsnitt beholder meta. CTA bruker `--t-meta`, line-height 1.6 og vekt 400 via `cta-system.css`. Nav bruker body på desktop og meta på mobil. Hero-rolletittel bruker h4.
+Kortbrødtekst bruker `--t-meta`, line-height 1.5 og tracking -.012em. Ingressen i Section 1 (`system-copy__intro`) bruker `--t-body`; nederste avsnitt beholder meta. CTA bruker `--t-meta`, line-height 1.6 og vekt 400 via `cta-system.css`. Nav bruker body på desktop og meta på mobil. Hero-rolletittel bruker H4 på desktop og body på mobil.
 
 Section 1-tittelen er uppercase, vekt 500, line-height 1 og tracking -.04em. Desktopstørrelse: `min(8vw, calc(var(--row) / 2.4))`; mobil: `clamp(45px, 12vw, 80px)`. NYME bruker xxl med fullbreddekomposisjon. «STARTS WITH THE JOB.» ligger nederst i øverste rad med vanlig cellepadding. Mobil beholder venstrejusterte linjer i normal flyt.
 
@@ -121,7 +121,7 @@ Behold synlig tastaturfokus. Tilstander for skjema og 3D må testes separat fra 
 
 Technical (`/build/`) og Sitter (`/work/sitter/`) inngår i porteføljen, men hovedside-QA er ikke en full revisjon av disse. Technical har egne animasjonskapitler og lesemodus; disse er særroller. Sitter har kodeprøver og høyder bestemt av innholdet.
 
-Kjente harmoniseringsoppgaver: Technical bruker fast 16 px mobilpadding, Sitter beholder 10/20 px ramme/celle, flere undersider har egne nav-/footerkopier. Glassnav og de nye mediekortvariantene er avgrenset til hovedsiden; delte CTA-piler og fjerning av nav-dividere gjelder sider som laster de delte filene.
+Kjente harmoniseringsoppgaver: Technical bruker fast 16 px mobilpadding, Sitter bruker 2 px mobilramme; åtte aktive sider deler nav og footer. Glassnav og de nye mediekortvariantene er avgrenset til hovedsiden; delte CTA-piler og fjerning av nav-dividere gjelder sider som laster de delte filene.
 
 Avklart videre: Technical er steget med 3D-modellen, ikke et prosjektkort eller en separat teknisk dokumentasjonsside. [FigJam-sitemap](https://www.figma.com/board/3mwhXw8SCggg33evk6Qjm2/Portefolio).
 
@@ -145,19 +145,19 @@ Samme grid, én kolonne. Ingen egen mobildesign og ingen «bruk desktop»-meldin
 
 Regler:
 
-- **Rammen og cellen.** `--pad` 8 px rundt alt, `--cell` 1rem inne i tekstceller, rotstørrelse `clamp(13px, 100vw / 24.375, 18px)`. Modulhøyden er innholdsbestemt (`--box` og `--row` er `auto`); ingen `100vh`-flater med tomrom under.
+- **Rammen og cellen.** `--pad` 2 px rundt alt, `--cell` 1rem inne i tekstceller, rotstørrelse `clamp(13px, 100vw / 24.375, 18px)`. Modulhøyden er innholdsbestemt (`--box` og `--row` er `auto`); ingen `100vh`-flater med tomrom under.
 - **Media går helt ut til rammen — regel 1.** Foto, video, vindu og stillbilde fyller bredden mellom ytterrammene, uten sideinnrykk. Kortmodulene på hovedsiden har derfor null padding på selve modulen på mobil, også over videoen; bare tekstblokkene (`.card__box`, `.card__note`, statement og CTA) bærer cellepaddingen. Ingen boks inne i en rute: et glasskort over foto fyller rutens bredde.
-- **Tekstruter.** Samme logikk som desktop: innholdet limes i topp og bunn, midten puster. Ruta er minst 4:5 av bredden (`--mcell`, aldri høyere enn skjermen), flex-kolonne med fleksibel luft mellom topp- og bunngruppen, én `--cell` rundt innholdet. Står en CTA-celle under ruta, trekkes CTA-cellens høyde (`--mcta`) fra, så rute og CTA sammen er 4:5. Gjelder hero, kontaktruta og utsagnsmodulene på How I work. Forsidens prosjektkort og Section 1 bruker de eksplisitte 50svh-reglene nedenfor.
+- **Tekstruter.** Samme logikk som desktop: innholdet limes i topp og bunn, midten puster. Ruta er minst 4:5 av bredden (`--mcell`, aldri høyere enn skjermen), flex-kolonne med fleksibel luft mellom topp- og bunngruppen, én `--cell` rundt innholdet. Står en CTA-celle under ruta, trekkes CTA-cellens høyde (`--mcta`) fra, så rute og CTA sammen er 4:5. Gjelder hero og prosjektkort. Egne godkjente høyder: tittelruter 40svh, kontaktinvitasjon 50svh, footerens kontaktstakk 30svh. Skjemaer og caseforklaringer følger innholdshøyde.
 - **Hero.** Rute 1 og 2 stablet loddrett. Rute 1 er fotoet helt ut til rammen, 4:5 og aldri høyere enn skjermen, med tittelen øverst til venstre under nav. Rute 2 er svart grunn med påstanden øverst, CTA 6 px under og listen nederst med fleksibel luft mellom påstand og liste. CTA og tekstfelt utgjør samlet én rute med `--cell` padding rundt (16 px ved 390 px bredde), og minst samme 4:5-høyde som fotoruta. Modul-linja med noder skiller rutene. Ingen glassboks over fotoet på mobil.
 - **Rekkefølge per seksjon.** Tittel først, så media, så tekst og CTA. I vindu-modulen: introtittel og oppsummering, 40 px luft, vinduet i 4:5, så begrunnelsene stablet. I kortmodulene på hovedsiden: påstand der den finnes, media, tekstboks med eventuelle CTA-er samlet i bunngruppen. SBB-kontrollene står i én rad under filmen, transport til venstre og teller til høyre. Jelsa-veggen står over tekstboksen. NYME-utsagnet står to trinn over H1: lokalt XXL med tak 3.75rem, begrenset til 13.8vw slik at APPLICATION får plass som helt ord (53.82 px ved 390 px). KAIZEN-utsagnet bruker XXL på 3.75rem. Tekstboksene er flate på svart grunn: glass og terreng-lag hører til foto på desktop.
 - **Rytme mellom seksjoner.** Minst to trinn i bruk. Vindu-modulen bruker `--s-3` (40 px) mellom tittel og media og `--s-4` (100 px) mellom begrunnelser. Forsidens gridruter møter hverandre uten ekstra mellomrom; tekstcellene har én `--cell` padding. Naboceller har hver sin padding, aldri et grid-gap.
 - **Vindu og tunge lag.** Live-rammen lastes bare fra 1024 px; mobil viser et stillbilde av nettstedets egen mobilversjon (`--poster-m`, 780 × 976) i samme rute. Preluden, glasslappene i vinduet og panelsynken finnes ikke på mobil. iOS Safari strekker ellers en iframe til innholdets høyde.
-- **Tekst.** Venstrejustert og toppjustert, også der desktop sentrerer (utsagnsmodulene på How I work, «Let’s talk.» på Contact). CTA uten egen linje og i cta-system-stemmen. Display 13vw, xl 2.8125rem, h1/h2 1.875rem, h3 1.31rem, brødtekst meta. Nav bruker to kolonner og meta.
+- **Tekst.** Venstrejustert og toppjustert, også der desktop sentrerer (utsagnsmodulene på How I work, «Let’s talk.» på Contact). CTA uten egen linje og i cta-system-stemmen. Display 13vw, xl 2.8125rem, h1/h2 1.875rem, h3 1.31rem, brødtekst meta. Nav bruker hamburger med navn og menyknapp, og meta-størrelse på lenkene.
 - **Bevegelse.** Hover-tilstander erstattes av synlig sluttilstand (Jelsa-veggen viser sidene, kontaktbildet står statisk). Innfasing (`.iv`) beholdes.
 
-Status 2026-10-28 (headless Chrome, 390 px, stegvis scroll i ekte viewport): hovedsiden, Contact, How I work, Sitter, `/work/nyme/` og `/work/kaizen/` følger reglene. Legal casework har egne rammer, vignetter og sentrerte sperrede titler fra sin egen stil og er ikke rettet. Technical (`/build/`) og KAIZEN AI (`kaizen-ai.html`, ikke lenket fra nav) er ikke vurdert for mobil. Ikke bevist i headless: iOS Safari, WebGL-heroen og video-autoplay; de sjekkes på ekte telefon.
+QA og videreføring: se `MOBILE-HANDOFF.md` for kontrollerte sider, komponentansvar og avgrensninger. Dokumentasjonen beskriver dagens regler; ekte iOS Safari og full WebGL-interaksjon er fortsatt egne kontroller.
 
-Section 1 og NYME på mobil: tittelruten og bilderuten er hver 50svh, samlet 100svh. Tittelen er bunnjustert med én cellepadding, og bildet fyller sin rute. Section 1s tekstrute med CTA er samlet 50svh, med fleksibel luft mellom avsnittene og én cellepadding; den kan vokse når tekst krever det. NYMEs produktkort følger med minst 50svh, én cellepadding og ett fleksibelt mellomrom mellom toppgruppen (identitet og påstand) og bunngruppen (brødtekst og nettsidelenke med 6 px avstand). NYME-bilderuten beholder håndtrykkbildet (`assets/opt/nyme/placeholder-success.webp`), sentrert og heldekkende. Rune avviste nettsideskjermbildet og valgte stockfoto 28. oktober 2026; dette er et eksplisitt unntak fra stockfoto-regelen. NYME-navnet prøves på H1-trinnet (`--t-h1`) på mobil, mens metadata beholder meta-størrelse. Kortet kan vokse hvis innholdet trenger mer plass. På mobil ligger Design process og Visit NYME samlet i kortets bunngruppe, 6 px under brødteksten: to like brede kolonner (1fr/1fr), Design process først, minst 44 px trykkhøyde og tekstlenkestil uten boks. Desktop beholder sin separate Design process-celle.
+NYME på mobil: tittelruten er 40svh og bilderuten er 50svh. Section 1 har en tittelrute på 40svh, med teksten bunnjustert og vanlig cellepadding. Bilderuten bruker `--mcell` (4:5 av skjermbredden, maks 100svh). Tittelen er bunnjustert med én cellepadding, og bildet fyller sin rute. Section 1s tekstrute med CTA er samlet 50svh, med fleksibel luft mellom avsnittene og én cellepadding; den kan vokse når tekst krever det. NYMEs produktkort følger med minst `--mcell`, én cellepadding og ett fleksibelt mellomrom mellom toppgruppen (identitet og påstand) og bunngruppen (brødtekst og nettsidelenke med 6 px avstand). NYME-bilderuten beholder håndtrykkbildet (`assets/opt/nyme/placeholder-success.webp`), sentrert og heldekkende. Rune avviste nettsideskjermbildet og valgte stockfoto 28. oktober 2026; dette er et eksplisitt unntak fra stockfoto-regelen. Prosjektnavnene i alle tilsvarende kort bruker godkjent XL-størrelse (`--t-xl`, 45 px ved 390 px) på mobil, mens metadata beholder meta-størrelse. Kortet kan vokse hvis innholdet trenger mer plass. På mobil ligger Design process og Visit NYME samlet i kortets bunngruppe, 6 px under brødteksten: to like brede kolonner (1fr/1fr), Design process først, minst 44 px trykkhøyde og tekstlenkestil uten boks. Desktop beholder sin separate Design process-celle.
 
 ## Ikke i dette designet
 
@@ -168,8 +168,8 @@ Avvist av CEO. Står her så ingen må be om det to ganger. Et unntak må bes om
 - **Media som ikke fyller ruten.** Bilde, video og vindu går helt ut til gridlinjene, uten innrykk, hjørnemerker eller bildetekst under.
 - **Radius, skygge, kantlinje** på celler, glass, knapper og lapper.
 - **Gradienter og vignetter** på svart grunn. Grunnen er `#000`, ren.
-- **Bakgrunnsfarge bak navnet i nav.** Navnet står rett på flaten, og i kompakt nav er det skjult til menyen er åpen.
-- **Sentrert tekst i gridceller.** Tekst er venstrejustert og toppjustert med cellepadding. Preluden er unntaket: den er en dialog, ikke en celle.
+- **Bakgrunnsfarge bak navnet i nav.** Navnet står rett på flaten. Mobil viser alltid navnet ved siden av menyknappen; desktopens kompakte casevariant kan skjule det.
+- **Sentrert tekst i gridceller.** Tekst er venstrejustert med cellepadding. Vanlige tittelruter er bunnjustert; tekstkort følger topp-/bunngruppering. Preluden er en egen dialog.
 - **Interne navn, agentnavn og pipeline-diagrammer** på offentlige sider.
 - **Stockfoto** (håndtrykk og lignende), med unntak av det eksplisitt valgte NYME-bildet (28. oktober 2026).
 - **Stiplede `.fact-gap`-felt i produksjon.** De er utkastmarkører og skal være erstattet med sanne tall før merge.
@@ -197,7 +197,7 @@ Stegknappene står nederst i hver sin rute: 1, 2 og 3. Rute 4 er åpen. På desk
 
 ## Felles navigasjon etter QA
 
-`portfolio-nav.js` eier synlighet, glass-tilstand, lenker og aktiv side gjennom data-attributter. Lokale scripts kan fortsatt markere seksjonslenker, men lokale `is-paper`/`is-hidden`-klasser styrer ikke den rendrede navflaten når den felles komponenten er startet. CSS lastes sist i head på alle åtte sider. Desktop: fire kolonner, 20 px padding og 18 px tekst. Mobil: to kolonner, 16 px padding, meta-tekst og lenker på egen rad. Toppen er 0, uten skygge, border eller kolonneskiller. Glass er 18 % hvitt, 18 px blur og 110 % saturation, med hvit tekst. Hovedsidens Hero og How I work beholder sort starttekst. Opp-scroll på 120 px viser nav; tastaturfokus holder den synlig. Technical bruker hamburger kun i 3D-opplevelsen.
+`portfolio-nav.js` eier synlighet, glass-tilstand, lenker og aktiv side gjennom data-attributter. Lokale scripts kan fortsatt markere seksjonslenker, men lokale `is-paper`/`is-hidden`-klasser styrer ikke den rendrede navflaten når den felles komponenten er startet. CSS lastes sist i head på alle åtte sider. Desktop: fire kolonner, 20 px padding og 18 px tekst. Mobil: navn og hamburger i én rad, 16 px padding, meta-tekst og gruppert lenkeliste når menyen åpnes. Toppen er 0, uten skygge, border eller kolonneskiller. Glass er 18 % hvitt, 18 px blur og 110 % saturation, med hvit tekst. Hovedsidens Hero og How I work beholder sort starttekst. Opp-scroll på 120 px viser nav; tastaturfokus holder den synlig. Technical bruker hamburger i 3D-opplevelsen på desktop og gjennom hele siden på mobil.
 
 Technical-avslutningen oppsummerer nå de tre faktiske stegene, og ordtelling/indekser er oppdatert. De to lenkene til How I work bruker samme navn. Den korte kontaktinvitasjonen gjentar ikke neste seksjons avsnitt.
 
@@ -217,7 +217,7 @@ Technical: aktivt steg markeres på desktop med en 2 px strek på den felles mid
 
 ## Sitter — case-layout
 
-`/work/sitter/` bruker `assets/css/sitter-case.css` og de felles nav-/footerkomponentene. Desktopintro fyller en modul: Sitter-tittelen og undertittelen i rute 5, forklaring i rute 6, tekniske lenker i 7 og Try Sitter i 8. Innholdsseksjonene har fire kolonner med h1-titler i 1–2 og brødtekst i 3–4, 20 px cellepadding og felles linjer/noder. Hver tekstrad er minst en halv modul, og kan vokse med innholdet. Kode, tester, migrering og repo-struktur ligger i native details/summary under seksjonen; kode bruker lesbar monospace og lokal horisontal scrolling fremfor nedskalering. Ingen skygger, gradientflater eller dekorativt korn. Mobil bruker 8 px ramme, 16 px padding, stablet innhold, h2-størrelse på seksjonstitler og fullbredde utfellingsfelt. Kildeutdrag er fortsatt bundet til samme commit og verifiseres av `check-sitter-excerpts.mjs`.
+`/work/sitter/` bruker `assets/css/sitter-case.css` og de felles nav-/footerkomponentene. Desktopintro fyller en modul: Sitter-tittelen og undertittelen i rute 5, forklaring i rute 6, tekniske lenker i 7 og Try Sitter i 8. Innholdsseksjonene har fire kolonner med h1-titler i 1–2 og brødtekst i 3–4, 20 px cellepadding og felles linjer/noder. Hver tekstrad er minst en halv modul, og kan vokse med innholdet. Kode, tester, migrering og repo-struktur ligger i native details/summary under seksjonen; kode bruker lesbar monospace og lokal horisontal scrolling fremfor nedskalering. Ingen skygger, gradientflater eller dekorativt korn. Mobil bruker 2 px ramme, 16 px padding, stablet innhold, h2-størrelse på seksjonstitler og fullbredde utfellingsfelt. Kildeutdrag er fortsatt bundet til samme commit og verifiseres av `check-sitter-excerpts.mjs`.
 
 Sitter: begrensningsseksjonens tekstfelt er én sort, flat flate over kolonne 3–4. Den indre vertikale linjen skjules, mens ytterlinjer og noder beholdes. Ingen radius eller skygge.
 
@@ -244,8 +244,34 @@ NYME audience working assumption (2026-10-27): candidates seeking relevant roles
 
 ## Felles prosjektkort på mobil
 
-NYME-mønsteret gjelder også SBB, Jelsadokumentene og KAIZEN: minst 50svh per tekstkort, én cellepadding, prosjektnavn på H1-trinnet og ett fleksibelt mellomrom mellom toppgruppen (identitet og påstand) og bunngruppen (brødtekst eller fakta, med eventuelle lenker). Lange navn brytes innenfor ruten. Kortene kan vokse når innhold krever det.
+NYME-mønsteret gjelder også SBB, Jelsadokumentene og KAIZEN: minst `--mcell` per tekstkort (4:5 av skjermbredden, maks 100svh), én cellepadding, prosjektnavn på XL-trinnet og ett fleksibelt mellomrom mellom toppgruppen (identitet og påstand) og bunngruppen (brødtekst eller fakta, med eventuelle lenker). Lange navn brytes innenfor ruten. Kortene kan vokse når innhold krever det.
 
-KAIZEN bruker samme rekkefølge som NYME: bunnjustert utsagn i 50svh, heldekkende media i 50svh og prosjektkort i 50svh. Utsagnet bruker mobilt XXL (3.75rem), undertittelen H3. Begge kort har en CTA-rad på 1fr/1fr med Design process først og ekstern nettside til høyre, 6 px under brødteksten og minst 44 px trykkhøyde. SBB og Jelsa beholder sine faktagrupper uten nye lenker. SBB-videoen fyller 50svh med kontroller i egen rad under. Jelsas fire synlige bilder fyller en samlet 50svh-rute (to rader). Media har ingen modulpadding. Desktop beholder eksisterende layout.
+KAIZEN bruker samme rekkefølge som NYME: bunnjustert utsagn i 40svh, heldekkende media i 50svh og prosjektkort med minst `--mcell`. Utsagnet bruker mobilt XXL (3.75rem), undertittelen H3. Begge kort har en CTA-rad på 1fr/1fr med Design process først og ekstern nettside til høyre, 6 px under brødteksten og minst 44 px trykkhøyde. SBB og Jelsa beholder sine faktagrupper uten nye lenker. SBB-videoen fyller 50svh med kontroller i egen rad under. Jelsas fire synlige bilder fyller en samlet 50svh-rute (to rader). Media har ingen modulpadding. Desktop beholder eksisterende layout.
 
 Mobil-QA 28. oktober: prosjektets navn i vindu-modulens smale desktopkolonne bruker H1 ved 1024–1279 px for å holde hele navnet innenfor cellen. Den eldre KAIZEN AI-siden bruker mobilt XL på 2.8125rem, så avtalens overskrift ikke skyver siden utenfor 320 px.
+
+## Mobilnavigasjon
+
+Under 1024 px bruker alle åtte sider med delt navigasjon hamburger: navn til venstre og en 44 × 44 px menyknapp til høyre. Åpning viser hovedlenkene som én samlet vertikal gruppe, med 2 × cellepadding luft etter navneraden. Contact er en egen handling med 60 px luft over. Menylenker har 30 px radhøyde og én cellepadding mot ytterkanten; avstanden mellom grupper skal være større enn innenfor lenkegruppen. Glass, tekstfarge og scrolloppførsel følger felles nav. Ingen separat modal eller dupliserte lenker. Åpning fokuserer første lenke; Escape lukker og gir fokus tilbake til knappen. Lenkevalg, klikk utenfor og fokus ut lukker også. Ved kryssing av 1024 px lukkes menyen. Desktop beholder åpen navigasjon og Technicals scenestyrte hamburger. Uten JavaScript forblir HTML-lenkene synlige.
+
+Navnets ordmerke bruker Instrument Serif Regular, lokalt lagret med OFL-lisens i `assets/fonts/`, på både mobil og desktop. Størrelse 1rem (16 px ved 390 px mobilbredde), linjehøyde 1 og normal tracking. Navnet er en rolig signatur under rolletittelens hierarki; rolletittelen bruker 18 px ved samme bredde. Andre navlenker beholder systemfonten.
+
+Forsidens kontaktinvitasjon følger samme mobilkortprinsipp: minst 50svh, én cellepadding, tittel øverst og brødtekst/Contact som samlet bunngruppe med 6 px mellom. Ingen ekstra padding eller gap på wrapperen som også inneholder footeren.
+
+Mobilhero: fotoruten beholder 4:5 og begrenses til 100svh. Bildet zoomes 20 % inn fra midten nederst; dette endrer utsnittet, ikke rutens høyde. Rolletittelen bruker body-trinnet (18 px ved 390 px), ett trinn under H4. Rutehøyden beholder 4:5-forholdet.
+
+Tilsvarende tittelruter på mobil (Section 1, NYME og KAIZEN) bruker 40svh, bunnjustert tekst og vanlig cellepadding. På forsiden på mobil står solnedgangsbildet én gridrute tidligere, før kontaktinvitasjonen. Bilderuten er 57.8svh høy. Mobilbildet zoomes 12 % med `object-position: 50% 65%` og transform-origin `54% 65%` for å løfte og sentrere personen; wrapperen klipper bildet ved gridkanten. Desktop beholder bildet i footeren. «Flytt bildet opp» betyr å flytte bilderuten i rekkefølgen, ikke å endre utsnittet.
+
+Forsidens mobilfooter har ingen negativ sidemargin: wrapperen har ingen ekstra innrykk, og footerinnholdet bruker vanlig 16 px cellepadding innenfor ytterrammen.
+
+Footerens separate navigasjonsgruppe er fjernet fra alle åtte sider. Navn, telefon, e-post, ticker og Back to top beholdes; hovednavigasjonen eier sidelenkene.
+
+Footerens kontaktfelt på mobil er minst 30svh med vanlig cellepadding. Navn, telefon og e-post står i en samlet stakk nederst, i denne rekkefølgen. Telefon og e-post har små dekorative linjeikoner på mobil, i tekstfargen, med 10 px avstand til teksten. Navnet bruker body-trinnet (1.125rem), to trinn over meta; 32 px mellom navn og kontaktgruppen, 10 px mellom e-post og telefon.
+
+Footerens copyright (© 2026) bruker fintekst på mobil, .75rem (12 px ved 390 px bredde), under Back to top i hierarkiet.
+
+How I work: mobilens stasjoner har ingen ekstra wrapperpadding; de to utsagnstitlene har egne bunnjusterte 40svh-ruter og tekst i normal flyt under. Contact: «Let’s talk.» bruker 40svh med bunnjustert tittel og plass til nav; skjemaet følger innholdet uten fast skjermhøyde.
+
+Legal casework: mobilens innholdsruter bruker cellepadding uten ekstra 72 px wrapperpadding eller jevnt 40 px gap. Avslutningen har minst 50svh, tittel øverst og brødtekst/CTA nederst. Caseforklaringer og dokumentkort følger innholdshøyde.
+
+Legal casework bruker ren grunn uten seksjonenes dekorative gradient-/kornlag på mobil.

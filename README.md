@@ -35,7 +35,7 @@ node --test tests/analytics.test.cjs tools/story-timeline.test.mjs
 
 ## Rules and decisions
 
-- Design reference for the whole portfolio: [`docs/design/DESIGN.md`](docs/design/DESIGN.md), including spacing, typography, components and unresolved differences. Read it before visual changes.
+- Design reference for the whole portfolio: [`docs/design/DESIGN.md`](docs/design/DESIGN.md), including spacing, typography, components and unresolved differences. Read it before visual changes. The current mobile handoff, component ownership and verification limits are in [`docs/design/MOBILE-HANDOFF.md`](docs/design/MOBILE-HANDOFF.md).
 - Rules for everyone who changes this repo: [`AGENTS.md`](AGENTS.md).
 - Decisions: [`docs/decisions/`](docs/decisions/), one file per decision.
 - Deploy is a push to `live`: the workflow builds `dist/` and publishes it to `gh-pages`. Until Pages is repointed, whatever is on `live` is published as it stands.

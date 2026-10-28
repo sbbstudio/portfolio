@@ -125,7 +125,7 @@ body {
 .grid .nodes {
   position: absolute; top: 0; bottom: 0;
   width: var(--node);
-  margin-left: calc(var(--node) / -2);
+  margin-left: 0;
   background-image: repeating-linear-gradient(
     to bottom,
     #050505 0, #050505 var(--node),
@@ -695,7 +695,7 @@ a:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
   html { font-size: clamp(13px, calc(100vw / 24.375), 18px); }
 
   :root {
-    --pad: 8px;
+    --pad: 2px;
     --cell: 1rem;                          /* 16 ved 390, skalerer */
     --box: calc(100svh - (var(--pad) * 2));  /* svh: stabil under URL-feltet */
     /* CEO rev 3: nettet skal SYNES på mobil — mindre flate gir
@@ -734,8 +734,8 @@ a:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
     width: var(--node); height: var(--node);
     background: #050505;
   }
-  .mline::before { left: calc(var(--node) / -2); }
-  .mline::after  { right: calc(var(--node) / -2); }
+  .mline::before { left: 0; }
+  .mline::after  { right: 0; }
   /* Mørke moduler: linja og nodene snur blekket.               */
   .sec3 .mline, .footer .mline { background: rgba(255, 255, 255, .34); }
   .sec3 .mline::before, .sec3 .mline::after,
@@ -773,8 +773,8 @@ a:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
      romslig luft (cell-multipler), tittel + brød i modulen.    */
   .st {
     position: relative;
-    display: flex; flex-direction: column; gap: 1.5rem;
-    padding: calc(var(--cell) * 4) 0;
+    display: flex; flex-direction: column; gap: 0;
+    padding: 0;
     pointer-events: auto;
   }
   .st .cell { opacity: 1 !important; transform: none !important; }
@@ -801,9 +801,9 @@ a:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
   }
   /* Left and top aligned on mobile (DESIGN.md, Mobil); centring is desktop geometry. */
   .page { --mcell: min(calc(100vw * 5 / 4), 100svh); }
-  .sec2 .cols, .sec3 .cols { align-items: stretch; text-align: left; justify-content: space-between; min-height: var(--mcell); }
+  .sec2 .cols, .sec3 .cols { align-items: stretch; text-align: left; gap: 0; padding: 0; min-height: 0; }
   .sec2 .sec-center, .sec3 .sec-center { align-items: flex-start; text-align: left; }
-  .sec2__title { padding: var(--cell); justify-content: flex-start; text-align: left; }
+  .sec2__title { min-height: 40svh; padding: var(--cell); justify-content: flex-start; align-items: flex-end; text-align: left; }
   .sec2__title h2 { white-space: normal; }
   .sec2, .sec3 { height: auto; }
   .sec3 { position: relative; top: auto; overflow: visible; }
@@ -940,8 +940,8 @@ a:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
 
 </style>
 
-<link rel="stylesheet" href="/nav-system.css?v=20261025-scroll-nav">
-<link rel="stylesheet" href="/assets/css/portfolio-footer.css">
+<link rel="stylesheet" href="/nav-system.css?v=20261028-mobile-final">
+<link rel="stylesheet" href="/assets/css/portfolio-footer.css?v=20261028-mobile-final">
 <script src="/assets/js/portfolio-footer.js" defer></script>
 </head>
 <body>
@@ -1124,11 +1124,7 @@ a:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
   <img class="portfolio-footer__landscape" src="/assets/opt/intro-sunset-portrait.webp" alt="Rune on a beach at sunset." width="1333" height="2000" loading="lazy" decoding="async">
   <div class="portfolio-footer__details">
     <p class="portfolio-footer__name">Rune Øverland</p>
-    <nav class="portfolio-footer__links" aria-label="Footer">
-      <a href="/grid-video.html#approach">Approach</a><a href="/grid-video.html#work">Work</a>
-      <a href="/how-i-work.html">How I work</a><a href="/contact.html">Contact</a>
-    </nav>
-    <div class="portfolio-footer__contact"><a href="tel:+4741167940">+47 411 67 940</a><a href="mailto:rune@kaizenstudio.no">rune@kaizenstudio.no</a></div>
+    <div class="portfolio-footer__contact"><a href="tel:+4741167940"><svg class="portfolio-footer__contact-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.1-8.7A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.8 2.1Z"/></svg><span>+47 411 67 940</span></a><a href="mailto:rune@kaizenstudio.no"><svg class="portfolio-footer__contact-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3" y="5" width="18" height="14"/><path d="m3 5 9 7 9-7"/></svg><span>rune@kaizenstudio.no</span></a></div>
   </div>
   <div class="portfolio-footer__ticker" aria-hidden="true"><div class="portfolio-footer__track">
     <span>ADS VIDEO DESIGN CODE AGENTS&nbsp;</span><span>ADS VIDEO DESIGN CODE AGENTS&nbsp;</span>
@@ -1481,6 +1477,6 @@ a:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
 <!-- Cloudflare Web Analytics (CEO 09-04) -->
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "111e05e03c3f411fa8ebbbd04b820e76"}'></script>
 <script defer src="assets/js/analytics.js"></script>
-<script defer src="/assets/js/portfolio-nav.js?v=20261025-scroll-nav"></script>
+<script defer src="/assets/js/portfolio-nav.js?v=20261028-mobile-final"></script>
 </body>
 </html>
