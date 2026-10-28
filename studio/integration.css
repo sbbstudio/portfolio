@@ -118,7 +118,7 @@ html[data-entry="leaving"] .entry-loader { opacity: 0; }
   .contact__h h2 { margin: 0; max-width: 20ch; font-size: var(--t-h1); line-height: 1.12; }
   .contact__lede { margin-top: calc(var(--cell) * 2); }
   .contact__lede p { margin: 0; max-width: 48ch; font-size: var(--t-body); line-height: 1.55; font-weight: 400; color: var(--ink-2); }
-  .contact__cta { margin-top: calc(var(--cell) * 2); margin-bottom: calc(var(--cell) * 3); }
+  .contact__cta { margin-top: auto; margin-bottom: 0; }
   /* CTA in the shared voice (cta-system.css): no own line, no own size. */
   .contact__cta a { display: inline-flex; align-items: center; min-height: 44px; border-bottom: 0; }
   .contact__colophon { gap: 28px; }

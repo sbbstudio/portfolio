@@ -800,7 +800,8 @@ a:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
     padding: calc(var(--cell) * 5) 0;
   }
   /* Left and top aligned on mobile (DESIGN.md, Mobil); centring is desktop geometry. */
-  .sec2 .cols, .sec3 .cols { align-items: stretch; text-align: left; }
+  .page { --mcell: min(calc(100vw * 5 / 4), 100svh); }
+  .sec2 .cols, .sec3 .cols { align-items: stretch; text-align: left; justify-content: space-between; min-height: var(--mcell); }
   .sec2 .sec-center, .sec3 .sec-center { align-items: flex-start; text-align: left; }
   .sec2__title { padding: var(--cell); justify-content: flex-start; text-align: left; }
   .sec2__title h2 { white-space: normal; }
