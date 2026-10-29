@@ -243,3 +243,24 @@
     --gl2: calc(var(--pad) + var(--row));
   }
 }
+
+/* The animated desktop role uses body size to keep its motion subordinate to the statement. */
+@media (min-width: 1024px) {
+  .home-photo .hero__display h1 { font-size: var(--t-body); }
+}
+
+/* Project copy and its external action stay one group, separated by one cell of air. */
+@media (min-width: 1024px) {
+  .home-photo .card .card__actions a.site-cta {
+    align-self: flex-start; margin-top: var(--cell); padding: 0 12px;
+    border: 1px solid color-mix(in srgb,currentColor 40%,transparent);
+  }
+  .home-photo .site-cta .card__desktop-label { display: inline-flex; align-items: center; gap: 8px; }
+}
+
+/* Only the desktop NYME summary is condensed in this review; mobile retains its approved copy. */
+.nyme-copy__desktop { display: none; }
+@media (min-width: 1024px) {
+  .nyme-copy__desktop { display: inline; }
+  .nyme-copy__mobile { display: none; }
+}

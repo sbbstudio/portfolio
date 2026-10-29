@@ -254,7 +254,7 @@ Mobil-QA 28. oktober: prosjektets navn i vindu-modulens smale desktopkolonne bru
 
 Under 1024 px bruker alle åtte sider med delt navigasjon hamburger: navn til venstre og en 44 × 44 px menyknapp til høyre. Åpning viser hovedlenkene som én samlet vertikal gruppe, med 2 × cellepadding luft etter navneraden. Contact er en egen handling med 60 px luft over. Menylenker har 30 px radhøyde og én cellepadding mot ytterkanten; avstanden mellom grupper skal være større enn innenfor lenkegruppen. Glass, tekstfarge og scrolloppførsel følger felles nav. Ingen separat modal eller dupliserte lenker. Åpning fokuserer første lenke; Escape lukker og gir fokus tilbake til knappen. Lenkevalg, klikk utenfor og fokus ut lukker også. Ved kryssing av 1024 px lukkes menyen. Desktop beholder åpen navigasjon og Technicals scenestyrte hamburger. Uten JavaScript forblir HTML-lenkene synlige.
 
-Navnets ordmerke bruker Instrument Serif Regular, lokalt lagret med OFL-lisens i `assets/fonts/`, på både mobil og desktop. Størrelse 1rem (16 px ved 390 px mobilbredde), linjehøyde 1 og normal tracking. Navnet er en rolig signatur under rolletittelens hierarki; rolletittelen bruker 18 px ved samme bredde. Andre navlenker beholder systemfonten.
+Navnets ordmerke bruker Instrument Serif Regular, lokalt lagret med OFL-lisens i `assets/fonts/`, på mobil. Desktop bruker systemfont som beskrevet under. Størrelse 1rem (16 px ved 390 px mobilbredde), linjehøyde 1 og normal tracking. Navnet er en rolig signatur under rolletittelens hierarki; rolletittelen bruker 18 px ved samme bredde. Andre navlenker beholder systemfonten.
 
 Forsidens kontaktinvitasjon følger samme mobilkortprinsipp: minst 50svh, én cellepadding, tittel øverst og brødtekst/Contact som samlet bunngruppe med 6 px mellom. Ingen ekstra padding eller gap på wrapperen som også inneholder footeren.
 
@@ -277,3 +277,15 @@ Legal casework: mobilens innholdsruter bruker cellepadding uten ekstra 72 px wra
 Legal casework bruker ren grunn uten seksjonenes dekorative gradient-/kornlag på mobil.
 
 Jelsadokumentenes prosjektnavn brytes bevisst mellom «Jelsa» og «dokumentene» på mobil. Begge ledd beholder godkjent XL-størrelse og høyrejustering; desktop viser det sammenhengende navnet.
+
+## Desktopknapper — 29. oktober 2026
+
+Godkjent av Rune for publisering. Fra 1024 px bruker navigasjonens navn systemfont, body-trinnet og vekt 500. Den animerte hero-rolletittelen er redusert fra H4 til body (18 px ved 16 px rot), fortsatt vekt 500.
+
+Interne hovedhandlinger på forsiden, Technical og Sitter bruker én klasse, `hero-cta`, i `cta-system.css`: How I work i Hero, Design process i NYME/KAIZEN, See how I build og Contact. Body/400, 14 px gap, 30 px åpen sirkel og 44 px klikkhøyde. Ringen bruker 50 % av tekstfargen. Teksten flukter optisk med toppjustert innhold i naborutene; klikkflaten beholdes. Ved hover/tastaturfokus vrir `hero-cta__glyph` seg −45 grader til ↗; sirkelen får svakt relieff. Glyph-rotasjon og sirkelens dybde har separate elementer. Ingen hvileanimasjon. Redusert bevegelse fjerner overgangene.
+
+Eksterne hovedhandlinger bruker `site-cta`, Tynn kontur (nr. 4), meta/400, minst 30 px synlig høyde, 12 px sidepadding, 8 px pilgap og ↗. Ingen puls/chase. Eksterne destinasjoner og nye faner beholdes. Én cellepadding (20 px) mellom brødtekst og ekstern knapp på desktop. NYME har en kortere desktopbeskrivelse; mobil beholder tidligere tekst. Navigasjonslenker og mobilknapper er uendret. Mobilens kontroller er kontrollert mot tidligere tekst, font, padding, kant og høyde.
+
+`docs/design/cta-preview.html` med tilhørende CSS/JS er en lokal sammenligningsside og inngår ikke i publisert dist. Den beholder utforskede alternativer; den er ikke komponentkilden. PDF-handlinger bruker samme kapsel med nedlastingspil. Navigasjon, kildehenvisninger og skjemaknapper beholder egne roller. Sammenligningssiden er fortsatt en lokal prøve; de godkjente komponentene eies av `cta-system.css`.
+
+Miranda gjennomførte tre avgrensede skjermbildevurderinger av desktopprøven: runde 1 ved 1440 px førte til tydeligere ring og korrigert tekstlinje; runde 2 beholdt løsningen; runde 3 kontrollerte Hero, NYME og KAIZEN i hvile/hover ved 1100 px uten nye visuelle blokkere innen CTA-omfanget. Dette er rådgivende lokal vurdering, ikke publiseringsgodkjenning. Chromium/WebKit kontrollerte komponentene, rotasjon og mobilbevaring separat. 14 eksisterende tester og build bestod.

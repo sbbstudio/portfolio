@@ -191,3 +191,13 @@ body .nav[data-portfolio-nav] .nav__name a {
   font-family: 'Instrument Serif', Georgia, serif; font-weight: 400;
   font-size: 1rem; line-height: 1; letter-spacing: 0;
 }
+
+/* Desktop wordmark uses the navigation's system font; mobile keeps its approved serif. */
+@media (min-width: 1024px) {
+  body .nav[data-portfolio-nav] .nav__name a {
+    font-family: inherit;
+    font-size: var(--t-body, 1.125rem);
+    font-weight: 500;
+    line-height: 1.3;
+  }
+}
