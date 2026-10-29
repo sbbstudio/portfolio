@@ -703,7 +703,8 @@ a:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
     --line: rgba(5, 5, 5, .24);
     --t-xxl: 2.8125rem;   /* 110 → 45-trinnet, flyter med roten  */
     --t-xl:  2.8125rem;   /*  80 → 45                            */
-    --t-h1:  2.8125rem;   /*  60 → 45                            */
+    --t-h1:  1.875rem;
+    --t-h3:  1.31rem;
     --t-h2:  1.875rem;    /*  45 → 30                            */
   }
   .grid { display: none; }   /* 4-kolonne-nettet er desktop-geometri */
@@ -756,43 +757,44 @@ a:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
   .nav .nav__jumps { display: none; }   /* matcher desktop-selektorens vekt */
   .nav.is-paper { padding-top: 0; padding-bottom: 0; }
 
-  /* HERO — fotomodul på én --box; stasjon 0 mot bunnen, over
-     SAMME boks (ikke inset:0 mot siden — det dekket alt).      */
+  /* Mobile separates full-bleed media from the text card, as on the homepage. */
   .stage-wrap { height: auto; }
   .stage { position: relative; height: auto; overflow: visible; }
   .stage .cols {
     position: relative;
     display: block;
-    height: var(--box);
+    height: var(--mcell);
     padding: 0;
   }
   .stage__media { position: absolute; inset: 0; transform: none; }
   .stage__tiles, .stage__bar, .stage__scroll { display: none; }
 
-  /* STASJONENE 01–04 — én modul hver: åpner på egen nettlinje,
-     romslig luft (cell-multipler), tittel + brød i modulen.    */
+  /* Each station owns one padded top/bottom card; supporting paragraphs stay together. */
   .st {
     position: relative;
     display: flex; flex-direction: column; gap: 0;
-    padding: 0;
+    min-height: var(--mcell); height: auto;
+    padding: var(--cell);
     pointer-events: auto;
+    background: var(--paper);
   }
-  .st .cell { opacity: 1 !important; transform: none !important; }
-  .st--0 {
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: var(--box);
-    justify-content: flex-end;
-    padding: 0 0 var(--cell);
+  .st .cell { padding: 0; opacity: 1 !important; transform: none !important; }
+  .st--0 { top: auto; left: auto; right: auto; background: #000; }
+  .st__display, .st__h { align-self: stretch; padding-bottom: calc(2 * var(--cell)) !important; }
+  .st__display h1, .st__h h2 {
+    margin: 0; text-box: normal; font-size: var(--t-h1);
+    text-wrap: initial; max-width: none;
   }
-  .st:not(.st--0) { background: var(--paper); }
   .st:not(.st--0) .st__h h2 { color: var(--ink); }
+  .st .st__body { margin-top: auto; }
+  .st .st__body-b { margin-top: var(--cell); }
+  .st .st__frost { backdrop-filter: none; -webkit-backdrop-filter: none; background: none; }
+  .st p { margin: 0; max-width: none; font-size: var(--t-meta); line-height: 1.5; }
+  .st p + p { margin-top: var(--cell); }
+  .st p.lead { font-size: var(--t-body); }
   .st:not(.st--0) p { color: var(--ink-2); }
-  .st:not(.st--0) .st__frost { backdrop-filter: none; -webkit-backdrop-filter: none; background: none; }
 
-  /* SEC 2/3 — utsagnsmoduler, senter senter som referansen og
-     desktopen; fit-mekanikken er desktop — her taler tokenet
-     (rem, flyter med roten).                                   */
+  /* Statement titles keep their 40svh cells; supporting copy uses the body hierarchy. */
   .sec2 .cols, .sec3 .cols, .footer .cols {
     position: static;
     display: flex; flex-direction: column; gap: 2.5rem;
@@ -805,6 +807,8 @@ a:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
   .sec2 .sec-center, .sec3 .sec-center { align-items: flex-start; text-align: left; }
   .sec2__title { min-height: 40svh; padding: var(--cell); justify-content: flex-start; align-items: flex-end; text-align: left; }
   .sec2__title h2 { white-space: normal; }
+  .sec-center p { font-size: var(--t-meta); font-weight: 400; line-height: 1.5; text-wrap: initial; }
+  .sec-center .sec3__punch { font-size: var(--t-body); }
   .sec2, .sec3 { height: auto; }
   .sec3 { position: relative; top: auto; overflow: visible; }
   .sec3::after { display: none; }   /* scrim er videoens instrument */
@@ -1273,7 +1277,7 @@ a:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
     current = n;
     stations.forEach(function (st, i) {
       st.classList.toggle('is-on', i === n);
-      st.setAttribute('aria-hidden', i === n ? 'false' : 'true');
+      st.setAttribute('aria-hidden', mobile.matches || i === n ? 'false' : 'true');
     });
     fill.style.width = (n / 4 * 100) + '%';
   }
@@ -1347,9 +1351,14 @@ a:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
   /* Load: stasjon 0 står i markup med hero-forsinkelsene
      (retimet etter flisene). Etter åpningen strammes delayene
      så returen fra 01 → 0 svarer som de andre byttene.         */
-  stations.forEach(function (st, i) {
-    st.setAttribute('aria-hidden', i === 0 ? 'false' : 'true');
-  });
+  // All stations are readable in mobile flow; desktop exposes its active scene only.
+  function syncStationAccessibility() {
+    stations.forEach(function (st, i) {
+      st.setAttribute('aria-hidden', mobile.matches || i === current ? 'false' : 'true');
+    });
+  }
+  syncStationAccessibility();
+  mobile.addEventListener('change', syncStationAccessibility);
   setTimeout(function () {
     var d = ['0ms', '80ms'];
     Array.prototype.forEach.call(document.querySelectorAll('#st-0 .cell'), function (el, i) {
@@ -1477,6 +1486,6 @@ a:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
 <!-- Cloudflare Web Analytics (CEO 09-04) -->
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "111e05e03c3f411fa8ebbbd04b820e76"}'></script>
 <script defer src="assets/js/analytics.js"></script>
-<script defer src="/assets/js/portfolio-nav.js?v=20261028-mobile-final"></script>
+<script defer src="/assets/js/portfolio-nav.js?v=20261029-menu-close"></script>
 </body>
 </html>
