@@ -67,7 +67,13 @@
     animation: none; transform: none;
     transition: transform .25s var(--ez), box-shadow .25s var(--ez), background .25s var(--ez);
   }
-  .hero-cta__glyph { display: inline-block; transition: transform .25s var(--ez); }
+  /* The SVG mask gives every browser the same centered arrow; mobile retains the text glyph. */
+  .hero-cta__glyph {
+    display: block; width: 18px; height: 18px; font-size: 0;
+    background: currentColor;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M4 12h16m-6-6 6 6-6 6' fill='none' stroke='black' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat;
+    transition: transform .25s var(--ez);
+  }
   body a.hero-cta:is(:hover,:focus-visible) .hero-cta__glyph { transform: rotate(-45deg); }
   body a.hero-cta:is(:hover,:focus-visible) .arrow {
     transform: translateY(-2px); color: #171719;
