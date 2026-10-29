@@ -69,9 +69,18 @@
     if (restoreFocus) toggle.focus({ preventScroll: true });
     scheduleNav();
   };
-  toggle.addEventListener('click', () => {
-    const open = toggle.getAttribute('aria-expanded') !== 'true';
-    setOpen(open);
+  // Capture intent before pointer focus can close the menu via focusout.
+  // Otherwise the following click can reopen the menu instead of closing it.
+  let pointerOpen = null;
+  toggle.addEventListener('pointerdown', event => {
+    if (event.button === 0) pointerOpen = toggle.getAttribute('aria-expanded') !== 'true';
+  });
+  toggle.addEventListener('pointercancel', () => { pointerOpen = null; });
+  toggle.addEventListener('click', event => {
+    const open = event.detail > 0 && pointerOpen !== null
+      ? pointerOpen : toggle.getAttribute('aria-expanded') !== 'true';
+    pointerOpen = null;
+    setOpen(open, !open);
     if (open && primary) primary.querySelector('a')?.focus({ preventScroll: true });
   });
   nav.addEventListener('keydown', event => {
