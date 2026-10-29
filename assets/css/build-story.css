@@ -1,0 +1,267 @@
+/* Intro, interactive overview and closing recap share the original camera path. */
+.story-journey { height: 750svh; position: relative; }
+.story-stage { position: sticky; top: 0; height: 100svh; overflow: hidden; isolation: isolate; background: #0b0b0d; }
+.story-canvas { position: absolute; inset: 0; opacity: calc(1 - var(--story-end, 0)); }
+/* The stage stays dark until the first frame is ready; the status text sits in .story-controls. */
+#studio-root:not([data-load-phase="ready"]) .story-canvas { visibility: hidden; }
+.story-canvas > div { height: 100% !important; }
+.story-grid { position: absolute; inset: 0; pointer-events: none; opacity: .55; }
+.story-grid i { position: absolute; top: 0; bottom: 0; width: 1px; background: #ffffff18; }
+.story-grid i:nth-child(1) { left: 25%; } .story-grid i:nth-child(2) { left: 50%; } .story-grid i:nth-child(3) { left: 75%; }
+.story-grid b { position: absolute; left: 0; right: 0; top: 50%; height: 1px; background: #ffffff18; }
+.story-chapter { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; padding: 150px var(--cell) 95px; opacity: var(--chapter-opacity, 0); pointer-events: none; background: linear-gradient(90deg,#000f 0%,#000e 31%,#000a 47%,transparent 78%); }
+.build-page .story-chapter:focus { outline: none; }
+.story-chapter > * { width: calc(50% - var(--cell)); max-width: 620px; }
+.story-chapter .story-label { font-size: var(--t-meta); color: #a6a6a6; margin: 0 0 32px; }
+.story-chapter h1, .story-chapter h2 { margin: 0 0 32px; font-size: clamp(40px,4.5vw,68px); font-weight: 500; line-height: 1.06; letter-spacing: -.035em; text-wrap: balance; }
+.story-chapter p { margin: 0 0 20px; font-size: var(--t-h4); line-height: 1.4; max-width: 40ch; }
+/* Type steps down from the opening: the four stops sit one step below the intro h1
+   (3.75vw against 4.5vw in the fluid range, 34–56px against 40–68px at the clamps); the recap uses the stops' size. */
+.story-chapter h2 { font-size: clamp(34px,3.75vw,56px); }
+.story-controls { position: absolute; bottom: var(--cell); left: var(--cell); right: var(--cell); display: flex; justify-content: space-between; gap: 20px; font-size: var(--t-meta); }
+.story-controls button { border: 0; background: none; padding: 0; color: #fff; font: inherit; cursor: pointer; }
+.story-controls .arrow { display: inline-block; transition: transform .35s var(--ez); }
+.story-controls button:hover .arrow { transform: translateX(.5ch); }
+.story-fallback, .story-journey.is-reading { height: auto; }
+.story-fallback { padding-top: 160px; }
+.is-reading .story-stage { height: auto; position: relative; overflow: visible; }
+.is-reading .story-grid { display: none; }
+.story-fallback .story-chapter, .is-reading .story-chapter { position: relative; opacity: 1; padding: 80px var(--cell); background: #000; border-bottom: 1px solid var(--line); pointer-events: auto; }
+.is-reading .story-chapters { padding-top: 160px; }
+/* Jumps and reading mode land each chapter below the fixed nav; --nav-height is set by build-hero. */
+.story-fallback .story-chapter, .is-reading .story-chapter { scroll-margin-top: var(--nav-height, 0px); }
+.story-fallback .story-chapter > *, .is-reading .story-chapter > * { margin-left: calc(25% + var(--cell) / 2); }
+.is-reading .story-controls { position: relative; padding: var(--cell); left: auto; right: auto; bottom: auto; }
+.build-page .nav:not(.is-paper) { background: linear-gradient(#0b0b0d, #0b0b0d00); }
+@media (max-width:1023px) {
+  .story-grid { display: none; }
+  .story-chapter { justify-content: flex-end; padding: 140px var(--cell) 95px; background: linear-gradient(transparent 35%,#0005 45%,#000e 56%,#000f 65%); }
+  .story-chapter > * { width: 100%; max-width: 36ch; }
+  .story-chapter .story-label { margin-bottom: 20px; font-size: 13px; }
+  .story-chapter h1, .story-chapter h2 { font-size: clamp(30px,8vw,52px); margin-bottom: 24px; }
+  .story-chapter h2 { font-size: clamp(26px,6.75vw,44px); }
+  .story-chapter p { font-size: clamp(16px,4.3vw,21px); margin-bottom: 16px; }
+  .story-fallback .story-chapter > *, .is-reading .story-chapter > * { margin-left: 0; }
+  .story-controls { font-size: 12px; flex-wrap: wrap; gap: 12px; }
+  .story-controls button { min-height: 44px; }
+  .story-controls > span { align-self: center; }
+  .story-fallback .story-chapter, .is-reading .story-chapter { padding: 48px var(--cell); }
+}
+@media (prefers-reduced-motion:reduce) { .story-controls .arrow { transition: none; } }
+@media (max-width:1023px) and (max-height:650px) {
+  .story-chapter { background: linear-gradient(transparent 15%,#000c 32%,#000f 55%); }
+}
+/* The opening sits at the center of the frame; later chapters retain their layout. */
+.story-chapter.story-intro { align-items: center; justify-content: center; text-align: center; padding-block: 0; background: radial-gradient(ellipse at center, #0009, #0005 55%, transparent 85%); }
+.story-chapter.story-intro > * { width: 100%; max-width: 620px; margin-inline: 0; }
+.story-chapter.story-intro p { max-width: 40ch; }
+.story-chapter.story-intro > :last-child { margin-bottom: 0; }
+.story-fallback .story-intro, .is-reading .story-intro { padding-block: 80px; background: #000; }
+
+/* Closing recap: the four stop headlines as one centered paragraph on black, in every mode.
+   The id selector outranks the shared chapter rules (layout, background, reading-mode indent);
+   reading mode and the fallback keep their own chapter padding, so the recap scrolls like the others. */
+#recap { align-items: center; justify-content: center; text-align: center; background: #000; }
+.story-journey:not(.is-reading) #recap { padding-block: 0; }
+#recap > * { width: 100%; max-width: 620px; margin-inline: 0; }
+#recap .story-label { font-size: var(--t-meta); font-weight: 400; }
+/* One line per headline: each .story-recap__line is a block, so a headline never shares a line with
+   the next. The paragraph drops the 620px column cap so the longest headline fits on one line on
+   desktop; on narrow screens a headline wraps inside its own line.
+   The headlines light word by word as the recap hold is scrolled. --p (0–1) is set on #recap by the
+   story timeline (recapProgress); --n is the word count on the paragraph, --i each word's index.
+   Word i ramps from dim (.22) to full over its own 1/n slice of --p. The ramp is linear on purpose:
+   scroll speed is the easing. Without --p (no script) every word is lit. */
+#recap .story-recap { max-width: none; margin: 0; font-size: clamp(34px,3.75vw,56px); font-weight: 500; line-height: 1.1; letter-spacing: -.025em; }
+/* Balance applies per headline, so a wrapped headline splits evenly instead of leaving one word alone. */
+.story-recap__line { display: block; text-wrap: balance; }
+.story-recap__line > span { opacity: clamp(.22, calc(.22 + .78 * (var(--p, 1) * var(--n) - var(--i))), 1); }
+/* Reading mode, the no-script fallback and reduced motion (which renders reading mode) show plain text. */
+.story-fallback .story-recap__line > span, .is-reading .story-recap__line > span { opacity: 1; }
+
+/* A heading row precedes the three next steps in cells 6, 7 and 8. */
+.build-summary__grid { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); grid-template-rows: repeat(2,minmax(0,1fr)); height: var(--box); }
+.build-summary__grid > .cell { display: flex; flex-direction: column; align-items: flex-start; gap: var(--cell); }
+.build-summary h2, .build-summary h3 { margin: 0; font-weight: 500; line-height: 1.1; letter-spacing: -.025em; }
+.build-summary__heading { grid-column: 1 / -1; grid-row: 1; }
+.build-summary__grid > .cell:nth-child(2) { grid-column: 2; grid-row: 2; }
+.build-summary__grid > .cell:nth-child(3) { grid-column: 3; grid-row: 2; }
+.build-summary__grid > .cell:nth-child(4) { grid-column: 4; grid-row: 2; }
+.build-summary h2 { font-size: var(--t-xxl); line-height: 1; letter-spacing: -.04em; }
+.build-summary h3 { font-size: var(--t-h3); }
+.build-summary p { margin: 0; max-width: 32ch; font-size: var(--t-meta); line-height: 1.5; letter-spacing: -.012em; }
+.build-summary .system-link { margin-top: auto; padding-top: var(--cell); }
+.build-page .build-summary .grid { border-top: var(--hair) solid var(--line); }
+.build-page .build-summary .grid .nodes { top: 0; bottom: 0; height: auto; background: none; }
+.build-page .build-summary .grid::after { content: ""; position: absolute; top: 50%; left: 0; right: 0; height: var(--hair); background: var(--line); z-index: -1; }
+.build-page .build-summary .grid .nodes::before, .build-page .build-summary .grid .nodes::after { content: ""; position: absolute; top: 0; transform: translateY(-50%); width: var(--node); height: var(--node); background: #fff; }
+.build-page .build-summary .grid .nodes::after { top: 50%; }
+.build-page .build-summary .grid .n0 { left: 0; }
+.build-page .build-summary .grid .n4 { left: 100%; }
+@media (max-width:1023px) {
+  .build-summary__grid { grid-template-columns: 1fr; grid-template-rows: auto; height: auto; border-top: var(--hair) solid var(--line); }
+  .build-summary__grid > .cell:nth-child(n) { grid-column: 1; grid-row: auto; min-height: 200px; }
+  .build-summary__grid > .build-summary__heading { min-height: 0; padding-block: calc(var(--cell) * 2); }
+  .build-summary__grid > .cell + .cell { border-top: var(--hair) solid var(--line); }
+  .build-summary h2 { font-size: clamp(45px, 12vw, 80px); }
+  .build-summary h3 { font-size: var(--t-h4); }
+}
+
+/* Closing invitation: the homepage contact grid and shared content-action style. */
+.build-page .build-contact:focus { outline: none; }
+.build-page .nav.is-hidden:has(:focus-visible) { transform: translateY(0); }
+.build-contact .contact__h { grid-column: 2 / 4; grid-row: 1; align-self: center; justify-self: center; text-align: center; }
+.build-contact .contact__h h2 { margin: 0 auto; max-width: 20ch; font-size: min(var(--t-xxl), calc(var(--row) / 3.4)); font-weight: 500; line-height: 1; letter-spacing: -.04em; }
+.build-contact .contact__lede { grid-column: 2 / 4; grid-row: 2; align-self: center; justify-self: center; text-align: center; }
+.build-contact .contact__lede p { margin: 0 auto; max-width: 44ch; font-size: var(--t-h4); font-weight: 500; line-height: 1.4; letter-spacing: -.012em; }
+@media (max-width:1023px) {
+  .build-contact .system-grid { padding-block: calc(var(--cell) * 4); gap: var(--cell); }
+  .build-contact .contact__h, .build-contact .contact__lede, .build-contact .contact__cta { grid-column: 1 / -1; }
+  .build-contact .contact__h h2 { font-size: clamp(45px, 12vw, 80px); }
+  .build-contact .contact__cta { grid-row: 3; }
+}
+@media (max-width:1023px) {
+  /* Same fluid mobile rem basis and multipliers as nyme.html and kaizen.html,
+     scoped here so the earlier animation chapters keep their current sizing. */
+  #recap, .build-contact {
+    --closing-base: clamp(13px, calc(100vw / 24.375), 18px);
+    --t-meta: calc(var(--closing-base) * .9375);
+  }
+  .build-contact {
+    --t-h1: calc(var(--closing-base) * 1.875);
+    --t-h4: calc(var(--closing-base) * 1.31);
+  }
+  .build-contact .system-link { font-size: var(--t-meta); }
+  #recap .story-recap { font-size: clamp(26px,6.75vw,44px); }
+}
+
+/* Grid-aligned glass notes for the interactive camera overview. */
+#thinking .context-note {
+  width: calc(25% - var(--cell)); max-width: none; margin: 0;
+  padding: var(--cell);
+  background: rgba(0,0,0,.58);
+  -webkit-backdrop-filter: blur(6px) saturate(110%);
+  backdrop-filter: blur(6px) saturate(110%);
+  color: #fff; border: 0; border-radius: 0; box-shadow: none;
+}
+#thinking .context-note .story-label { font-size: var(--t-meta); margin-bottom: var(--cell); }
+#thinking .context-note h2 { font-size: var(--t-h1); margin-bottom: var(--cell); }
+#thinking .context-note .context-copy { font-size: var(--t-body); line-height: 1.5; margin: 0; }
+.story-journey:not(.is-reading) #thinking {
+  justify-content: flex-start;
+  padding-top: 20svh;
+  background: none;
+}
+.is-reading #thinking .context-note, .story-fallback #thinking .context-note { width: 50%; max-width: 620px; margin-left: calc(25% + var(--cell) / 2); }
+@media (max-width: 1023px) {
+  .story-journey:not(.is-reading) #thinking { justify-content: flex-end; padding-top: 140px; background: none; }
+  #thinking .context-note, .is-reading #thinking .context-note, .story-fallback #thinking .context-note { width: 100%; max-width: 36ch; margin: 0; }
+  #thinking .context-note h2 { font-size: var(--t-h2); }
+}
+
+/* All notes share one full-grid glass surface; only the active content changes. */
+#thinking .context-heading { width: auto; max-width: none; margin: 0; }
+@media (min-width: 1024px) {
+  .story-journey:not(.is-reading) #thinking { padding: 0; }
+  .story-journey:not(.is-reading) #thinking .context-note {
+    position: absolute; inset: 0; width: 100%; height: 100%; max-width: none;
+    display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); grid-template-rows: repeat(2,minmax(0,1fr));
+    padding: 0;
+  }
+  /* Match the homepage: each content cell starts at the row edge plus cell padding. */
+  .story-journey:not(.is-reading) #thinking .context-heading { display: block; grid-column: 1 / 3; grid-row: 2; padding: var(--cell); }
+  .story-journey:not(.is-reading) #thinking .context-heading .story-label { position: static; line-height: 1.5; margin-bottom: var(--cell); }
+  .story-journey:not(.is-reading) #thinking .context-heading h2 { margin: 0; }
+  .story-journey:not(.is-reading) #thinking .context-copy {
+    grid-row: 2; align-self: start; margin: 0; padding: var(--cell);
+  }
+  .story-journey:not(.is-reading) #thinking .context-copy { grid-column: 3; max-width: none; }
+
+}
+
+/* Step buttons and native scrolling share the same reading windows. */
+.story-journey:not(.is-reading) #thinking .context-note[hidden] { display: none; }
+#thinking .story-steps { position: absolute; top: calc(var(--nav-height, 64px) + var(--cell)); left: var(--cell); right: var(--cell); width: auto; max-width: none; margin: 0; padding-bottom: var(--cell); }
+#thinking .story-steps__count { margin: 0 0 12px; font-size: var(--t-meta); }
+.story-steps ol { display: flex; gap: calc(var(--cell) * 2); margin: 0; padding: 0; list-style: none; }
+.story-steps li { font-size: var(--t-meta); }
+.story-steps button { display: block; min-height: 44px; padding: 6px 0; border: 0; border-bottom: 2px solid transparent; background: transparent; color: inherit; font: inherit; white-space: nowrap; opacity: .75; cursor: pointer; pointer-events: auto; }
+.story-steps button[aria-current="step"] { opacity: 1; border-bottom-color: currentColor; }
+.story-steps button:hover { opacity: 1; }
+.story-steps button:focus-visible { opacity: 1; outline: 2px solid #fff; outline-offset: 4px; }
+.story-steps button:active { background: rgba(255,255,255,.12); }
+.story-steps li span { margin-right: .5ch; }
+.is-reading #thinking, .story-fallback #thinking { gap: var(--cell); }
+@media (max-width:1023px) {
+  #thinking .story-steps { top: 140px; transform: none; }
+  .story-steps ol { gap: var(--cell); flex-wrap: wrap; }
+}
+
+@media (max-width:1023px) { .build-summary__grid > .build-summary__empty { display: none; } }
+
+/* The overview has its own instruction; keep the reading-mode action in place. */
+.story-journey.is-overview .story-controls > span { visibility: hidden; }
+#thinking .context-note .story-label { color: rgba(255,255,255,.8); }
+
+/* Review overlay: show the actual four-column/two-row grid above the glass. */
+.story-journey.is-overview .story-grid { z-index: 3; opacity: 1; border: var(--hair) solid var(--line); }
+.story-journey.is-overview .story-grid i,
+.story-journey.is-overview .story-grid b { background: var(--line); }
+.story-journey.is-overview .story-grid i::after {
+  content: ''; position: absolute; top: 50%; left: 50%;
+  width: var(--node); height: var(--node); background: #fff;
+  transform: translate(-50%,-50%);
+}
+.story-journey.is-overview .story-grid b::before,
+.story-journey.is-overview .story-grid b::after {
+  content: ''; position: absolute; top: 50%; width: var(--node); height: var(--node);
+  background: #fff; transform: translateY(-50%);
+}
+.story-journey.is-overview .story-grid b::before { left: 0; }
+.story-journey.is-overview .story-grid b::after { right: 0; }
+
+/* Titles lead each step; the numbered label follows with the shared cell gap. */
+#thinking .context-heading h2 { margin: 0 0 var(--cell); }
+#thinking .context-heading .story-label { margin: 0; }
+@media (min-width:1024px) {
+  .story-journey:not(.is-reading) #thinking .context-heading h2 { margin: 0 0 var(--cell); }
+  .story-journey:not(.is-reading) #thinking .context-heading .story-label { margin: 0; }
+}
+
+/* Each desktop step occupies one grid cell; the scroll count stays in cell 5. */
+@media (min-width:1024px) {
+  #thinking .story-steps { position: static; width: auto; padding: 0; }
+  #thinking .story-steps ol { position: absolute; left: 0; bottom: calc(50% + var(--cell)); width: 75%; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; }
+  .story-steps li { padding: 0 var(--cell); }
+  .story-steps button { width: 100%; height: 100%; }
+  #thinking .story-steps__count { position: absolute; left: var(--cell); bottom: var(--cell); margin: 0; }
+}
+
+/* Approved copy uses two paragraphs; keep inherited body typography. */
+#thinking .context-copy p { font: inherit; margin: 0 0 1em; max-width: none; }
+#thinking .context-copy p:last-child { margin-bottom: 0; }
+.story-steps button { white-space: normal; text-align: left; }
+.story-steps li { white-space: normal; min-width: 0; }
+@media (min-width:1024px) and (max-width:1279px) {
+  .story-journey:not(.is-reading) #thinking .context-copy { grid-column: 3 / 5; }
+}
+@media (max-width:1023px) and (max-height:740px) {
+  #thinking .context-note .context-copy { font-size: var(--t-meta); }
+  #thinking .story-steps { top: 72px; }
+}
+@media (max-width:1023px) {
+  .story-steps ol { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 8px; }
+  .story-steps li span { display: none; }
+  .story-steps button { width: 100%; height: 100%; }
+}
+
+/* The active desktop step highlights its full cell edge on the shared row baseline. */
+@media (min-width:1024px) {
+  .story-steps li { position: relative; }
+  .story-steps button[aria-current="step"] { border-bottom-color: transparent; }
+  .story-steps button[aria-current="step"]::after {
+    content: ''; position: absolute; left: 0; right: 0;
+    bottom: calc(-1 * var(--cell) - 1px); height: 2px;
+    background: currentColor; pointer-events: none;
+  }
+}

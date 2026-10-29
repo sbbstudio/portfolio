@@ -1,0 +1,169 @@
+.cyan-agent {
+  position: fixed; top: 0; left: 0; width: 1px; height: 1px;
+  z-index: 30; pointer-events: none; opacity: 0;
+  contain: layout style; will-change: transform;
+}
+/* Runtime switches positioning and coordinates together at the mobile breakpoint. */
+.cyan-agent[data-document-anchor] { position: absolute; }
+/* Document-origin containing block: clips only horizontal canvas overscan.
+   Unlike hidden, clip creates no scroll container; vertical overflow stays visible. */
+.cyan-mobile-plane { position: absolute; top: 0; left: 0; width: 100%; height: 0;
+  overflow-x: clip; overflow-y: visible; pointer-events: none; z-index: 30; }
+.cyan-agent canvas { display: block; width: 100%; height: 100%; }
+.cyan-controls {
+  display: none; position: fixed; right: 16px; bottom: 16px; z-index: 110;
+  align-items: center; gap: 8px; padding: 4px 8px;
+  border: 1px solid #29211f15; border-radius: 999px;
+  background: #f7f6f2e8; color: #29211f; font-size:.6875rem;
+}
+.cyan-controls span { display: none; }
+.cyan-controls button {
+  min-height: 40px; padding: 0 10px; border: 0; border-radius: 999px;
+  background: transparent; color: inherit; cursor: pointer; font: inherit;
+}
+.cyan-controls button:hover { background: #d3dfd3; }
+.cyan-controls button:focus-visible { outline: 2px solid #29211f; outline-offset: 2px; }
+[data-cyan-hero-slot], .cyan-wordmark { display: none; }
+
+/* One quiet stage. Character first, wordmark and surrounding copy second. */
+html[data-cyan-preview='ready'] #topp { --hero-tail: 0px; min-height: 180svh; }
+html[data-cyan-preview='ready'] .hero-stage {
+  height: 100svh; padding: 0; display: block;
+  background: radial-gradient(ellipse at 50% 48%, #fbfbf9 0%, #f0f1ed 75%, #e5e9e1 100%);
+}
+html[data-cyan-preview='ready'] .hero-stage::before,
+html[data-cyan-preview='ready'] .hero-stage::after,
+html[data-cyan-preview='ready'] .hero-dot-grid,
+html[data-cyan-preview='ready'] .hero-fade,
+html[data-cyan-preview='ready'] .hero-flow,
+html[data-cyan-preview='ready'] .flow-ports { display: none; }
+html[data-cyan-preview='ready'] [data-cyan-hero-slot] {
+  display: block; position: absolute;
+  top: 12%; bottom: 8%; left: 25%; right: 25%;
+}
+html[data-cyan-preview='ready'] .cyan-wordmark {
+  display: block; position: absolute; top: 12%; left: 0; right: 0;
+  text-align: center; color: #b9c6b5; font-size: 20.4vw;
+  font-weight: 700; letter-spacing: -.065em; line-height: .9;
+  padding-right: .065em; user-select: none; pointer-events: none;
+}
+html[data-cyan-preview='ready'] .hero-intro,
+html[data-cyan-preview='ready'] .hero-copy,
+html[data-cyan-preview='ready'] .hero-cta { position: absolute; margin: 0; }
+html[data-cyan-preview='ready'] .hero-intro { left: 3.5%; top: 65%; width: 25%; }
+html[data-cyan-preview='ready'] .hero-kicker { font-size:.625rem; letter-spacing: .13em; margin-bottom: 14px; }
+html[data-cyan-preview='ready'] #hero-title {
+  font-size:clamp(1.75rem, 3.1vw,3rem); max-width: 7.5em;
+  line-height: 1.02; letter-spacing: -.055em;
+}
+html[data-cyan-preview='ready'] .hero-copy {
+  left: auto; right: 3.5%; top: 64%; width: 24%; max-width: 31ch;
+  font-size:clamp(.8125rem, 1.05vw,1rem); line-height: 1.5;
+}
+html[data-cyan-preview='ready'] .hero-copy br { display: none; }
+html[data-cyan-preview='ready'] .hero-copy p:first-of-type { margin-bottom: 20px; }
+html[data-cyan-preview='ready'] .hero-copy p:last-of-type { white-space: normal; }
+html[data-cyan-preview='ready'] .hero-cta { left: 3.5%; bottom: 5%; font-size:.6875rem; }
+html[data-cyan-preview='ready'] .cyan-wordmark,
+html[data-cyan-preview='ready'] .hero-intro,
+html[data-cyan-preview='ready'] .hero-copy,
+html[data-cyan-preview='ready'] .hero-cta,
+html[data-cyan-preview='ready'] body > header {
+  opacity: 0; visibility: hidden; translate: 0 12px;
+  transition: opacity .9s ease, translate .9s ease, visibility .9s;
+}
+html[data-cyan-preview='ready'] .hero-intro { transform: none; transition-delay: .15s; }
+html[data-cyan-preview='ready'] .hero-copy { transition-delay: .3s; }
+html[data-cyan-preview='ready'] .hero-cta { transition-delay: .4s; }
+html[data-cyan-preview='ready'] body > header { transition-delay: .25s; background: transparent; backdrop-filter: none; }
+html[data-cyan-reveal='shown'] .cyan-wordmark,
+html[data-cyan-reveal='shown'] .hero-intro,
+html[data-cyan-reveal='shown'] .hero-copy,
+html[data-cyan-reveal='shown'] .hero-cta,
+html[data-cyan-reveal='shown'] body > header { opacity: 1; visibility: visible; translate: 0 0; }
+html[data-cyan-reveal='shown'] .cyan-controls { display: flex; }
+html[data-cyan-reveal='waiting'] .cyan-wordmark,
+html[data-cyan-reveal='waiting'] .hero-intro,
+html[data-cyan-reveal='waiting'] .hero-copy,
+html[data-cyan-reveal='waiting'] .hero-cta,
+html[data-cyan-reveal='waiting'] body > header { transition: none; }
+/* Hero-teksten fader bare på mobil (ingen festet hero). På desktop følger h1 og avsnitt ordmerket, se nederst. */
+@media (max-width: 800px) {
+  html[data-cyan-depart='leaving'] .hero-intro,
+  html[data-cyan-depart='leaving'] .hero-copy {
+    opacity: 0; visibility: hidden; transition: none;
+  }
+  html[data-cyan-depart='fading'] .hero-intro,
+  html[data-cyan-depart='fading'] .hero-copy { opacity: 0; transition-delay: 0s; transition-duration: .25s; }
+}
+
+/* After leaving the centre, the small character keeps to one outer margin. */
+html[data-cyan-preview='ready'] main > section:not(#topp) { padding-inline: 64px; }
+html[data-cyan-preview='ready'] #avtalen { padding-top: 192px; margin-bottom: 0; }
+html[data-cyan-preview='ready'] #avtalen > * { transform: none; }
+html[data-cyan-preview='ready'] #arbeidsflyter-title { left: 64px; }
+html[data-cyan-preview='ready'] .site-footer {
+  position: relative; grid-column: 1 / -1; left: auto; right: auto;
+  margin: 0; min-height: 120px;
+}
+@media (max-width: 800px) {
+  html[data-cyan-preview='ready'] #topp {
+    /* Match the painted stage height so no unpainted strip separates the mobile sections.
+       Keep --hero-tail for the stage's internal padding. */
+    --hero-tail: 56px;
+    --cyan-stage-height: max(840px, 100svh);
+    --cyan-figure-height: min(110vw, 440px);
+    min-height: var(--cyan-stage-height);
+  }
+  html[data-cyan-preview='ready'] .hero-stage { position: relative; top: auto; height: var(--cyan-stage-height); }
+  html[data-cyan-preview='ready'] [data-cyan-hero-slot] {
+    top: 124px; bottom: auto; height: var(--cyan-figure-height); left: 5%; right: 5%;
+  }
+  html[data-cyan-preview='ready'] .cyan-wordmark { top: 110px; font-size: 20.6vw; }
+  html[data-cyan-preview='ready'] .hero-intro { top: calc(100px + var(--cyan-figure-height)); left: 24px; right: 24px; width: auto; }
+  html[data-cyan-preview='ready'] #hero-title { font-size: var(--t-h2); line-height: var(--lh-display); max-width: none; } /* samme trinn som seksjonenes H2 (Designer P2-1) */
+  html[data-cyan-preview='ready'] .hero-copy { top: calc(100px + var(--cyan-figure-height) + var(--t-h2) + 30px); left: 24px; right: 24px; width: auto; max-width: 42ch; font-size:clamp(.8125rem, 3.6vw,.9375rem); line-height: 1.45; }
+  html[data-cyan-preview='ready'] .hero-cta { left: 24px; top: calc(185px + var(--cyan-figure-height)); bottom: auto; }
+  html[data-cyan-preview='ready'] main > section:not(#topp) { padding-inline: 44px; }
+  html[data-cyan-preview='ready'] #arbeidsflyter-title { left: 44px; }
+  .cyan-controls { right: 10px; bottom: 10px; gap: 0; padding: 3px; }
+  .cyan-controls button { width: 44px; min-height: 44px; padding: 0; font-size: 0; }
+  .cyan-controls button::before { font-size:1.125rem; content: 'Ⅱ'; }
+  .cyan-controls button:last-child::before { content: '↺'; }
+  .cyan-controls button[aria-pressed='true']::before,
+  html[data-cyan-motion='reduced'] .cyan-controls button:first-of-type::before { content: '▶'; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html[data-cyan-preview='ready'] .hero-stage > *,
+  html[data-cyan-preview='ready'] body > header { transition: none; }
+}
+
+/* Typografi-prøve (branch typo/syne-trial): ordmerket i display-skriften */
+html[data-cyan-preview='ready'] .cyan-wordmark { font-family: var(--font-display); font-weight: 800; font-size: 15vw; letter-spacing: -.04em; }
+/* Tekstsystem: tokens fra index.html :root */
+html[data-cyan-preview='ready'] .hero-kicker, html[data-cyan-preview='ready'] .hero-cta, .cyan-controls { font-size: var(--t-label); }
+html[data-cyan-preview='ready'] .hero-copy { font-size: var(--t-body); }
+@media (min-width: 801px) { html[data-cyan-preview='ready'] #hero-title { font-size: var(--t-h2); line-height: var(--lh-display); } }
+/* Hero: h1 og brødtekst linjert på kapphøyde. Syne: kapp-topp = (lh-1.2)/2+.275 em; Instrument Sans (lh 1.5) = .39 em. */
+html[data-cyan-preview='ready'] #hero-title { margin: 0; }
+html[data-cyan-preview='ready'] .hero-copy { line-height: 1.5; }
+html[data-cyan-preview='ready'] .hero-copy p:first-of-type { margin-top: 0; }
+@media (min-width: 801px) {
+  html[data-cyan-preview='ready'] .hero-intro { top: 62%; }
+  html[data-cyan-preview='ready'] .hero-copy { top: calc(62% + var(--t-h2) * .165 - var(--t-body) * .39); }
+}
+
+/* Tema: hero-flate og ordmerke via tokens (index.html :root). */
+html[data-cyan-preview='ready'] .hero-stage { background: radial-gradient(ellipse at 50% 48%, var(--hero-a) 0%, var(--hero-b) 75%, var(--hero-c) 100%); }
+html[data-cyan-preview='ready'] .cyan-wordmark { color: var(--wordmark); }
+
+/* Ordmerket (CEO 2026-09-11): KAIZEN står fast i verden bak Kai. Heroen er festet på desktop, så cyan-runtime
+   setter --kai-wordmark-travel = scroll forbi drivestart (der hjulene begynner å rulle); merket glir da opp i
+   scrolltakt og Kai kjører fra det. Mobil har ingen festet hero og trenger ingen travel (0px). transform, ikke
+   translate: reveal-overgangen bruker translate. */
+html[data-cyan-preview='ready'] .cyan-wordmark { transform: translateY(calc(-1 * var(--kai-wordmark-travel, 0px))); }
+/* CEO 2026-09-12: «Dette er Kai.» og avsnittet får samme effekt og flytter seg i takt med ordmerket (desktop). */
+@media (min-width: 801px) {
+  html[data-cyan-preview='ready'] .hero-intro,
+  html[data-cyan-preview='ready'] .hero-copy { transform: translateY(calc(-1 * var(--kai-wordmark-travel, 0px))); }
+}

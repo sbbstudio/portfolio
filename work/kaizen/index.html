@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KAIZEN — Website design decisions | Rune Øverland</title>
+<meta name="description" content="Designing an approachable AI service for small businesses: character-led identity, visual hierarchy, interaction and the next usability questions.">
+<link rel="icon" href="/favicon.ico?v=r1" sizes="16x16 32x32 48x48">
+<link rel="stylesheet" href="/assets/css/module-system.css?v=20261027-dark-active">
+
+<link rel="stylesheet" href="/cta-system.css?v=20261029-svg-arrow">
+<link rel="stylesheet" href="/nav-system.css?v=20261029-shared-wordmark">
+<link rel="stylesheet" href="/assets/css/portfolio-footer.css?v=20261028-mobile-final">
+<script src="/assets/js/portfolio-footer.js" defer></script>
+<script src="/assets/js/portfolio-snapshot-links.js"></script>
+</head>
+<body>
+<div class="page" id="top">
+
+<nav class="nav" data-variant="compact" aria-label="Main">
+  <div class="cell nav__name"><a href="/grid-video.html">Rune &Oslash;verland</a></div>
+  <div class="cell nav__links"><a href="/work/nyme/">Nyme</a><a href="/work/kaizen/">Kaizen</a><a href="/how-i-work.html">How I work</a></div>
+  <div class="cell nav__jumps" aria-label="Sections on this page"><a href="#intro" data-panel="0"><span>01</span>Start</a><a href="#story" data-panel="2"><span>03</span>Familiar work</a><a href="#story" data-panel="6"><span>07</span>Learning</a></div>
+  <div class="cell nav__cta"><a href="/contact.html">Contact</a></div>
+</nav>
+
+<main id="hero">
+
+<!-- ══ PRELUDE — a glass over the module while the site loads in the window.
+     Same glass as the nav component. It clears when the frame is ready and
+     leaves on the first scroll. ══ -->
+<div class="prelude is-loading" id="prelude" data-glass="dark" role="dialog" aria-modal="true" aria-labelledby="kaizen-title">
+  <button type="button" class="prelude__close" data-dismiss aria-label="Close and go to the page">×</button>
+  <div class="prelude__body">
+    <p class="label">Design process</p>
+    <h1 class="prelude__title" id="kaizen-title"><span class="prelude__name">KAIZEN</span><span class="prelude__sub">How I designed it.</span></h1>
+    <p class="prelude__lead">How do you make an unfamiliar AI service tangible for a small business? I explored a character-led identity, plain language and interaction to help explain the offer. Follow the design decisions and what I still need to test.</p>
+    <p class="prelude__status" aria-live="polite"><span class="prelude__state" data-loading>Loading kaizenstudio.no <span class="prelude__bar" aria-hidden="true"></span></span><span class="prelude__state" data-ready>kaizenstudio.no is running in the window.</span></p>
+  </div>
+</div>
+
+<!-- ══ PINNED WINDOW — one module that stays on screen for the whole read.
+     The site runs in cells 1–3/5–7. Cells 4 and 8 are a sequence of panels
+     driven by the page scroll: intro → problem → one panel per decision
+     (the window scrolls to the element it names) → result. ══ -->
+<section class="pin pin--live pin--credits" id="story" style="--panels:1" aria-label="The design process">
+  <div class="mod step pin__stage">
+  <div class="mgrid" aria-hidden="true"><i style="--x:0%"><b></b></i><i style="--x:25%"><b></b></i><i style="--x:50%"><b></b></i><i style="--x:75%"><b></b></i><i style="--x:100%"><b></b></i></div>
+  <div class="cell step__window"><div class="window window--live window--notes" data-window="notes" style="--poster:url(/assets/opt/process/kaizen-poster.jpg);--poster-m:url(/assets/opt/process/kaizen-poster-m.jpg)">
+    <iframe data-src="/work/kaizen/site/" data-hide=".kai-startup,.kai-loading,section.kai-top" data-css="html:not([data-kai-site=ready]) body>:not(.kai-startup):not(.kai-loading) *{visibility:visible!important}html:not([data-kai-site=ready]){overflow:auto!important}" title="kaizenstudio.no, as designed — October 2026"></iframe>
+  <div class="pin__navigation" data-glass="dark">
+    <nav class="pin__steps" aria-label="Sections"><button type="button" data-step="0" aria-current="step">1</button><button type="button" data-step="1">2</button><button type="button" data-step="2">3</button><button type="button" data-step="3">4</button><button type="button" data-step="4">5</button><button type="button" data-step="5">6</button><button type="button" data-step="6">7</button></nav>
+  </div>
+    <p class="pin__site-link" data-glass="dark"><a class="site-cta" href="https://kaizenstudio.no" target="_blank" rel="noopener">Open kaizenstudio.no <span class="arrow" aria-hidden="true">↗</span></a></p>
+  </div></div>
+
+  <!-- Section navigation sits inside the window; each panel supplies its own summary in cell 4. -->
+
+
+  <article class="panel is-active" id="intro" data-target="#topp">
+    <header class="cell step__head"><p class="label">The design challenge · 1 of 7</p><h1 class="step__title"><span class="step__name">KAIZEN</span><span class="step__sub">How I designed it.</span></h1></header>
+    <div class="cell step__copy"><dl class="think"><dt>Audience</dt><dd>Small businesses without the budget for senior developers or an in-house team.</dd><dt>Exploration</dt><dd>Early versions without a character felt abstract and difficult to distinguish. Introducing Kai gave the service a name and a recognisable presence.</dd><dt>Decision</dt><dd>I redesigned the experience around Kai, from animation to the navigation logo, to create one coherent identity.</dd></dl></div>
+    <p class="cell pin__credits">Product design, visual identity and interaction. Solo, 2025–26.</p>
+  </article>
+  <article class="panel" data-target="#avtalen-title">
+    <header class="cell step__head"><p class="label">Clarity · 2 of 7</p><h2>Make the service tangible.</h2></header>
+    <div class="cell step__copy"><dl class="think"><dt>Design challenge</dt><dd>Kai creates an introduction, but the visitor still needs to understand what they can buy.</dd><dt>Design reasoning</dt><dd>I use familiar work, plain language and a clear hierarchy to make the service approachable without AI knowledge.</dd><dt>Decision</dt><dd>The offer brings everyday tasks, the installation price and the payment condition into one section.</dd></dl></div>
+    <p class="cell pin__credits">A recognisable character needs a concrete offer.</p>
+  </article>
+  <article class="panel" data-target=".kai-capability-track, #arbeidsflyter">
+    <header class="cell step__head"><p class="label">Information hierarchy · 3 of 7</p><h2>Start with familiar work.</h2></header>
+    <div class="cell step__copy"><dl class="think"><dt>Design challenge</dt><dd>The service can cover many kinds of work. A broad promise alone gives visitors little to relate to.</dd><dt>Design reasoning</dt><dd>Concrete tasks give an unfamiliar service a familiar frame of reference.</dd><dt>Decision</dt><dd>I organise the examples around business activities, so visitors can connect the offer to their own working day.</dd></dl></div>
+    <p class="cell pin__credits">Help visitors recognise a need before explaining the solution.</p>
+  </article>
+  <article class="panel" data-target="#metode">
+    <header class="cell step__head"><p class="label">Expectations · 4 of 7</p><h2>Make the next steps visible.</h2></header>
+    <div class="cell step__copy"><dl class="think"><dt>Design challenge</dt><dd>Interest in the service does not explain what happens after a conversation.</dd><dt>Design reasoning</dt><dd>A short sequence makes responsibilities and approval points easier to inspect.</dd><dt>Decision</dt><dd>I show four stages, from agreeing the work to reviewing it together, with a heading and explanation for each.</dd></dl></div>
+    <p class="cell pin__credits">Agreement, delivery and review form one readable sequence.</p>
+  </article>
+  <article class="panel" data-target="#prat">
+    <header class="cell step__head"><p class="label">Attention and action · 5 of 7</p><h2>Give curiosity a next step.</h2></header>
+    <div class="cell step__copy"><dl class="think"><dt>Design intent</dt><dd>I want visitors to explore before asking them to make contact. Kai’s eyes invite them to notice that the page responds.</dd><dt>Trade-off</dt><dd>Kai can draw too much attention. I use his head direction to point towards the content, alongside simple copy and visual hierarchy.</dd><dt>Next step</dt><dd>The invitation asks for one task and a conversation, rather than a prepared brief.</dd></dl></div>
+    <p class="cell pin__credits">Motion should support the message, not compete with it.</p>
+  </article>
+  <article class="panel" data-target="#kontakt">
+    <header class="cell step__head"><p class="label">Contact · 6 of 7</p><h2>Leave room for uncertainty.</h2></header>
+    <div class="cell step__copy"><dl class="think"><dt>Design challenge</dt><dd>Someone may be interested without knowing which task to start with.</dd><dt>Design reasoning</dt><dd>The contact section makes a question a valid reason to reach out.</dd><dt>Decision</dt><dd>I provide phone, email and a short form, with copy that explains there is no commitment to proceed.</dd></dl></div>
+    <p class="cell pin__credits">A visitor should not need a finished brief to get in touch.</p>
+  </article>
+  <article class="panel is-last" data-target="footer.site-footer">
+    <header class="cell step__head"><p class="label">Learning · 7 of 7</p><h2>Test beyond first impressions.</h2></header>
+    <div class="cell step__copy"><dl class="think"><dt>Feedback so far</dt><dd>Informal walkthroughs have brought positive reactions to Kai and the visual design. They were open requests for feedback, not structured usability tests.</dd><dt>Still unknown</dt><dd>I have not established whether visitors understand the offer or whether the page generates enquiries.</dd><dt>Next test</dt><dd>Ask small-business participants to explain the service, identify a relevant task and find how to make contact. Observe where Kai helps or distracts.</dd></dl></div>
+    <p class="cell pin__credits">Positive reactions are a starting point, not proof of effectiveness.</p>
+  </article>
+
+</div>
+</section>
+
+</main>
+
+<!-- portfolio-footer:start -->
+<footer class="portfolio-footer" id="footer" role="contentinfo" aria-label="Portfolio footer">
+  <div class="portfolio-footer__grid" aria-hidden="true"><i style="--x:0%;--y:0%"></i><i style="--x:0%;--y:50%"></i><i style="--x:0%;--y:100%"></i><i style="--x:25%;--y:0%"></i><i style="--x:25%;--y:50%"></i><i style="--x:25%;--y:100%"></i><i style="--x:50%;--y:0%"></i><i style="--x:50%;--y:50%"></i><i style="--x:50%;--y:100%"></i><i style="--x:75%;--y:0%"></i><i style="--x:75%;--y:50%"></i><i style="--x:75%;--y:100%"></i><i style="--x:100%;--y:0%"></i><i style="--x:100%;--y:50%"></i><i style="--x:100%;--y:100%"></i></div>
+  <img class="portfolio-footer__landscape" src="/assets/opt/intro-sunset-portrait.webp" alt="Rune on a beach at sunset." width="1333" height="2000" loading="lazy" decoding="async">
+  <div class="portfolio-footer__details">
+    <p class="portfolio-footer__name">Rune Øverland</p>
+    <div class="portfolio-footer__contact"><a href="tel:+4741167940"><svg class="portfolio-footer__contact-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.1-8.7A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.8 2.1Z"/></svg><span>+47 411 67 940</span></a><a href="mailto:rune@kaizenstudio.no"><svg class="portfolio-footer__contact-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3" y="5" width="18" height="14"/><path d="m3 5 9 7 9-7"/></svg><span>rune@kaizenstudio.no</span></a></div>
+  </div>
+  <div class="portfolio-footer__ticker" aria-hidden="true"><div class="portfolio-footer__track">
+    <span>ADS VIDEO DESIGN CODE AGENTS&nbsp;</span><span>ADS VIDEO DESIGN CODE AGENTS&nbsp;</span>
+  </div></div>
+  <img class="portfolio-footer__portrait" src="/assets/opt/footer-sunset-profile.webp" alt="Rune looking toward the sea at sunset." width="889" height="1334" loading="lazy" decoding="async">
+  <div class="portfolio-footer__end"><a class="portfolio-footer__top" href="#top">Back to top <span class="arrow">↑</span></a><span>© 2026</span></div>
+</footer>
+<!-- portfolio-footer:end -->
+
+</div>
+
+<script>
+/* Mobile reads the still behind the window: the live frame loads from 1024px only,
+   so iOS cannot stretch it to the site's height and the page stays light. The
+   prelude belongs to the loading frame, so it goes with it. */
+(function () {
+  var f = document.querySelector('.pin iframe'); if (!f) return;
+  var mq = matchMedia('(min-width: 1024px)');
+  var load = function () { if (!f.src) f.src = f.getAttribute('data-src'); };
+  if (mq.matches) load();
+  else { var p = document.getElementById('prelude'); if (p) p.remove(); mq.addEventListener('change', function (e) { if (e.matches) load(); }); }
+})();
+</script>
+
+<script>
+/* Live window: render the site at --window-width and scale it to the cell. */
+(function () {
+  var W = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--window-width')) || 1440;
+  var wins = Array.prototype.slice.call(document.querySelectorAll('.window--live'));
+  if (!wins.length) return;
+  var fit = function (w) { w.style.setProperty('--scale', (w.clientWidth / W).toFixed(4)); };
+  wins.forEach(fit);
+  if (window.ResizeObserver) { var ro = new ResizeObserver(function (es) { es.forEach(function (e) { fit(e.target); }); }); wins.forEach(function (w) { ro.observe(w); }); }
+  else window.addEventListener('resize', function () { wins.forEach(fit); }, { passive: true });
+})();
+
+/* The framed site is the scroller, at 100%. One panel per section of the site:
+   the section whose top has passed the upper third of the window is the current one. */
+(function () {
+  var pin = document.querySelector('.pin'); if (!pin) return;
+  var frame = pin.querySelector('iframe');
+  var panels = Array.prototype.slice.call(pin.querySelectorAll('.panel'));
+  var steps = Array.prototype.slice.call(pin.querySelectorAll('[data-step]'));
+  var desktopQuery = matchMedia('(min-width: 1024px)');
+  var desktop = function () { return desktopQuery.matches; };
+  var scrollBehavior = function () { return matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth'; };
+  var doc = null, targets = [], current = -1;
+  var setPanel = function (i) {
+    if (i === current) return; current = i;
+    panels.forEach(function (p, k) {
+      var visible = !desktop() || k === i;
+      p.classList.toggle('is-active', visible);
+      p.inert = !visible;
+      if (visible) p.removeAttribute('aria-hidden'); else p.setAttribute('aria-hidden', 'true');
+    });
+    steps.forEach(function (b, k) { if (k === i) b.setAttribute('aria-current', 'step'); else b.removeAttribute('aria-current'); });
+    targets.forEach(function (t, k) { if (t) t.classList.toggle('is-current', k === i); });
+  };
+  var render = function () {
+    if (!doc || !desktop()) return;
+    resolve();
+    var line = frame.contentWindow.innerHeight * 0.35, best = 0;
+    targets.forEach(function (t, k) { if (t && t.getBoundingClientRect().top <= line) best = k; });
+    if (frame.contentWindow.scrollY < 200) best = 0;
+      var w = frame.contentWindow, se = doc.scrollingElement || doc.documentElement; if (w.scrollY >= 200 && w.scrollY + w.innerHeight >= se.scrollHeight - 2) best = targets.length - 1; /* at the very bottom the Result panel wins */ /* the package card sits inside the hero */
+    setPanel(best);
+  };
+  var resolve = function () {
+    targets = panels.map(function (p, k) {
+      var t = doc.querySelector(p.getAttribute('data-target')); // Re-resolve after runtime inserts or replaces sections.
+      if (t && !t.hasAttribute('data-rn')) t.setAttribute('data-rn', String(k + 1).padStart(2, '0'));
+      return t;
+    });
+  };
+  var wire = function () {
+    var d = frame.contentDocument; if (doc || !d || !d.body || !d.querySelector('main')) return;
+    doc = d;
+    window.portfolioSnapshotLinks(d, pin.querySelector('.pin__site-link a').href);
+    frame.parentNode.classList.add('is-loaded');
+    var css = d.createElement('style');
+    var hide = frame.getAttribute('data-hide'), extra = frame.getAttribute('data-css') || '';
+    css.textContent = (hide ? hide + '{display:none!important}' : '') + extra + 'html{scrollbar-width:none}::-webkit-scrollbar{display:none}main>section{min-height:100vh;box-sizing:border-box;display:flex;flex-direction:column;justify-content:center}[data-rn]{position:relative;outline:1px solid transparent;outline-offset:-1px}' +
+      '[data-rn].is-current{outline-color:#000}@media (max-width:1023px){[data-rn]::before{display:none}}';
+    d.head.appendChild(css);
+    resolve();
+    var ticking = false;
+    frame.contentWindow.addEventListener('scroll', function () { if (ticking) return; ticking = true; requestAnimationFrame(function () { ticking = false; render(); }); }, { passive: true });
+    render();
+  };
+  var go = function (k) {
+    if (!desktop()) { panels[k].scrollIntoView({ behavior: scrollBehavior() }); return; }
+    if (!doc) return;
+    resolve(); // The site's runtime may create sections after the iframe load event.
+    var t = targets[k], w = frame.contentWindow; if (!t) return;
+    var se = doc.scrollingElement || doc.documentElement;
+    // The last panel is a reflection at the end of the page, even when the footer is short.
+    var top = k === panels.length - 1 ? se.scrollHeight - w.innerHeight :
+      k === 0 ? 0 : t.getBoundingClientRect().top + w.scrollY - w.innerHeight * 0.3;
+    w.scrollTo({ top: Math.max(0, top), behavior: scrollBehavior() });
+    render();
+  };
+  steps.forEach(function (b, k) { b.addEventListener('click', function () { go(k); }); });
+  document.querySelectorAll('[data-panel]').forEach(function (a) { a.addEventListener('click', function (e) { if (!desktop()) return; e.preventDefault(); go(+a.getAttribute('data-panel')); }); });
+  // Mobile exposes every note; crossing the breakpoint restores the current desktop panel.
+  desktopQuery.addEventListener('change', function () {
+    var previous = Math.max(0, current); current = -1;
+    setPanel(previous); render();
+  });
+  setPanel(0);
+  wire(); frame.addEventListener('load', wire);
+})();
+</script>
+<script>
+/* Prelude: the glass clears when the framed site has loaded (never before a
+   short beat, so the state is readable). It stays until the reader closes it. */
+(function () {
+  var pre = document.getElementById('prelude'), frame = document.querySelector('.pin iframe');
+  if (!pre || !frame) return;
+  requestAnimationFrame(function () { requestAnimationFrame(function () { pre.classList.add('is-shown'); }); });
+  var ready = false, left = false, t0 = Date.now();
+  document.documentElement.classList.add('has-prelude');
+  var setReady = function () {
+    if (ready) return; ready = true;
+    var wait = Math.max(0, 1400 - (Date.now() - t0));
+    setTimeout(function () { pre.classList.remove('is-loading'); pre.classList.add('is-ready'); }, wait);
+  };
+  var leave = function () {
+    if (left) return; left = true;
+    pre.classList.add('is-leaving');
+    document.documentElement.classList.remove('has-prelude');
+    var done = function () { if (pre.parentNode) pre.remove(); };
+    pre.addEventListener('transitionend', done, { once: true });
+    setTimeout(done, 1200);
+  };
+  var loaded = function () { try { return frame.contentDocument && frame.contentDocument.readyState === 'complete' && frame.contentDocument.querySelector('main'); } catch (e) { return true; } };
+  if (loaded()) setReady(); else frame.addEventListener('load', setReady);
+  setTimeout(setReady, 6000);
+  pre.querySelector('[data-dismiss]').addEventListener('click', leave);
+  window.addEventListener('keydown', function (e) { if (e.key === 'Escape') leave(); });
+})();
+</script>
+<script defer src="/assets/js/analytics.js"></script>
+<script defer src="/assets/js/portfolio-nav.js?v=20261029-menu-close"></script>
+</body>
+</html>

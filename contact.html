@@ -1,0 +1,1297 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rune Øverland — Contact</title>
+<style>
+/* ═══ CASE-UNDERSIDE — delt mal, NYME er første instans ═══════
+   (CEO 08-13: «case underside på alt — ikke for bespoke for
+   NYME».) Fire moduler, tre av dem er malen:
+
+     01 INTRO  (delt, --box)   wordmark rute 1 · claim rute 5–6
+                               · note rute 7 · lenke rute 8
+     02 MEDIA  (delt, --box)   casens materiale i kolonnene —
+                               her tre app-opptak; kan være
+                               foto, video, dokument
+     03 DEPTH  (bespoke slot)  casens egen mekanikk — her NYME-
+                               kjeden; Jelsa/Sitter setter sitt
+                               eget inn. Hele rader, alltid.
+     04 HOOK   (delt, --box)   tolkningen av leveransene —
+                               statement rute 5–6 + linjer rute 7
+     05 CLOSE  (delt, --box)   claim rute 5–6 · kolofon rute 7
+                               · CTA rute 8 — siden slutter i
+                               nettet, ikke i løs footer
+
+   Grunnlaget er forsidens system, portert ordrett:
+     · BG-div hvit #FFF, padding 10 — rammen alt ligger i
+     · Rullende nett: 2 rader × 4 kolonner per 100vh, 6px noder
+     · Innhold henger UNDER strekene (20px-husregelen)
+     · Seksjoner = hele moduler (JMB-lås 2) — nettet driver aldri
+     · Typeskala-tokens — ingen font-size skrives fritt
+   Innholdet (copy, app-triptyk, ni-trinns-kjeden) er uendret;
+   pipeline-motoren og Gauntlet-polishen intakt. Kjedens spor
+   ligger PÅ nettets v2 (50 %) — viftens bus spenner v1→v3.     */
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+/* CEO 08-13: subtil smooth scroll — ankerhopp glir; av ved
+   redusert bevegelse.                                          */
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+}
+body { margin: 0; }
+
+:root {
+  --paper:  #FFFFFF;
+  --ground: #000000;
+  --ink:    #FFFFFF;
+  --ink-2:  rgba(255, 255, 255, .52);
+  --ink-3:  rgba(255, 255, 255, .30);
+  --line:   rgba(255, 255, 255, .16);
+  --accent: #3D6FC4;
+
+  --pad:  10px;
+  --cell: 20px;
+  --hair: 1px;
+  --node: 6px;
+  --stack: 0px;
+
+  --ez: cubic-bezier(.22, .61, .36, 1);
+
+  /* Typeskala — forsidens tokens, 1rem = 16px. */
+  --t-display: min(9.375rem, 9.9vw);
+  --t-xxl:     min(6.875rem, 7.3vw);
+  --t-xl:      5rem;
+  --t-h1:      3.75rem;
+  --t-h2:      2.8125rem;
+  --t-h3:      1.875rem;
+  --t-h4:      1.31rem;
+  --t-caption: .9375rem;
+  --t-meta:    .9375rem;
+  --t-fine:    .75rem;
+  --t-body:    1.125rem;
+  --t-base:    1rem;
+
+  --box:  calc(100vh - (var(--pad) * 2));
+  --row:  calc(var(--box) / 2);
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: ui-sans-serif, -apple-system, "Helvetica Neue", Arial, sans-serif;
+  font-size: var(--t-base);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ─── BG-DIV + RULLENDE NETT — forsidens system ordrett ────── */
+.page { position: relative; margin: var(--pad); background: var(--ground); }
+
+.grid {
+  position: absolute;
+  inset: 0;
+  z-index: 40;
+  pointer-events: none;
+}
+.grid .v {
+  position: absolute; top: 0; bottom: 0;
+  width: var(--hair); background: var(--line);
+}
+.grid .v1 { left: 25%; }  .grid .v2 { left: 50%; }  .grid .v3 { left: 75%; }
+.grid .rows {
+  position: absolute; inset: 0;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    var(--line) 0, var(--line) var(--hair),
+    transparent var(--hair), transparent var(--row)
+  );
+}
+.grid .nodes {
+  position: absolute; top: 0; bottom: 0;
+  width: var(--node);
+  margin-left: 0;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    var(--paper) 0, var(--paper) var(--node),
+    transparent var(--node), transparent var(--row)
+  );
+  background-position: 0 calc(var(--node) / -2);
+}
+.grid .n1 { left: 25%; }  .grid .n2 { left: 50%; }  .grid .n3 { left: 75%; }
+
+/* ─── LYS I SVARTET — forsidens lysmodell per seksjon ────────
+   Én kilde per seksjon med ekte falloff; grain maskert av samme
+   geometri. Seksjonene er egne stacking contexts (z:1), kilden
+   ligger under innholdet.                                      */
+.intro::before, .app::before, .pipe::before, .hook::before, .close::before {
+  content: "";
+  position: absolute; inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+.intro::before {
+  background: radial-gradient(1400px 900px at 62% 38%,
+    #1a1a1a 0%, #0d0d0d 40%, #050505 72%, #000 100%);
+}
+.app::before {
+  background: radial-gradient(1300px 850px at 30% 45%,
+    #181818 0%, #0c0c0c 40%, #050505 72%, #000 100%);
+}
+.pipe::before {
+  background: radial-gradient(1300px 850px at 50% 28%,
+    #181818 0%, #0c0c0c 40%, #050505 72%, #000 100%);
+}
+.hook::before {
+  background: radial-gradient(1300px 850px at 30% 62%,
+    #181818 0%, #0c0c0c 40%, #050505 72%, #000 100%);
+}
+.close::before {
+  background: radial-gradient(1300px 850px at 78% 22%,
+    #1a1a1a 0%, #0c0c0c 40%, #050505 72%, #000 100%);
+}
+.intro::after, .app::after, .pipe::after, .hook::after, .close::after {
+  content: "";
+  position: absolute; inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  opacity: .06;
+  background-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='160'%20height='160'%3E%3Cfilter%20id='n'%3E%3CfeTurbulence%20type='fractalNoise'%20baseFrequency='0.9'%20numOctaves='2'%20stitchTiles='stitch'/%3E%3C/filter%3E%3Crect%20width='100%25'%20height='100%25'%20filter='url(%23n)'/%3E%3C/svg%3E");
+}
+.intro::after {
+  -webkit-mask-image: radial-gradient(1400px 900px at 62% 38%, #000 0%, rgba(0,0,0,.5) 45%, transparent 80%);
+  mask-image: radial-gradient(1400px 900px at 62% 38%, #000 0%, rgba(0,0,0,.5) 45%, transparent 80%);
+}
+.app::after {
+  -webkit-mask-image: radial-gradient(1300px 850px at 30% 45%, #000 0%, rgba(0,0,0,.5) 45%, transparent 80%);
+  mask-image: radial-gradient(1300px 850px at 30% 45%, #000 0%, rgba(0,0,0,.5) 45%, transparent 80%);
+}
+.pipe::after {
+  -webkit-mask-image: radial-gradient(1300px 850px at 50% 28%, #000 0%, rgba(0,0,0,.5) 45%, transparent 80%);
+  mask-image: radial-gradient(1300px 850px at 50% 28%, #000 0%, rgba(0,0,0,.5) 45%, transparent 80%);
+}
+.hook::after {
+  -webkit-mask-image: radial-gradient(1300px 850px at 30% 62%, #000 0%, rgba(0,0,0,.5) 45%, transparent 80%);
+  mask-image: radial-gradient(1300px 850px at 30% 62%, #000 0%, rgba(0,0,0,.5) 45%, transparent 80%);
+}
+.close::after {
+  -webkit-mask-image: radial-gradient(1300px 850px at 78% 22%, #000 0%, rgba(0,0,0,.5) 45%, transparent 80%);
+  mask-image: radial-gradient(1300px 850px at 78% 22%, #000 0%, rgba(0,0,0,.5) 45%, transparent 80%);
+}
+
+/* ─── FELLES ───────────────────────────────────────────────── */
+.cols {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+.cell { min-width: 0; padding: var(--cell); }
+
+.mline { display: none; }
+
+.intro, .app, .pipe, .hook, .close { position: relative; z-index: 1; overflow: hidden; }
+
+.label {
+  font-size: var(--t-meta);
+  line-height: 1.4;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+a { color: inherit; }
+a:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
+
+/* ─── IN VIEW — forsidens demping ──────────────────────────── */
+.iv {
+  opacity: 0;
+  transform: translateY(8px);
+  transition:
+    opacity   .4s var(--ez) calc(var(--d, 0ms) * .5),
+    transform .4s var(--ez) calc(var(--d, 0ms) * .5);
+  will-change: opacity, transform;
+}
+.iv.is-in { opacity: 1; transform: none; }
+
+/* ═══ NAV — forsidens nav ordrett (CEO 08-12: samme nav på
+   alle sidene). Ingen hero her: hvit rygg straks man har
+   scrollet, retningsstyrt hide.                                */
+.nav {
+  position: fixed;
+  top: var(--pad); left: var(--pad); right: var(--pad);
+  z-index: 50;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  transition: transform .45s var(--ez), background-color .3s var(--ez);
+}
+.nav.is-hidden { transform: translateY(calc(-100% - var(--pad) - 2px)); }
+.nav.is-paper {
+  background: var(--paper);
+  box-shadow: 0 calc(var(--pad) * -1) 0 0 var(--paper);
+  padding-top: calc(var(--cell) - var(--pad));
+  padding-bottom: var(--cell);
+  border-bottom: var(--hair) solid rgba(5, 5, 5, .14);
+}
+.nav .cell { line-height: 1.3; letter-spacing: -.012em; font-weight: 400; }
+.nav a { text-decoration: none; color: #FFFFFF; transition: color .3s var(--ez); }
+.nav.is-paper a { color: #000000; }
+.nav__name { grid-column: 1 / 2; }
+.nav__links { grid-column: 2 / 3; display: flex; flex-wrap: wrap; gap: 6px 1.25ch; }
+.nav__links a[aria-current="page"] { color: var(--accent); }
+.nav__cta a[aria-current="page"] { pointer-events: none; }
+.nav .nav__jumps {
+  grid-column: 3 / 4;
+  display: flex; flex-direction: column;
+  align-items: flex-start; gap: 0;
+  line-height: 1.5;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+.nav__jumps button {
+  margin: 0; padding: 0;
+  background: none; border: 0; cursor: pointer;
+  font: inherit;
+  text-align: left;
+  color: #FFFFFF;
+  white-space: nowrap;
+  transition: color .3s var(--ez);
+}
+.nav.is-paper .nav__jumps button { color: #000000; }
+.nav__jumps .jno { padding-right: .75ch; font-variant-numeric: tabular-nums; }
+.nav__jumps button:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
+.nav .nav__jumps button.is-here,
+.nav.is-paper .nav__jumps button.is-here { color: var(--accent); }
+.nav__cta { grid-column: 4 / 5; text-align: right; }
+.nav__cta .arrow { display: inline-block; }
+
+
+/* ══ 01 · INTRO — én modul (2 rader) ═════════════════════════
+   Forsidens grammatikk: toppraden bærer identiteten (wordmark
+   rute 1, hengende fra topplinja); påstand og note henger RETT
+   UNDER midtstreken. Rute 5–6: claim · rute 7: note · rute 8:
+   nymestudio-lenka topp/høyre (rute-8-CTA-mekanikken).         */
+.intro .cols {
+  height: var(--box);
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+}
+.intro__h { grid-column: 1 / 3; grid-row: 2 / 3; align-self: start; }
+.intro__h h1 {
+  margin: 0;
+  font-size: var(--t-h1);
+  line-height: 1.1;
+  letter-spacing: -.032em;
+  font-weight: 500;
+}
+.intro__body { grid-column: 3 / 4; grid-row: 2 / 3; align-self: start; }
+.intro__body p { margin: 0 0 14px; font-size: var(--t-body); line-height: 1.5; color: var(--ink-2); max-width: 38ch; }
+.intro__body p + p { font-size: var(--t-base); line-height: 1.6; }
+.intro__cta { grid-column: 4 / 5; grid-row: 2 / 3; align-self: start; text-align: right; }
+.intro__cta a {
+  display: block; width: fit-content; margin-left: auto;
+  font-size: var(--t-meta);
+  color: var(--ink);
+  text-decoration: none;
+}
+.intro__cta .arrow { display: inline-block; letter-spacing: 0; transition: transform .35s var(--ez); }
+.intro__cta a:hover .arrow { transform: translateX(.5ch); }
+
+/* ══ 02 · APP — én modul (2 rader) ═══════════════════════════
+   Tre ekte skjermopptak i kolonne 1–3, hver i sin rute over
+   begge rader — telefonens kant lever i nettets kolonne.
+   Label + figcaption-tekstene samlet i rute 4/8 (møblement).
+   Rammen er nettets egen grammatikk: hårlinje + 6px hjørne-
+   noder — ingen tegnet telefon.                                */
+.app .cols {
+  height: var(--box);
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+}
+.app__item {
+  margin: 0; min-width: 0;
+  grid-row: 1 / 3;
+  align-self: center;
+}
+.app__item:nth-child(1) { grid-column: 1 / 2; }
+.app__item:nth-child(2) { grid-column: 2 / 3; }
+.app__item:nth-child(3) { grid-column: 3 / 4; }
+.app__frame {
+  position: relative;
+  border: var(--hair) solid rgba(255, 255, 255, .3);
+  width: fit-content;
+  margin: 0 auto;
+}
+.app__frame video {
+  display: block;
+  height: calc(var(--box) - var(--cell) * 6);
+  width: auto;
+  aspect-ratio: 1170 / 2532;
+  background: #0c0c0c;
+}
+.app__frame::before, .app__frame::after,
+.app__frame .node::before, .app__frame .node::after {
+  content: '';
+  position: absolute;
+  width: var(--node); height: var(--node);
+  background: #FFFFFF;
+  z-index: 1;
+}
+.app__frame::before { top: -3px; left: -3px; }
+.app__frame::after  { top: -3px; right: -3px; }
+.app__frame .node::before { bottom: -3px; left: -3px; }
+.app__frame .node::after  { bottom: -3px; right: -3px; }
+.app__item figcaption {
+  margin: 12px auto 0; width: fit-content;
+  font-size: var(--t-fine); line-height: 1.4;
+  text-align: center;
+}
+.app__item figcaption b {
+  display: block;
+  font-weight: 500;
+  font-size: var(--t-caption);
+  color: var(--ink);
+}
+.app__item figcaption span { color: rgba(255, 255, 255, .42); }
+/* Label i rute 8 — hengende under midtstreken, klar av naven.  */
+.app__cap { grid-column: 4 / 5; grid-row: 2 / 3; align-self: start; text-align: right; }
+.app__cap p { margin: 0; }
+
+/* ══ 03 · PIPELINE — tre rader (1.5 modul) ═══════════════════
+   Kjedens spor ligger PÅ nettets v2 (50 %); leveranseviftens
+   bus spenner v1→v3. Cap henger under modulens topplinje i
+   rute 1. Motor, falloff-lys og registreringsmerker uendret.   */
+.pipe { height: calc(var(--row) * 3); }
+/* Cap sentrert over animasjonen (CEO 08-13): de tre titlene
+   STABLET vertikalt med trange gaps — h4-trinnet, møblement-
+   stemmen. Størrelsen står; det var hooken som skulle bli
+   Section 3, ikke denne.                                       */
+.pipe__cap {
+  /* CEO 08-13: linjene hører sammen — leding 1.15; blokken
+     sluppet ned fra topplinja (cell-multipler, ikke frie tall). */
+  margin: calc(var(--cell) * 4) 0 auto;
+  text-align: center;
+  font-size: var(--t-h4); line-height: 1.15;
+  letter-spacing: .14em; text-transform: uppercase;
+  color: var(--ink-2);
+}
+.pipe__cap span { display: block; }
+.pipe__stage {
+  position: relative; z-index: 2;
+  height: 100%;
+  padding: var(--cell) var(--cell) calc(var(--cell) * 2);
+  display: flex; flex-direction: column;
+  justify-content: flex-end;
+}
+.pipe__list {
+  margin: 0; padding: 0; list-style: none;
+  position: relative;
+  flex: none;
+  display: flex; flex-direction: column;
+  gap: clamp(40px, 6.5vh, 84px);
+}
+.pipe__list::before {
+  content: "";
+  position: absolute;
+  left: calc(50% - .5px); top: 11px; bottom: 11px;
+  width: 1px;
+  background: linear-gradient(180deg,
+    rgba(255, 255, 255, .38) 0%,
+    rgba(255, 255, 255, .28) 45%,
+    rgba(255, 255, 255, .16) 100%);
+}
+.pipe__list::after {
+  content: "";
+  position: absolute;
+  left: calc(50% - .5px); top: 11px; bottom: 11px;
+  width: 1px;
+  background: var(--paper);
+  transform: scaleY(var(--pp, 0));
+  transform-origin: top;
+  transition: transform .7s var(--ez);
+}
+.pipe__step {
+  position: relative; z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr 22px 1fr;
+  gap: 14px;
+  align-items: center;
+  font-size: var(--t-fine); line-height: 1.3;
+}
+.pipe__step + .pipe__step::before {
+  content: "";
+  position: absolute;
+  left: calc(50% - 1.5px);
+  top: calc(clamp(40px, 6.5vh, 84px) / -2 - 1.5px);
+  width: 3px; height: 3px;
+  background: rgba(255, 255, 255, .45);
+}
+.pipe__step b { font-size: var(--t-caption); }
+.pipe__step svg { display: block; }
+.pipe__step .ring {
+  fill: var(--ground);
+  stroke: rgba(255, 255, 255, .35);
+  stroke-width: 1;
+  transition: stroke .4s var(--ez);
+}
+.pipe__step .tick {
+  fill: none;
+  stroke: var(--paper);
+  stroke-width: 1.5;
+  stroke-linecap: round; stroke-linejoin: round;
+  stroke-dasharray: 12;
+  stroke-dashoffset: 12;
+  transition: stroke-dashoffset .45s var(--ez) .15s;
+}
+.pipe__step.is-done .ring { stroke: var(--paper); }
+.pipe__step.is-done .tick { stroke-dashoffset: 0; }
+.pipe__step.is-done svg { filter: drop-shadow(0 0 7px rgba(255, 255, 255, .38)); }
+.pipe__step:nth-child(n+4).is-done svg { filter: drop-shadow(0 0 6px rgba(255, 255, 255, .26)); }
+.pipe__step:nth-child(n+7).is-done svg { filter: drop-shadow(0 0 5px rgba(255, 255, 255, .16)); }
+.pipe__step b {
+  font-weight: 500;
+  text-align: right;
+  color: rgba(255, 255, 255, .45);
+  transition: color .4s var(--ez);
+}
+.pipe__step span {
+  position: relative; top: 1px;
+  color: rgba(255, 255, 255, .42);
+  transition: color .4s var(--ez);
+}
+.pipe__step.is-done b { color: var(--ink); }
+.pipe__step.is-done span { color: rgba(255, 255, 255, .62); }
+/* Viften: stem på v2, bus v1→v3, droppene på kolonnemidtene.   */
+.pipe__fork { position: relative; height: 88px; flex: none; }
+.pipe__fork span { position: absolute; background: var(--paper); }
+.fork__stem { left: calc(50% - .5px); top: -11px; width: 1px; height: 43px; transform: scaleY(0); transform-origin: top; }
+.fork__bus  { left: 25%; width: 50%; top: 32px; height: 1px; transform: scaleX(0); transform-origin: center; }
+.fork__d1   { left: calc(25% - .5px); top: 32px; width: 1px; height: 56px; transform: scaleY(0); transform-origin: top; }
+.fork__d2   { left: calc(50% - .5px); top: 32px; width: 1px; height: 56px; transform: scaleY(0); transform-origin: top; }
+.fork__d3   { left: calc(75% - .5px); top: 32px; width: 1px; height: 56px; transform: scaleY(0); transform-origin: top; }
+.pipe--out .pipe__fork span { transform: none; }
+.pipe--out .fork__stem { transition: transform .2s var(--ez); }
+.pipe--out .fork__bus  { transition: transform .4s var(--ez) .18s; }
+.pipe--out .fork__d1   { transition: transform .25s var(--ez) .3s; }
+.pipe--out .fork__d2   { transition: transform .25s var(--ez) .42s; }
+.pipe--out .fork__d3   { transition: transform .25s var(--ez) .56s; }
+.pipe__out {
+  margin: 6px 0 0;
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  font-size: var(--t-fine); line-height: 1.3;
+}
+.pipe__out .itm {
+  grid-row: 1;
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+  opacity: .3;
+  transition: opacity .5s var(--ez);
+}
+/* Leveransene sentrert på droppene: v1, v2, v3.                */
+.pipe__out .itm:nth-child(1) { grid-column: 1 / 3; }
+.pipe__out .itm:nth-child(2) { grid-column: 2 / 4; }
+.pipe__out .itm:nth-child(3) { grid-column: 3 / 5; }
+.pipe--out .pipe__out .itm { opacity: 1; }
+.pipe--out .pipe__out .itm:nth-child(1) { transition-delay: .45s; }
+.pipe--out .pipe__out .itm:nth-child(2) { transition-delay: .57s; }
+.pipe--out .pipe__out .itm:nth-child(3) { transition-delay: .69s; }
+.pipe__out .itm svg .sheet { fill: #fff; stroke: rgba(65, 65, 62, .16); stroke-width: .78; }
+.pipe__out .itm svg line,
+.pipe__out .itm svg rect:not(.sheet) { fill: none; stroke: rgba(65, 65, 62, .42); stroke-width: .78; }
+.pipe__out .itm svg .hvy { stroke: #41413e; stroke-width: 1.17; }
+.pipe__out .itm b { font-weight: 500; color: var(--ink); }
+.pipe--out .pipe__new {
+  opacity: 1; transform: none;
+  transition: opacity .5s var(--ez), transform .5s var(--ez);
+}
+.pipe__new {
+  margin: 40px 0 0;
+  font-size: var(--t-fine); line-height: 1.3;
+  text-align: center;
+  color: var(--ink-2);
+  opacity: 0; transform: translateY(5px);
+}
+.pipe--out .pipe__new { transition-delay: .95s; }
+
+/* ══ 04 · HOOK — Section 3-oppsettet fra how-i-work (CEO
+   08-13, presisert): fittet kjempetittel center i rute 2–3
+   øvre rad (fitTitle skalerer lengste linje til gridlinjene,
+   t-xxl er fallback), tekstblokken sentrert i rute 5–6 nedre
+   rad i h4-stemmen. Copywriter 08-13: leveransene TOLKES.      */
+.hook .cols {
+  height: var(--box);
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+}
+.hook__title {
+  grid-row: 1 / 2; grid-column: 2 / 4;
+  padding: 0;
+  display: flex; justify-content: center; align-items: center;
+  text-align: center;
+}
+.hook__title h2 {
+  margin: 0;
+  font-size: var(--t-xxl);
+  line-height: 1.1;
+  letter-spacing: -.025em;
+  font-weight: 500;
+  color: var(--ink);
+  white-space: nowrap;
+}
+.hook__body {
+  grid-row: 2 / 3; grid-column: 2 / 4;
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: center;
+  text-align: center;
+  gap: 14px;
+}
+.hook__body p {
+  margin: 0;
+  font-size: var(--t-h4);
+  line-height: 1.4;
+  letter-spacing: -.012em;
+  font-weight: 500;
+  color: var(--ink);
+  max-width: 44ch;
+  text-wrap: balance;
+}
+
+/* ══ 05 · CLOSE — én modul (2 rader) ═════════════════════════
+   Landingspunktet i forsidens Contact-grammatikk: tom topprad,
+   claim rute 5–6 under midtstreken, kolofon rute 7, CTA rute 8
+   topp/høyre. Kolofonen bærer footer-lenkene — siden slutter i
+   nettet, ikke i en løs footer under det.                      */
+.close .cols {
+  height: var(--box);
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+}
+.close__h { grid-column: 1 / 3; grid-row: 2 / 3; align-self: start; }
+.close__h h2 {
+  margin: 0;
+  font-size: var(--t-h1);
+  line-height: 1.1;
+  letter-spacing: -.032em;
+  font-weight: 500;
+  max-width: 16ch;
+}
+/* ── FOOTER — forsidens fulle kolofonmodul (CEO 08-14: samme
+   footer på alle sider, inkludert reel-klippet i rute 1–2). ── */
+.footer { position: relative; z-index: 1; overflow: hidden; }
+.footer .cols {
+  height: var(--box);
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+}
+.footer__reel {
+  grid-column: 1 / 3; grid-row: 1 / 2;
+  position: relative; overflow: hidden;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, .55);
+}
+.footer__reel img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: center bottom; display: block;
+}
+@media(max-width:1023px) { .footer__reel picture { display: block; } .footer__reel img { position: relative; height: auto; } }
+.footer__colophon {
+  grid-column: 4 / 5; grid-row: 1 / 2; align-self: stretch;
+  display: grid; grid-template-rows: repeat(2, 1fr);
+  font-size: var(--t-fine); line-height: 1.4;
+}
+.footer__colophon .footer__name { grid-area: 1 / 1; align-self: start; }
+.colo__mid {
+  grid-area: 1 / 1; align-self: end;
+  display: flex; flex-direction: column; gap: 10px;
+}
+.colo__bottom {
+  grid-area: 2 / 1; align-self: end;
+  display: flex; flex-direction: column; gap: 10px;
+}
+.footer__name { letter-spacing: .14em; text-transform: uppercase; color: var(--ink-2); }
+/* Bevisst 2 × 2-grid — forsidens kanon; ingen tilfeldig knekk. */
+.footer__nav { display: grid; grid-template-columns: repeat(2, max-content); gap: 6px 2.5ch; }
+.footer__nav a, .footer__mail {
+  color: var(--ink-2);
+  text-decoration: none;
+  letter-spacing: .14em; text-transform: uppercase;
+  transition: color .3s var(--ez);
+}
+.footer__nav a:hover, .footer__mail:hover { color: var(--ink); }
+.footer__mail { text-transform: none; letter-spacing: 0; }
+.footer__cta {
+  color: var(--ink);
+  text-decoration: none;
+  letter-spacing: .14em; text-transform: uppercase;
+  font-weight: 500;
+}
+.footer__cta .arrow { display: inline-block; transition: transform .35s var(--ez); }
+.footer__cta:hover .arrow { transform: translateX(.5ch); }
+.footer__c {
+  grid-column: 4 / 5; grid-row: 2 / 3; align-self: end;
+  font-size: var(--t-fine); line-height: 1.4;
+  color: var(--ink-3); letter-spacing: .14em;
+}
+/* TICKER — portert fra forsiden. Lineær tid: på en ticker er
+   farten konstant per definisjon.                              */
+.footer__ticker {
+  grid-column: 1 / 3; grid-row: 2 / 3;
+  align-self: stretch;
+  padding: 0;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+}
+.ticker__track {
+  display: flex;
+  flex: none;
+  animation: tick 40s linear infinite;
+}
+.ticker__seq {
+  display: flex; flex: none;
+  white-space: nowrap;
+  gap: .8ch;            /* CEO 08-16 (3): mindre gap mellom ordene */
+  padding-right: .8ch;
+  /* Ordene uten bindestrek, store nok til å dekke halve ruta —
+     størrelsen er geometri (row/2), ikke et skalatrinn.        */
+  font-size: calc(var(--row) / 2);
+  line-height: 1;
+  letter-spacing: -.02em;
+  font-weight: 500;
+  color: var(--ink-2);
+}
+.ticker__seq i { font-style: normal; }
+@keyframes tick {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.close__cta { grid-column: 4 / 5; grid-row: 2 / 3; align-self: start; text-align: right; }
+.close__cta a {
+  text-decoration: none;
+  color: var(--ink);
+}
+.close__cta .arrow { display: inline-block; transition: transform .35s var(--ez); }
+.close__cta a:hover .arrow { transform: translateX(.5ch); }
+
+/* ═══ MOBIL ≤1023 — forsidens modulgrid-grammatikk ═══════════ */
+@media (max-width: 1023px) {
+  html { font-size: clamp(13px, calc(100vw / 24.375), 18px); }
+  :root {
+    --pad: 2px; --cell: 1rem;
+    --t-display: 13vw;
+    --t-xl: 2.8125rem;
+    --t-h1: 1.875rem;
+    --t-h2: 1.875rem;
+    --t-h3: 1.31rem;
+  }
+  .grid { display: none; }
+  .page::before, .page::after {
+    content: '';
+    position: absolute; top: 0; bottom: 0;
+    width: var(--hair);
+    background: rgba(255, 255, 255, .3);
+    z-index: 40; pointer-events: none;
+  }
+  .page::before { left: 0; }
+  .page::after  { right: 0; }
+  .mline {
+    display: block;
+    position: absolute; top: 0; left: 0; right: 0;
+    height: var(--hair);
+    background: rgba(255, 255, 255, .3);
+    z-index: 40; pointer-events: none;
+  }
+  .mline::before, .mline::after {
+    content: '';
+    position: absolute;
+    top: calc(var(--node) / -2 + var(--hair) / 2);
+    width: var(--node); height: var(--node);
+    background: #FFFFFF;
+  }
+  .mline::before { left: 0; }
+  .mline::after  { right: 0; }
+
+  .nav {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    background: var(--paper);
+    box-shadow: 0 calc(var(--pad) * -1) 0 0 var(--paper);
+    border-bottom: var(--hair) solid rgba(5, 5, 5, .14);
+  }
+  .nav .cell { line-height: 1.4; padding: var(--cell); }
+  .nav a, .nav.is-paper a { color: #000000; }
+  .nav__name  { grid-column: 1 / 2; grid-row: 1; }
+  .nav__cta   { grid-column: 2 / 3; grid-row: 1; }
+  .nav__links { grid-column: 1 / 3; grid-row: 2; padding-top: 0; }
+  .nav .nav__jumps { display: none; }
+  .nav.is-paper { padding-top: 0; padding-bottom: 0; }
+
+  .intro, .app, .pipe, .hook, .close { position: relative; height: auto; }
+  .cols {
+    position: static !important;
+    display: flex; flex-direction: column; gap: 40px;
+    padding: 72px 0; min-height: 0 !important;
+    height: auto !important;
+  }
+  .intro .cols { padding-top: calc(var(--cell) * 8); }
+  /* Left and top aligned on mobile (DESIGN.md, Mobil); centre is desktop geometry. */
+  .chero .cols { padding-top: calc(var(--cell) * 8); }
+  .chero .chero__display { place-self: start; align-self: flex-start; text-align: left; }
+
+  /* App-raden blir snap-spor — ett klipp i fokus, neste stikker
+     inn fra kanten (mekanikken fra forrige versjon, bevart).   */
+  .app .cols { display: block; padding: 72px 0; }
+  .app__cap { display: block; padding: 0 var(--cell) var(--cell); text-align: left; }
+  .app__row {
+    display: flex;
+    gap: var(--cell);
+    padding: 3px var(--cell);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+  .app__row::-webkit-scrollbar { display: none; }
+  .app__item { flex: 0 0 64%; scroll-snap-align: center; }
+  .app__frame { width: auto; margin: 0; }
+  .app__frame video { height: auto; width: 100%; }
+  .app__item figcaption { margin-left: 0; width: auto; text-align: left; }
+
+  .pipe__stage { padding: var(--cell); }
+  .close__h h2 { max-width: none; }
+  .close__colophon { gap: 1.5rem; }
+  .close__cta { text-align: left; }
+
+  /* FOOTER — kolofonmodul portert fra how-i-work-mobil (CEO
+     08-16: brukertesting-runden — navn og lenker overlappet i
+     grid-area 1/1-stablingen; ticker sto på desktop-geometri). */
+  .footer { overflow: visible; }
+  .footer .cols {
+    position: static;
+    display: flex; flex-direction: column; gap: 2.5rem;
+    height: auto;
+    padding: calc(var(--cell) * 5) 0 calc(var(--cell) * 2);
+  }
+  .footer__colophon { display: flex; flex-direction: column; gap: 1.5rem; }
+  .footer__colophon .footer__name,
+  .footer__colophon .colo__mid,
+  .footer__colophon .colo__bottom { align-self: flex-start; }
+  .footer__nav { grid-template-columns: 1fr; gap: .65rem; }
+  .footer__ticker { align-self: stretch; overflow: hidden; }
+  .ticker__seq { font-size: var(--t-h1); }
+  .footer__nav a {
+    font-size: var(--t-h4); line-height: 1.3;
+    letter-spacing: -.012em; font-weight: 500;
+    text-transform: none;
+    color: var(--ink);
+  }
+  .footer__mail {
+    font-size: var(--t-h4); line-height: 1.3;
+    letter-spacing: -.012em; font-weight: 500;
+    color: var(--ink-2);
+  }
+  .footer__mail, .footer__c { text-align: left; }
+  .footer__c { align-self: flex-start; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pipe__list::after, .pipe__step .tick { transition: none; }
+}
+
+/* ── CEO 08-15: footer/nav-detaljer ──────────────────────────
+   1) Back to top i kolofonen — CTA-stemmen, pil opp på hover.
+   2) Hover-prikk foran nav-jump-titlene (Dado-referansen).
+   3) Jump-titlene på nav-cellens trinn — bare Rune Øverland-
+      merket står igjen på sitt.
+   4) Click to copy-tooltip på adressene (kun hover-flater).   */
+.footer__top {
+  color: var(--ink);
+  text-decoration: none;
+  letter-spacing: .14em; text-transform: uppercase;
+  font-weight: 500;
+}
+.footer__top .arrow { display: inline-block; transition: transform .35s var(--ez); }
+.footer__top:hover .arrow { transform: translateY(-.35ch); }
+
+.nav .nav__jumps { line-height: 1.3; letter-spacing: -.012em; font-weight: 400; }
+.nav__jumps button { position: relative; }
+.nav__jumps button::before {
+  content: ""; position: absolute;
+  left: -.8em; top: 50%;
+  width: .34em; height: .34em; border-radius: 50%;
+  background: currentColor;
+  transform: translateY(-50%) scale(0);
+  transition: transform .3s var(--ez);
+}
+.nav__jumps button:hover::before,
+.nav__jumps button.is-here::before { transform: translateY(-50%) scale(1); }
+
+.copytip {
+  position: fixed; left: 0; top: 0; z-index: 200;
+  pointer-events: none;
+  background: #111111; color: #FFFFFF;
+  border: var(--hair) solid rgba(255, 255, 255, .18);
+  font-size: var(--t-fine); line-height: 1;
+  letter-spacing: .02em;
+  padding: 9px 12px; border-radius: 2px;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity .2s var(--ez);
+}
+.copytip.is-on { opacity: 1; }
+.footer__c { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
+
+/* CEO 08-15 (2): sidelenkene (Nyme / How I work) vertikalt som
+   jump-lista, med samme hover-prikk; prikken står fast på
+   aktiv side (aria-current).                                  */
+.nav__links { flex-direction: column; gap: 0; align-items: flex-start; }
+.nav__links a { position: relative; }
+.nav__links a::before {
+  content: ""; position: absolute;
+  left: -.8em; top: 50%;
+  width: .34em; height: .34em; border-radius: 50%;
+  background: currentColor;
+  transform: translateY(-50%) scale(0);
+  transition: transform .3s var(--ez);
+}
+.nav__links a:hover::before,
+.nav__links a[aria-current="page"]::before { transform: translateY(-50%) scale(1); }
+
+/* CEO 08-15 (3): Contact-CTA paa samme prikk-grammatikk som resten
+   av naven -- pilen ut. Fargepar: hover = noeytral prikk (teksten
+   staar), valgt state = accent paa baade prikk og tekst.          */
+.nav__cta a { position: relative; }
+.nav__cta a::before {
+  content: ""; position: absolute;
+  left: -.8em; top: 50%;
+  width: .34em; height: .34em; border-radius: 50%;
+  background: currentColor;
+  transform: translateY(-50%) scale(0);
+  transition: transform .3s var(--ez);
+}
+.nav__cta a:hover::before { transform: translateY(-50%) scale(1); }
+.nav__cta a[aria-current="page"] { color: var(--accent); }
+.nav__cta a[aria-current="page"]::before { transform: translateY(-50%) scale(1); }
+
+/* CEO 08-16: hover paa EN nav-lenke graaner resten -- den du
+   peker paa staar i fullt blekk, alt annet faller til .45.     */
+.nav__name, .nav__links a, .nav__jumps button, .nav__cta a {
+  transition: opacity .3s var(--ez), color .3s var(--ez);
+}
+.nav:has(.nav__links a:hover, .nav__jumps button:hover, .nav__cta a:hover)
+  :is(.nav__name, .nav__links a, .nav__jumps button, .nav__cta a) { opacity: .45; }
+.nav:has(.nav__links a:hover, .nav__jumps button:hover, .nav__cta a:hover)
+  :is(.nav__links a, .nav__jumps button, .nav__cta a):hover { opacity: 1; }
+
+
+
+/* ══ CONTACT-SIDEN (CEO 08-15) ═══════════════════════════════
+   Modul 1: Contact me. mot bunnlinja. Modul 2: forsidens
+   godkjente linje + E/T-rader venstre, skjemaet i rute 3–4.   */
+.chero { position: relative; }
+.chero .cols { min-height: var(--box); grid-template-rows: repeat(2, minmax(0, 1fr)); }
+/* CEO 08-15 r2: Let’s talk. center-center i modulen; E/T-radene
+   nederst til venstre (cellens 20px).                          */
+.chero__display { grid-column: 1 / 5; grid-row: 1 / 3; place-self: center; }
+.chero__display h1 {
+  margin: 0;
+  font-size: min(9.375rem, 9.9vw);
+  font-weight: 500;
+  line-height: .94;
+  letter-spacing: -.03em;
+  color: var(--ink);
+  text-box: trim-both cap alphabetic;
+}
+.cform { position: relative; }
+.cform .cols { min-height: var(--box); grid-template-rows: repeat(2, minmax(0, 1fr)); }
+.cform__h { grid-column: 1 / 3; grid-row: 1 / 2; align-self: start; }
+.cform__h h2 {
+  margin: 0;
+  font-size: var(--t-h1);
+  line-height: 1.1;
+  letter-spacing: -.032em;
+  font-weight: 500;
+  max-width: 20ch;
+  text-box: trim-both cap alphabetic;
+}
+.cf__row { margin: 0; font-size: var(--t-h4); line-height: 1.3; letter-spacing: -.012em; font-weight: 500; text-box: trim-both cap alphabetic; }
+.cf__k { display: inline-block; width: 2.6ch; color: var(--ink-2); }
+.cf__row a { color: var(--ink); text-decoration: none; }
+/* CEO 08-15 r2: skjemaet bor i ÉN gridrute (rute 4);
+   E/T-radene i ruta til venstre (rute 3).            */
+.cform__meta { grid-column: 4 / 5; grid-row: 1 / 2; align-self: start; display: grid; gap: 14px; }
+.cform__form { grid-column: 3 / 4; grid-row: 1 / 2; align-self: start; }
+.contact__form { display: grid; gap: 18px; }
+.cf__field { display: grid; gap: 6px; }
+.cf__lab { font-size: var(--t-fine); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); }
+.contact__form input,
+.contact__form textarea {
+  width: 100%;
+  background: transparent;
+  border: 0;
+  border-bottom: var(--hair) solid var(--line);
+  border-radius: 0;
+  font: inherit;
+  font-size: var(--t-base);
+  color: var(--ink);
+  padding: 0 0 8px;
+  outline: none;
+  resize: none;
+}
+.contact__form input:focus,
+.contact__form textarea:focus { border-bottom-color: var(--ink); }
+.cf__hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+.contact__form button {
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  text-align: left;
+  justify-self: start;
+  font: inherit;
+  color: var(--ink);
+}
+.contact__form button .arrow { display: inline-block; transition: transform .35s var(--ez); }
+.contact__form button:hover .arrow { transform: translateX(.5ch); }
+/* CEO 08-16: knappen kvitterer selv i tre akter — Send → /
+   Sending… (dempet, låst) / Message sent ✓ — samme figur som
+   Copy email → / Copied ✓.                                     */
+.contact__form button:disabled { color: var(--ink-2); cursor: default; }
+.cf__msg { margin: 0; font-size: var(--t-fine); color: var(--ink-2); }
+
+/* Mobile title is a bottom-aligned cell; the form follows its content height. */
+@media (max-width: 1023px) {
+  .chero .cols { min-height: 40svh !important; padding: var(--nav-height, 60px) 0 0; justify-content: flex-end; gap: 0; }
+  .cform .cols { padding: 0; gap: 0; }
+  .cform__form { align-self: stretch; }
+}
+</style>
+
+<link rel="stylesheet" href="cta-system.css?v=20261029-svg-arrow">
+<link rel="stylesheet" href="/nav-system.css?v=20261029-shared-wordmark">
+<link rel="stylesheet" href="/assets/css/portfolio-footer.css?v=20261028-mobile-final">
+<script src="/assets/js/portfolio-footer.js" defer></script>
+</head>
+<body>
+
+<!-- ══ NAV — samme system som forsiden/how-i-work ══════════════ -->
+<nav class="nav" aria-label="Main">
+  <div class="cell nav__name"><a href="grid-video.html">Rune &Oslash;verland</a></div>
+  <div class="cell nav__links">
+    <a href="/work/nyme/">Nyme</a>
+    <a href="/work/kaizen/">Kaizen</a>
+    <a href="how-i-work.html">How I work</a>
+  </div>
+  <div class="cell nav__cta"><a href="contact.html" aria-current="page">Contact</a></div>
+</nav>
+
+<div class="page">
+
+  <!-- Rullende nett — forsidens system. -->
+  <div class="grid" aria-hidden="true">
+    <span class="v v1"></span><span class="v v2"></span><span class="v v3"></span>
+    <div class="rows"></div>
+    <span class="nodes n1"></span><span class="nodes n2"></span><span class="nodes n3"></span>
+  </div>
+
+  <!-- ══ 01 · HERO — Contact me. ═══════════════════════════ -->
+  <section class="chero" id="intro">
+    <div class="cols">
+      <div class="cell chero__display">
+        <h1 class="chero__h1">Let’s talk.</h1>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ 02 · FORM — forsidens godkjente linje + E/T-rader
+       venstre, skjemaet i rute 3–4. Skjema → Notion-innboks
+       via portefolio-contact-endepunktet. ═══════════════════ -->
+  <section class="cform" id="contact">
+    <i class="mline" aria-hidden="true"></i>
+    <div class="cols">
+      <div class="cell cform__h iv" style="--d:0ms">
+        <h2>Tell me what you need.<br>I’ll tell you where I can help.</h2>
+      </div>
+      <div class="cell cform__meta iv" style="--d:120ms">
+        <p class="cf__row"><span class="cf__k">E:</span><a href="mailto:rune@kaizenstudio.no">rune@kaizenstudio.no</a></p>
+        <p class="cf__row"><span class="cf__k">T:</span><a href="tel:+4741167940">+47 411 67 940</a></p>
+      </div>
+      <div class="cell cform__form iv" style="--d:240ms">
+        <form class="contact__form" novalidate>
+          <label class="cf__field"><span class="cf__lab">Name</span><input name="name" type="text" autocomplete="name" required></label>
+          <label class="cf__field"><span class="cf__lab">Email</span><input name="email" type="email" autocomplete="email" required></label>
+          <label class="cf__field"><span class="cf__lab">Message</span><textarea name="message" rows="4" required></textarea></label>
+          <input class="cf__hp" name="company" type="text" tabindex="-1" autocomplete="off" aria-hidden="true">
+          <button type="submit">Send <span class="arrow">&rarr;</span></button>
+          <p class="cf__msg" role="status" hidden></p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ 06 · FOOTER — forsidens fulle kolofonmodul (CEO 08-14:
+       samme footer på alle sider, inkludert reel-klippet) ═════ -->
+  <!-- portfolio-footer:start -->
+<footer class="portfolio-footer" id="footer" role="contentinfo" aria-label="Portfolio footer">
+  <div class="portfolio-footer__grid" aria-hidden="true"><i style="--x:0%;--y:0%"></i><i style="--x:0%;--y:50%"></i><i style="--x:0%;--y:100%"></i><i style="--x:25%;--y:0%"></i><i style="--x:25%;--y:50%"></i><i style="--x:25%;--y:100%"></i><i style="--x:50%;--y:0%"></i><i style="--x:50%;--y:50%"></i><i style="--x:50%;--y:100%"></i><i style="--x:75%;--y:0%"></i><i style="--x:75%;--y:50%"></i><i style="--x:75%;--y:100%"></i><i style="--x:100%;--y:0%"></i><i style="--x:100%;--y:50%"></i><i style="--x:100%;--y:100%"></i></div>
+  <img class="portfolio-footer__landscape" src="/assets/opt/intro-sunset-portrait.webp" alt="Rune on a beach at sunset." width="1333" height="2000" loading="lazy" decoding="async">
+  <div class="portfolio-footer__details">
+    <p class="portfolio-footer__name">Rune Øverland</p>
+    <div class="portfolio-footer__contact"><a href="tel:+4741167940"><svg class="portfolio-footer__contact-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.1-8.7A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.8 2.1Z"/></svg><span>+47 411 67 940</span></a><a href="mailto:rune@kaizenstudio.no"><svg class="portfolio-footer__contact-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3" y="5" width="18" height="14"/><path d="m3 5 9 7 9-7"/></svg><span>rune@kaizenstudio.no</span></a></div>
+  </div>
+  <div class="portfolio-footer__ticker" aria-hidden="true"><div class="portfolio-footer__track">
+    <span>ADS VIDEO DESIGN CODE AGENTS&nbsp;</span><span>ADS VIDEO DESIGN CODE AGENTS&nbsp;</span>
+  </div></div>
+  <img class="portfolio-footer__portrait" src="/assets/opt/footer-sunset-profile.webp" alt="Rune looking toward the sea at sunset." width="889" height="1334" loading="lazy" decoding="async">
+  <div class="portfolio-footer__end"><a class="portfolio-footer__top" href="#top">Back to top <span class="arrow">↑</span></a><span>© 2026</span></div>
+</footer>
+<!-- portfolio-footer:end -->
+
+</div>
+
+<script>
+(function () {
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ── IN VIEW — forsidens observer ──────────────────────────── */
+  var targets = document.querySelectorAll('.iv');
+  if ('IntersectionObserver' in window && !reduce) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); }
+      });
+    }, { rootMargin: '0px 0px 0px 0px', threshold: 0 });
+    Array.prototype.forEach.call(targets, function (el) { io.observe(el); });
+  } else {
+    Array.prototype.forEach.call(targets, function (el) { el.classList.add('is-in'); });
+  }
+
+  /* ── FIT TITLE — portert fra how-i-work (sec2/sec3-tittelen):
+     lengste linje skaleres til å treffe gridlinjene eksakt.    */
+  var fitEls = Array.prototype.slice.call(document.querySelectorAll('.hook__title h2'));
+  function fitTitle() {
+    fitEls.forEach(function (el) {
+      if (window.innerWidth < 1024) { el.style.fontSize = ''; return; }
+      el.style.fontSize = '100px';
+      var w = el.scrollWidth;
+      if (w > 0) { el.style.fontSize = (100 * el.parentElement.clientWidth / w) + 'px'; }
+    });
+  }
+  fitTitle();
+  if (document.fonts && document.fonts.ready) { document.fonts.ready.then(fitTitle); }
+  var ft; window.addEventListener('resize', function () {
+    clearTimeout(ft); ft = setTimeout(fitTitle, 120);
+  });
+
+  /* ── PIPELINE — scroll-drevet motor, uendret ──────────────── */
+  var pipe = document.getElementById('pipe');
+  if (pipe) {
+    var steps = pipe.querySelectorAll('.pipe__step');
+    var n = steps.length;
+    var wrap = pipe.closest('.pipe__stage');
+    var out = wrap.querySelector('.pipe__out');
+    var done = function (k) {
+      for (var i = 0; i < n; i++) { steps[i].classList.toggle('is-done', i < k); }
+      pipe.style.setProperty('--pp', n > 1 ? Math.max(0, (k - 1) / (n - 1)) : 0);
+    };
+    if (reduce) {
+      done(n);
+      wrap.classList.add('pipe--out');
+    } else {
+      var raf = null;
+      var update = function () {
+        raf = null;
+        var line = window.innerHeight * .80;
+        var k = 0;
+        for (var i = 0; i < n; i++) {
+          if (steps[i].getBoundingClientRect().top + 11 <= line) { k = i + 1; }
+        }
+        done(k);
+        var open = k === n && out.getBoundingClientRect().top <= line;
+        wrap.classList.toggle('pipe--out', open);
+      };
+      var queue = function () {
+        if (raf === null) { raf = requestAnimationFrame(update); }
+      };
+      window.addEventListener('scroll', queue, { passive: true });
+      window.addEventListener('resize', queue);
+      update();
+    }
+  }
+
+  /* ── APP-KLIPPENE — spiller kun i syne ────────────────────── */
+  var vids = Array.prototype.slice.call(document.querySelectorAll('.app video, .footer__reel video'));
+  if (vids.length && !reduce) {
+    if ('IntersectionObserver' in window) {
+      var vio = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) { e.target.play().catch(function () {}); }
+          else { e.target.pause(); }
+        });
+      }, { threshold: .25 });
+      vids.forEach(function (v) { vio.observe(v); });
+    } else {
+      vids.forEach(function (v) { v.play().catch(function () {}); });
+    }
+  }
+
+  /* ── NAV — ingen hero her: hvit rygg straks scrollet ──────── */
+  var nav = document.querySelector('.nav');
+  var navJumps = Array.prototype.slice.call(document.querySelectorAll('.nav__jumps button'));
+  var navTargets = ['contact'].map(function (id) { return document.getElementById(id); });
+  var navPad = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--pad')) || 10;
+  if (nav) {
+    /* CEO 08-13: terskel mot for sensitiv nav — 120px akkumulert
+       opp-scroll for vise den igjen; ned-scroll nullstiller.   */
+    var navLastY = window.scrollY, navTick = false, navUpAcc = 0;
+    var onNavScroll = function () {
+      if (navTick) { return; }
+      navTick = true;
+      requestAnimationFrame(function () {
+        navTick = false;
+        var y = window.scrollY;
+        var dy = y - navLastY;
+        navUpAcc = dy > 0 ? 0 : navUpAcc - dy;
+        if (y <= 40) { nav.classList.remove('is-hidden'); }
+        else if (dy > 0) { nav.classList.add('is-hidden'); }
+        else if (navUpAcc >= 120) { nav.classList.remove('is-hidden'); }
+        /* contact: nav forblir mørk — is-paper-flippen leste som bug her */
+        navLastY = y;
+        var active = 0;
+        navTargets.forEach(function (el, i) {
+          if (el && el.getBoundingClientRect().top <= window.innerHeight * 0.45) { active = i + 1; }
+        });
+        navJumps.forEach(function (b) {
+          b.classList.toggle('is-here', parseInt(b.dataset.jump, 10) === active);
+        });
+      });
+    };
+    window.addEventListener('scroll', onNavScroll, { passive: true });
+    onNavScroll();
+    navJumps.forEach(function (b) {
+      b.addEventListener('click', function () {
+        var el = navTargets[parseInt(b.dataset.jump, 10) - 1];
+        if (!el) { return; }
+        window.scrollTo({
+          top: el.getBoundingClientRect().top + window.scrollY - navPad,
+          behavior: reduce ? 'auto' : 'smooth'
+        });
+      });
+    });
+  }
+})();
+</script>
+
+<script>
+/* Kopier-CTA (CEO 08-15): mailto skal aldri rive besøkeren ut i
+   en mail-app — klikk legger adressen på utklippstavlen. På
+   hover-flater bærer «Click to copy»-tooltipen (Dado-ref.) både
+   affordance og kvittering; på touch svarer lenka selv
+   (adresse + ✓). mailto-href beholdes kun som fallback.        */
+(function () {
+  var tip = null;
+  if (window.matchMedia('(hover: hover)').matches) {
+    tip = document.createElement('div');
+    tip.className = 'copytip';
+    tip.textContent = 'Copy email \u2192';
+    document.body.appendChild(tip);
+    document.addEventListener('mousemove', function (e) {
+      tip.style.transform = 'translate(' + (e.clientX + 14) + 'px, ' + (e.clientY + 18) + 'px)';
+    });
+  }
+  Array.prototype.forEach.call(document.querySelectorAll('a[href^="mailto:"]'), function (a) {
+    var addr = a.getAttribute('href').replace(/^mailto:/, '').split('?')[0];
+    a.setAttribute('aria-live', 'polite');
+    if (tip) {
+      a.addEventListener('mouseenter', function () { tip.textContent = 'Copy email \u2192'; tip.classList.add('is-on'); });
+      a.addEventListener('mouseleave', function () { tip.classList.remove('is-on'); });
+    }
+    a.addEventListener('click', function (e) {
+      e.preventDefault();
+      function kvitter() {
+        if (tip && tip.classList.contains('is-on')) {
+          tip.textContent = 'Copied \u2713';
+          return;
+        }
+        if (a.dataset.orig) return;
+        a.dataset.orig = a.innerHTML;
+        a.innerHTML = addr + ' <span class="arrow">\u2713</span>';
+        setTimeout(function () {
+          a.innerHTML = a.dataset.orig;
+          delete a.dataset.orig;
+        }, 1800);
+      }
+      function fallback() {
+        var t = document.createElement('textarea');
+        t.value = addr;
+        t.style.cssText = 'position:fixed;opacity:0';
+        document.body.appendChild(t);
+        t.select();
+        var ok = false;
+        try { ok = document.execCommand('copy'); } catch (err) {}
+        document.body.removeChild(t);
+        if (ok) kvitter(); else location.href = 'mailto:' + addr;
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(addr).then(kvitter, fallback);
+      } else {
+        fallback();
+      }
+    });
+  });
+})();
+
+/* Back to top — footerens vei hjem (CEO 08-15). */
+(function () {
+  Array.prototype.forEach.call(document.querySelectorAll('.footer__top'), function (a) {
+    a.addEventListener('click', function (e) {
+      e.preventDefault();
+      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
+    });
+  });
+})();
+</script>
+
+<script>
+/* Skjema → Notion via portefolio-contact-endepunktet (CEO 08-15). */
+(function () {
+  var CF_ENDPOINT = 'https://portefolio-contact.vercel.app/api/contact';
+  var form = document.querySelector('.contact__form');
+  if (!form) return;
+  var btn = form.querySelector('button');
+  var msg = form.querySelector('.cf__msg');
+  function si(t) { msg.textContent = t; msg.hidden = !t; }
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (form.company.value) return; /* honningkrukke */
+    var data = {
+      name: form.name.value.trim(),
+      email: form.email.value.trim(),
+      message: form.message.value.trim(),
+      source: location.pathname
+    };
+    if (!data.name || !data.email || !data.message || data.email.indexOf('@') < 1) {
+      si('Please complete all three fields.');
+      return;
+    }
+    btn.disabled = true;
+    btn.textContent = 'Sending…';
+    si('');
+    fetch(CF_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    }).then(function (r) {
+      if (!r.ok) throw new Error(r.status);
+      form.reset();
+      btn.innerHTML = 'Message sent <span class="arrow">\u2713</span>';
+      setTimeout(function () {
+        btn.innerHTML = 'Send <span class="arrow">\u2192</span>';
+        btn.disabled = false;
+      }, 4000);
+    }).catch(function () {
+      btn.disabled = false;
+      btn.innerHTML = 'Send <span class="arrow">\u2192</span>';
+      si('Couldn\u2019t send. Email me directly at rune@kaizenstudio.no.');
+    });
+  });
+})();
+</script>
+
+<!-- Cloudflare Web Analytics (CEO 09-04) -->
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "111e05e03c3f411fa8ebbbd04b820e76"}'></script>
+<script defer src="assets/js/analytics.js"></script>
+<script defer src="/assets/js/portfolio-nav.js?v=20261029-menu-close"></script>
+</body>
+</html>

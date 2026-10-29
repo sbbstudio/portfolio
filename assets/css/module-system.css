@@ -1,0 +1,340 @@
+/* Module system — the home page’s module grammar, shared by the case pages —
+   one 100vh module per step, 2 rows × 4 columns, 6px nodes in the crossings.
+   Each step has one media window across cells 1–3 / 5–7 (a live site, a
+   still of it, or a recording) and the step's head in cell 4, copy in cell 8.
+   Values come from docs/design/DESIGN.md; the page sets no sizes of its own. */
+*, *::before, *::after { box-sizing: border-box; }
+:root {
+  --pad: 10px; --cell: 20px; --hair: 1px; --node: 6px;
+  /* Vertical rhythm inside a cell: distance encodes relation (see DESIGN.md › Vertikal rytme). */
+  --s-1: 6px; --s-2: var(--cell); --s-3: calc(var(--cell) * 2); --s-4: calc(var(--cell) * 5);
+  /* Glass: the nav's blur on a tint that is the ink's opposite (DESIGN.md › Glass). */
+  --glass-blur: blur(18px) saturate(110%); --glass-dark: rgba(0,0,0,.88); --glass-light: rgba(255,255,255,.64); --glass-fade: 80px;
+  --paper: #fff; --ground: #000; --ink: #fff; --ink-2: rgba(255,255,255,.52); --line: rgba(255,255,255,.16);
+  --box: calc(100svh - 2 * var(--pad)); --row: calc(var(--box) / 2);
+  --t-display: 9.9vw; --t-xxl: min(6.875rem, 7.3vw); --t-xl: 5rem; --t-h1: 3.75rem; --t-h2: 2.8125rem; --t-h3: 1.875rem; --t-h4: 1.31rem;
+  --t-body: 1.125rem; --t-base: 1rem; --t-meta: .9375rem;
+  --ez: cubic-bezier(.22,.61,.36,1);
+  /* The live window renders the site at its real desktop width and scales it to the cell. */
+  --window-width: 1440;
+}
+html { -webkit-text-size-adjust: 100%; }
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+body { margin: 0; background: var(--paper); color: var(--ink); font-family: ui-sans-serif, -apple-system, "Helvetica Neue", Arial, sans-serif; font-size: var(--t-base); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+.page { position: relative; margin: var(--pad); background: var(--ground); }
+p, h1, h2 { margin: 0; }
+a { color: inherit; text-decoration: none; }
+a:focus-visible, iframe:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
+.label { display: block; font-size: var(--t-meta); line-height: 1.5; color: var(--ink-2); }
+
+/* ── Module: one full-height section, four columns, two rows ─────────── */
+.mod { position: relative; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); grid-template-rows: repeat(2, minmax(var(--row), auto)); min-height: var(--box); scroll-margin-top: 0; }
+.mod > .cell { padding: var(--cell); min-width: 0; }
+/* The grid draws itself: full-height verticals, one horizontal per row, nodes above both. */
+.mgrid { position: absolute; inset: 0; pointer-events: none; z-index: 40; }
+.mgrid i { position: absolute; top: 0; bottom: 0; left: var(--x); width: var(--hair); margin-left: calc(var(--hair) / -2); background: var(--line); }
+.mgrid i:first-child, .mgrid i:last-child { background: none; }
+.mgrid i::before, .mgrid i::after, .mgrid i b { content: ''; position: absolute; left: calc(var(--node) / -2 + var(--hair) / 2); width: var(--node); height: var(--node); background: var(--paper); z-index: 1; }
+.mgrid i::before { top: calc(var(--node) / -2); }
+.mgrid i::after { bottom: calc(var(--node) / -2); }
+.mgrid i b { top: 50%; transform: translateY(-50%); }
+.mgrid i:first-child::before, .mgrid i:first-child::after, .mgrid i:first-child b { left: 0; }
+.mgrid i:last-child::before, .mgrid i:last-child::after, .mgrid i:last-child b { left: auto; right: 0; }
+.mgrid::before, .mgrid::after { content: ''; position: absolute; left: 0; right: 0; height: var(--hair); background: var(--line); }
+.mgrid::before { top: 0; }
+.mgrid::after { top: 50%; }
+
+/* ── Hero module ─────────────────────────────────────────────────────── */
+.hero .hero__title { grid-column: 1; grid-row: 2; }
+.hero h1 { font-size: var(--t-xxl); font-weight: 500; line-height: 1; letter-spacing: -.04em; }
+.hero .sub { margin-top: var(--cell); font-size: var(--t-h3); line-height: 1.1; letter-spacing: -.025em; }
+.hero .hero__title .label { margin-top: var(--cell); }
+.hero .hero__intro { grid-column: 2; grid-row: 2; font-size: var(--t-body); line-height: 1.4; max-width: 34ch; }
+.hero .hero__intro p + p { margin-top: var(--cell); font-size: var(--t-meta); color: var(--ink-2); }
+.hero .hero__links { grid-column: 3; grid-row: 2; }
+.hero .hero__links ul { margin: 0; padding: 0; list-style: none; font-size: var(--t-meta); }
+.hero .hero__links li + li { margin-top: 12px; }
+.hero .hero__links .label { margin-bottom: var(--cell); }
+.hero .hero__cta { grid-column: 4; grid-row: 2; text-align: right; font-size: var(--t-meta); }
+/* Step index on the top row: six steps, two per cell, cells 1–3. */
+.hero .hero__steps { grid-column: 1 / 5; grid-row: 1; align-self: end; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); padding: 0; }
+.hero .hero__steps div { padding: var(--cell); }
+.hero .hero__steps a { display: block; font-size: var(--t-meta); line-height: 1.5; color: var(--ink-2); }
+.hero .hero__steps a span { display: inline-block; width: 3ch; color: var(--ink-2); }
+.hero .hero__steps a:hover { color: var(--ink); }
+
+/* ── Step module ─────────────────────────────────────────────────────── */
+.step .step__window { grid-column: 1 / 4; grid-row: 1 / 3; }
+.step .step__head { grid-column: 4; grid-row: 1; }
+.step .step__head h2 { margin-top: var(--cell); font-size: var(--t-h3); font-weight: 500; line-height: 1.1; letter-spacing: -.025em; }
+.step .step__copy { grid-column: 4; grid-row: 2; display: flex; flex-direction: column; font-size: var(--t-meta); line-height: 1.5; }
+.step .step__copy p + p { margin-top: var(--cell); }
+.step .step__copy .cta { margin-top: auto; padding-top: var(--cell); }
+
+/* The window: one surface, three contents. Live = the real site in an
+   iframe at --window-width, scaled to fit. Still = a full-page capture that
+   slides up on hover. Video = a recording. No radius, no shadow, no chrome:
+   the window is the cell, the grid line is its frame. */
+/* The window is absolutely placed inside its cell so that tall content (a
+   full-page still) never stretches the module's rows. */
+/* Media fills its cells to the grid lines — no inner padding, like the home page's media cells (DESIGN.md: «Gridet eier seksjonslinjene»). */
+.step .step__window { position: relative; min-height: 0; padding: 0; }
+.window { position: absolute; inset: 0; overflow: hidden; background: var(--ground); container-type: size; }
+.window--live iframe { position: absolute; top: 0; left: 0; width: calc(var(--window-width) * 1px); height: calc(100% / var(--scale, 1)); border: 0; transform: scale(var(--scale, 1)); transform-origin: 0 0; background: var(--paper); }
+.window--still img { display: block; width: 100%; height: auto; transition: transform 9s linear; }
+.window--still:hover img, .window--still:focus-within img { transform: translateY(calc(-100% + 100cqh)); }
+.window--video video { display: block; width: 100%; height: 100%; object-fit: contain; background: var(--ground); }
+.window .open { position: absolute; right: 0; bottom: 0; padding: 10px var(--cell); font-size: var(--t-meta); background: var(--ground); color: var(--ink); }
+
+/* Draft marker: a fact Rune has not supplied yet. Must not ship. */
+.fact-gap { display: block; margin-top: var(--cell); padding: 12px; outline: 1px dashed var(--ink-2); outline-offset: -1px; color: var(--ink-2); }
+.fact-gap::before { content: 'Fact needed — '; color: var(--ink); }
+
+/* ── Close + reduced motion ──────────────────────────────────────────── */
+.close .close__h { grid-column: 1 / 3; grid-row: 2; }
+.close h2 { font-size: var(--t-h2); font-weight: 500; line-height: 1.1; letter-spacing: -.032em; }
+.close .close__cta { grid-column: 4; grid-row: 2; text-align: right; font-size: var(--t-meta); }
+.arrow { display: inline-block; transition: transform .35s var(--ez); }
+a:hover .arrow { transform: translateX(.5ch); }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .window--still img, .arrow { transition: none; }
+  .window--still:hover img { transform: none; }
+}
+
+/* ── Mobile ≤1023: one column, the window becomes a 16:10 box ────────── */
+@media (max-width: 1023px) {
+  html { font-size: clamp(13px, calc(100vw / 24.375), 18px); }
+  :root { --pad: 2px; --cell: 1rem; --t-xxl: 13vw; --t-h3: 1.31rem; --row: auto; }
+  .mod { display: flex; flex-direction: column; min-height: 0; }
+  .mgrid i:not(:first-child):not(:last-child), .mgrid::after, .mgrid i b { display: none; }
+  .hero .hero__title { padding-top: calc(var(--nav-height, 110px) + var(--cell)); }
+  .hero .hero__steps { display: block; order: 5; }
+  .hero .hero__cta, .close .close__cta { text-align: left; }
+  .step { padding-bottom: var(--cell); }
+  .step .step__window { order: 2; }
+  .step .step__head { order: 1; }
+  .step .step__copy { order: 3; }
+  .window { position: relative; inset: auto; aspect-ratio: 16 / 10; }
+  .pin--live .window { aspect-ratio: 4 / 5; }
+}
+
+/* ── K3 Ground: one surface over all eight cells, one sentence on row 1 ── */
+.ground .g__line { grid-column: 1 / 4; grid-row: 1; }
+.ground .g__line h1, .ground .g__line h2 { font-size: var(--t-h2); font-weight: 500; line-height: 1.1; letter-spacing: -.032em; max-width: 22ch; }
+.ground .g__line .label { margin-bottom: var(--cell); }
+.ground .g__meta { grid-column: 4; grid-row: 1; font-size: var(--t-meta); line-height: 1.5; }
+.ground .g__meta p + p { margin-top: var(--cell); color: var(--ink-2); }
+.ground .g__fact { grid-row: 2; font-size: var(--t-meta); line-height: 1.5; }
+.ground .g__fact .label { margin-bottom: var(--cell); }
+.ground .g__fact strong { display: block; font-size: var(--t-h3); font-weight: 500; line-height: 1.1; letter-spacing: -.025em; margin-bottom: var(--cell); }
+.ground .g__cta { grid-column: 4; grid-row: 2; display: flex; flex-direction: column; justify-content: flex-end; text-align: right; font-size: var(--t-meta); }
+.ground .g__cta a + a { margin-top: 12px; }
+/* Step index: four cells on row 2 of the hero ground. */
+.ground .g__step { grid-row: 2; display: flex; flex-direction: column; justify-content: flex-end; font-size: var(--t-meta); }
+.ground .g__step span { display: block; color: var(--ink-2); }
+.ground .g__step a { font-size: var(--t-h3); line-height: 1.1; letter-spacing: -.025em; }
+
+
+/* ── K1 Window, annotated: the site runs in the window; the notes in cell 8
+   point at elements inside it. The marker and the hairline are injected into
+   the framed document (same origin) in the grid's own language. ── */
+.step .notes { margin: 0; padding: 0; list-style: none; counter-reset: n; }
+.step .notes li { counter-increment: n; display: flex; gap: var(--cell); }
+.step .notes li + li { margin-top: 12px; }
+.step .notes li::before { content: counter(n, decimal-leading-zero); flex: none; width: 2ch; color: var(--ink-2); }
+.step .notes button { font: inherit; color: inherit; text-align: left; background: none; border: 0; padding: 0; cursor: pointer; }
+.step .notes button[aria-current="true"] { text-decoration: underline; text-underline-offset: .2em; }
+.step .notes button[aria-current="true"] + .why { display: block; }
+.step .notes .why { display: none; margin-top: 6px; color: var(--ink-2); }
+.step .notes li.is-open .why { display: block; }
+
+@media (max-width: 1023px) {
+  .ground .g__line h1, .ground .g__line h2 { max-width: none; }
+  .ground .g__cta { text-align: left; }
+  .step .notes .why { display: block; }
+}
+/* The hero's top row sits under the absolute nav; its cells start below it. */
+.hero.ground .g__line, .hero.ground .g__meta { padding-top: calc(var(--nav-height, 7.5rem) + var(--cell)); }
+
+/* ── Pinned story: the module stays on screen while the page scrolls past;
+   cells 4 and 8 show one panel at a time. --panels sets the scroll length. ── */
+.pin { position: relative; height: calc(var(--panels, 1) * var(--box)); }
+.pin .pin__stage { position: sticky; top: var(--pad); height: var(--box); }
+.pin .panel { display: contents; }
+.pin .panel .cell { opacity: 0; transition: opacity .5s var(--ez); pointer-events: none; }
+.pin .panel.is-active .cell { opacity: 1; pointer-events: auto; }
+.pin .step__copy p + p, .pin .step__copy .fact-gap + p { margin-top: var(--cell); }
+/* Cell 4: numbers are secondary navigation; the decision title leads. The intro mirrors the prelude. */
+.pin .step__head .label { margin-bottom: var(--s-3); }
+.pin .step__head h2 { margin-top: var(--s-2); font-size: var(--t-h3); font-weight: 500; line-height: 1.1; letter-spacing: -.025em; }
+.pin .step__title { font-weight: 500; line-height: 1; letter-spacing: -.04em; }
+.pin .step__name { display: block; font-size: var(--t-xl); }
+.pin .step__sub { display: block; margin-top: var(--s-1); font-size: var(--t-h3); letter-spacing: -.025em; line-height: 1.1; }
+/* Cell 8: the reasoning in three steps. Label 6px over its line, 20px between steps. */
+.think { margin: 0; }
+.think dt { font-size: var(--t-meta); color: var(--ink-2); }
+.think dd { margin: var(--s-1) 0 0; }
+.think dd + dt { margin-top: var(--s-2); }
+.pin .step__copy .cta { margin-top: auto; padding-top: var(--s-3); }
+.pin .step__copy p + .think, .pin .step__copy .think + .think { margin-top: var(--s-3); }
+/* Step chooser: shared type and focus styling; case pages position it over cell 5 below. */
+.pin .pin__steps { grid-column: 4; grid-row: 1; align-self: end; display: flex; gap: var(--cell); padding: var(--cell); position: relative; z-index: 2; }
+.pin .pin__steps button { font: inherit; font-size: var(--t-meta); font-weight: 400; letter-spacing: -.02em; color: var(--ink-2); background: none; border: 0; padding: 0; cursor: pointer; transition: color .3s var(--ez); }
+.pin .pin__steps button[aria-current] { color: var(--ink); font-weight: 600; }
+.pin .pin__steps button:focus-visible { outline: 1px solid var(--paper); outline-offset: 4px; }
+/* Incoming cells rise 12px as they fade in. */
+.pin .panel .cell { transform: translateY(12px); transition: opacity .5s var(--ez), transform .5s var(--ez); }
+.pin .panel.is-active .cell { transform: none; }
+@media (prefers-reduced-motion: reduce) { .pin .panel .cell { transition: none; transform: none; } }
+@media (max-width: 1023px) {
+  .pin { height: auto; }
+  .pin .pin__stage { position: relative; top: auto; height: auto; }
+  .pin .panel .cell { opacity: 1; pointer-events: auto; transform: none; }
+  .pin .pin__steps { display: none; }
+  /* Reading order as on desktop: the first panel's title, then the window, then its note and the rest.
+     The site's own menu then never sits under the hamburger tile. */
+  .pin .panel { display: block; order: 3; }
+  .pin .panel:first-of-type { display: contents; }
+  .pin .panel:first-of-type .step__head { order: 0; padding-top: calc(60px + var(--pad) + var(--cell)); }
+  .pin .step__window { order: 1; }
+  .pin .panel:first-of-type .step__copy { order: 2; }
+  .pin.pin--live { height: auto; } /* the live window's fixed height is desktop only; on mobile the panels stack below it */
+  /* Rhythm between the stacked sections: 40px from the title to the window, 100px of dead space between sections. */
+  .pin .step__window { margin-top: var(--s-3); }
+  .pin .panel + .panel { margin-top: var(--s-4); }
+  .pin .panel:first-of-type + .panel { margin-top: calc(var(--s-4) - var(--cell)); }
+  .pin .step__copy .cta { margin-top: var(--s-3); }
+}
+/* Panel cells are not direct children of the module, so they take the cell padding here.
+   The head starts below the nav, which is solid on this page because it sits over the window. */
+.pin .panel .cell { padding: var(--cell); }
+.pin .panel .step__head { padding-top: calc(var(--nav-height, 7.5rem) + var(--cell)); }
+
+/* ── Nav: fixed over the top row, as on the home page; solid here because it sits over the window. ── */
+body .nav.nav:not(.has-compact-menu), body .page > .nav.nav[data-portfolio-nav]:not(.has-compact-menu) { position: fixed; top: var(--pad); left: var(--pad); right: var(--pad); z-index: 50; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); background: var(--ground); font-size: var(--t-body); line-height: 1.3; letter-spacing: -.012em; backdrop-filter: none; -webkit-backdrop-filter: none; }
+body .nav.nav .cell { padding: var(--cell); }
+body .nav.nav .nav__links a, body .nav.nav .nav__jumps a { display: block; }
+body .nav.nav .nav__jumps span { display: inline-block; min-width: 3ch; color: var(--ink-2); }
+body .nav.nav .nav__cta { text-align: right; }
+@media (max-width: 1023px) { body .nav.nav { grid-template-columns: repeat(2, minmax(0, 1fr)); font-size: var(--t-meta); } }
+
+/* Compact (hamburger) nav on the pinned page: the name sits over the white
+   site, the toggle over the black fourth column; the open menu is a ground
+   band, not glass, so it reads over the window. */
+/* Compact nav on this page: closed, only the hamburger shows, as a dark glass tile.
+   Open, the whole menu is dark glass and the name comes back. */
+body .nav[data-portfolio-nav].has-compact-menu { color: #fff; --nav-foreground: #fff; --nav-paper-foreground: #fff; justify-content: flex-end; }
+body .nav[data-portfolio-nav].has-compact-menu:not(.is-menu-open) .nav__name { display: none; }
+body .nav[data-portfolio-nav].has-compact-menu .portfolio-menu-toggle { color: #fff; width: 60px; height: 60px; margin: 0; padding: 18px; background: var(--glass-dark); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur); }
+body .nav.nav[data-portfolio-nav].has-compact-menu.is-menu-open, body .nav.nav[data-portfolio-nav][data-glass].has-compact-menu.is-menu-open { background: var(--glass-dark); color: #fff; --nav-foreground: #fff; backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur); }
+body .nav[data-portfolio-nav].has-compact-menu.is-menu-open .cell { padding: var(--cell); }
+body .nav.nav[data-portfolio-nav].has-compact-menu.is-menu-open .portfolio-menu-toggle { top: 0; right: 0; background: transparent; backdrop-filter: none; -webkit-backdrop-filter: none; }
+.pin .panel .step__head { padding-top: var(--cell); }
+
+
+/* Live variant: the window is the scroller at 100%, so the story has no travel
+   and the grid keeps only the lines that frame cells 4 and 8. */
+.pin--live { height: var(--box); }
+/* A still of the site sits behind the frame from the first paint, so the prelude's glass has something to blur; the frame fades in over it once hydrated. */
+.pin--live .window--live { background: #fff var(--poster, none) center top / cover no-repeat; } /* --poster is set per page on .window */
+.pin--live .window--live iframe { opacity: 0; transition: opacity .6s var(--ez); }
+.pin--live .window--live.is-loaded iframe { opacity: 1; }
+.pin--live .pin__stage { position: relative; top: auto; }
+.pin--live .window--live iframe { width: 100%; height: 100%; transform: none; }
+/* Mobile shows the still of the site's own mobile layout (4:5) in the window; the frame is not loaded there. */
+@media (max-width: 1023px) { .pin--live .window--live { background-image: var(--poster-m, var(--poster, none)); } .pin--live .window--live iframe { display: none; } }
+.pin--live .mgrid i:not(:nth-child(4)) { display: none; }
+.pin--live .mgrid::before { display: none; }
+.pin--live .mgrid::after { left: 75%; }
+
+/* ── Glass ── one recipe, two variants. The tint is the opposite of the type:
+   dark glass carries white type, light glass carries black. --fade softens one edge. */
+[data-glass] { backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur); }
+[data-glass="dark"] { background: var(--glass-dark); color: #fff; }
+[data-glass="light"] { background: var(--glass-light); color: #000; }
+[data-glass][data-fade="bottom"] { mask-image: linear-gradient(#000 calc(100% - var(--glass-fade)), transparent); -webkit-mask-image: linear-gradient(#000 calc(100% - var(--glass-fade)), transparent); }
+[data-glass][data-fade="top"] { mask-image: linear-gradient(transparent, #000 var(--glass-fade)); -webkit-mask-image: linear-gradient(transparent, #000 var(--glass-fade)); }
+
+/* ── Prelude: the home page's card glass (card-system.css: white .18 + blur 18px,
+   white type) over the whole page, on a ground scrim so the type stays AA over the
+   white site. Centred. States: is-loading → is-ready → is-leaving. Closed by ×. ── */
+html.has-prelude { overflow: hidden; }
+.prelude { position: fixed; inset: var(--pad); z-index: 60; display: flex; align-items: center; justify-content: center; padding: var(--cell); text-align: center; transition: backdrop-filter 1.2s var(--ez), -webkit-backdrop-filter 1.2s var(--ez), opacity .9s var(--ez); }
+.prelude__body { width: min(44rem, 100%); transition: transform .9s var(--ez); }
+/* Order: the frost first, then the words. Body and × are hidden until .is-shown, which the script adds one frame after load. */
+.prelude__body, .prelude__close { opacity: 0; transition: opacity .8s var(--ez) 2s; }
+.prelude__body { transform: translateY(12px); transition: opacity .8s var(--ez) 2s, transform .8s var(--ez) 2s; }
+.prelude.is-shown .prelude__body, .prelude.is-shown .prelude__close { opacity: 1; transform: none; }
+.prelude.is-leaving .prelude__body, .prelude.is-leaving .prelude__close { transition-delay: 0s; }
+.prelude__body .label { margin-bottom: var(--s-3); }
+.prelude__title { font-weight: 500; line-height: 1; letter-spacing: -.04em; }
+.prelude__name { display: block; font-size: var(--t-xxl); }
+.prelude__sub { display: block; margin-top: var(--s-1); font-size: var(--t-h3); letter-spacing: -.02em; }
+.prelude__lead { margin: var(--s-2) auto 0; font-size: var(--t-body); line-height: 1.4; max-width: 38ch; }
+.prelude__status { margin: var(--s-3) auto 0; font-size: var(--t-meta); line-height: 1.5; max-width: 24rem; }
+.prelude__state { display: none; }
+.prelude.is-loading [data-loading], .prelude.is-ready [data-ready], .prelude.is-leaving [data-ready] { display: block; }
+.prelude__bar { display: block; height: var(--hair); margin-top: 12px; background: var(--line); position: relative; overflow: hidden; }
+.prelude__bar::after { content: ''; position: absolute; inset: 0; width: 40%; background: var(--paper); animation: prelude-sweep 1.4s var(--ez) infinite; }
+@keyframes prelude-sweep { from { transform: translateX(-100%); } to { transform: translateX(250%); } }
+.prelude__close { position: absolute; top: var(--cell); right: var(--cell); width: 44px; height: 44px; font: inherit; font-size: 2rem; line-height: 1; color: var(--ink); background: none; border: 0; padding: 0; cursor: pointer; }
+.prelude__close:focus-visible { outline: 1px solid var(--paper); outline-offset: 2px; }
+.prelude.is-ready { backdrop-filter: blur(6px) saturate(110%); -webkit-backdrop-filter: blur(6px) saturate(110%); } /* clears to a light blur, not to zero: white type over the white site needs it */
+.prelude.is-leaving { opacity: 0; pointer-events: none; }
+.prelude.is-leaving .prelude__body { transform: translateY(-6%); }
+@media (prefers-reduced-motion: reduce) {
+  .prelude, .prelude__body { transition: opacity .3s linear; }
+  .prelude__bar::after { animation: none; width: 100%; }
+  .prelude.is-leaving .prelude__body { transform: none; }
+}
+@media (max-width: 1023px) { .prelude__name { font-size: var(--t-xl); } .prelude__sub { font-size: var(--t-h4); } }
+
+/* Shared by NYME and KAIZEN: each panel supplies a summary at the foot of cell 4.
+   Reserve title space; the window controls are positioned separately below. */
+.pin--credits .pin__credits { grid-column: 4; grid-row: 1; align-self: end; padding: var(--cell); font-size: var(--t-h4); font-weight: 500; line-height: 1.1; letter-spacing: -.025em; color: var(--ink-2); }
+@media (min-width: 1024px) {
+  .pin--credits .pin__navigation { grid-column: 4; grid-row: 2; align-self: end; padding: var(--cell); position: relative; z-index: 2; }
+  .pin--credits .panel .step__head { padding-bottom: calc(var(--s-3) + var(--t-h4) * 4.4); }
+  .pin--credits .panel .step__copy { padding-bottom: calc(var(--s-3) + var(--s-2) + var(--t-meta) * 3.1); }
+}
+@media (max-width: 1023px) {
+  .pin--credits .pin__credits { order: 0; align-self: stretch; }
+  .pin--credits .panel:not(:first-of-type) { display: flex; flex-direction: column; }
+  .pin--credits .panel:not(:first-of-type) .pin__credits { order: 2; }
+}
+
+/* Shared case controls: base spacing before their window-overlay positioning. */
+.pin--credits .pin__navigation .pin__steps { padding: 0; }
+.pin--credits .pin__site-link { margin: 0 0 var(--s-2); font-size: var(--t-meta); line-height: 1.6; }
+@media (max-width: 1023px) {
+  .pin--credits .pin__navigation { order: 2; padding: var(--cell); }
+  .pin--credits .pin__site-link { margin: 0; }
+}
+
+
+/* Shared case controls occupy their own bottom area, separate from the scrollable notes. */
+@media (min-width: 1024px) {
+  .pin--credits .pin__navigation { display: grid; gap: var(--s-2); }
+  .pin--credits .pin__navigation .pin__steps { grid-column: 1; grid-row: 1; }
+  .pin--credits .pin__site-link { grid-column: 1; grid-row: 2; margin: 0; text-align: right; }
+  .pin--credits .panel .step__copy {
+    min-height: 0;
+    margin-bottom: 0;
+    padding-bottom: var(--cell);
+    overflow-y: auto;
+    scrollbar-width: thin;
+  }
+}
+
+/* External site link sits in cell 7, over the bottom-right of the full-height window. */
+.pin--credits .window .pin__site-link { position: absolute; bottom: 0; right: 0; z-index: 3; margin: 0; padding: calc(var(--s-1) * 1.5) calc(var(--s-2) * .75); text-align: right; }
+
+/* Shared section chooser replaces the single marker in cell 5, at the window's bottom-left. */
+.pin--credits .window .pin__navigation { position: absolute; bottom: 0; left: 0; z-index: 3; padding: calc(var(--s-1) * 1.5) calc(var(--s-2) * .75); display: block; }
+@media (max-width: 1023px) { .pin--credits .window .pin__navigation { display: none; } }
+
+/* Keep project names inside the fourth grid column on narrow desktop screens. */
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .pin .step__name { font-size: var(--t-h1); }
+}

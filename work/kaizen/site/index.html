@@ -1,0 +1,1995 @@
+<!doctype html>
+<html lang="nb" data-kai-site="fallback">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <script>
+    // Norsk/engelsk og tema før første maling. Dansk er parkert; gamle danske valg går til norsk.
+    // Lagres i localStorage (kz-lang, kz-theme); ?lang=en / ?theme=dark overstyrer og lagres.
+    (function () { var h = document.documentElement; try {
+      var q = new URLSearchParams(location.search).get('lang'), l = q || localStorage.getItem('kz-lang');
+      if (l === 'da') { l = 'nb'; localStorage.setItem('kz-lang', l); }
+      if (l === 'en' || l === 'nb') { h.lang = l; if (q) localStorage.setItem('kz-lang', l); }
+      var qt = new URLSearchParams(location.search).get('theme'), t = qt || localStorage.getItem('kz-theme');
+      if (t === 'dark' || t === 'light') { h.dataset.theme = t; if (qt) localStorage.setItem('kz-theme', t); }
+    } catch (e) {} })();
+  </script>
+  <title>KAIZEN — Møt Kai</title>
+  <meta name="description" content="Møt Kai. AI-agenter som tar oppgaver i systemene dere bruker. Sammen finner vi arbeidet som er verdt å gi videre.">
+  <link rel="preload" href="/work/kaizen/site/assets/fonts/syne-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/work/kaizen/site/assets/fonts/instrument-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/work/kaizen/site/assets/fonts/geist-mono-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/work/kaizen/site/assets/fonts/fonts.css">
+  <link rel="icon" href="/work/kaizen/site/assets/brand/favicon.svg" type="image/svg+xml">
+  <!-- Alt Kai trenger før avsløring starter her, parallelt — ikke i kjede etter agent.js.
+       URL-ene (inkl. ?v=) må være identiske med assets/cyan/src/asset-version.js (testet). -->
+  <link rel="modulepreload" href="/work/kaizen/site/assets/cyan/agent.js?v=kai-production-20261027-mobile-spacing-nb-en">
+  <link rel="preload" href="/work/kaizen/site/assets/cyan/preview.css?v=20261027-mobile-spacing-nb-en" as="style">
+  <link rel="preload" href="/work/kaizen/site/assets/cyan/experience.css?v=20261027-mobile-spacing-nb-en" as="style">
+  <link rel="preload" href="/work/kaizen/site/assets/cyan/stack-component.css?v=20261027-mobile-spacing-nb-en" as="style">
+  <link rel="preload" href="/work/kaizen/site/assets/cyan/approved-entrance.json?v=20261027-mobile-spacing-nb-en" as="fetch" crossorigin>
+  <link rel="preload" href="/work/kaizen/site/assets/cyan/cyan-approved.glb?v=20261027-mobile-spacing-nb-en" as="fetch" crossorigin>
+  <script src="/work/kaizen/site/assets/brand/kai-eyes.js" defer></script>
+  <script>
+    // Kai is the production site for every URL. Never remove the loading guard
+    // to reveal the retired design. No JS / failed startup uses the Kai fallback.
+    document.documentElement.dataset.kaiSite = 'loading';
+    document.documentElement.dataset.cyanBoot = '';
+    window.kaiBootTimer = setTimeout(() => {
+      if (document.documentElement.dataset.kaiSite !== 'ready')
+        document.documentElement.dataset.kaiSite = 'fallback';
+    }, 20000);
+    // Hårlinjen i loading-skjermen fra første byte: preloadene i <head> er ofte ferdige før agent.js
+    // kjører, så nedlastingsdelen (0–.85, vektet etter brotli-bytes) telles her. site-state.js tar over
+    // fra .85 (parse + gpu) og går aldri under verdien som står her. Samme vekter som STAGES der.
+    (function () { try {
+      var weight = { 'agent.js': .30, 'preview.css': .017, 'experience.css': .017, 'stack-component.css': .016, 'approved-entrance.json': .07, 'cyan-approved.glb': .43 };
+      var seen = {}, sum = 0, root = document.documentElement;
+      var observer = new PerformanceObserver(function (list) {
+        list.getEntries().forEach(function (entry) { var file = entry.name.split('?')[0].split('/').pop(); if (weight[file] && !seen[file]) { seen[file] = true; sum += weight[file]; } });
+        if (sum > (parseFloat(root.style.getPropertyValue('--kai-progress')) || 0)) root.style.setProperty('--kai-progress', sum.toFixed(3));
+        if (sum >= .85) observer.disconnect();
+      });
+      observer.observe({ type: 'resource', buffered: true });
+    } catch (e) {} })();
+  </script>
+  <style>
+    html:not([data-kai-site="ready"]) { overflow: hidden; }
+    html:not([data-kai-site="ready"]) body > :not(.kai-startup):not(.kai-loading),
+    html:not([data-kai-site="ready"]) body > :not(.kai-startup):not(.kai-loading) * { visibility: hidden !important; }
+    /* Loading-skjermen: merket våkner (Blikket-tilstand «vaakner») over en hårlinje som viser
+       faktisk nedlasting (--kai-progress fra site-state.js). Ingen tekst (CEO 2026-09-11). Tones ut når data-kai-site=ready. */
+    .kai-loading { position: fixed; inset: 0; z-index: 9998; display: grid; place-content: center; justify-items: center;
+      gap: 22px; background: var(--bg-kai); color: var(--ink); transition: opacity .36s ease, visibility 0s linear .36s; }
+    .kai-loading__mark { display: inline-flex; align-items: center; gap: .28em; font-family: var(--font-display);
+      font-weight: var(--w-display); letter-spacing: var(--track-display); font-size: var(--t-h3); line-height: 1; }
+    .kai-loading__bar { width: min(160px, 40vw); height: 1px; background: color-mix(in srgb, var(--ink) 18%, transparent); overflow: hidden; }
+    .kai-loading__bar::after { content: ""; display: block; height: 100%; background: var(--accent);
+      transform-origin: left; transform: scaleX(var(--kai-progress, 0)); transition: transform .25s ease-out; }
+    html[data-kai-site="ready"] .kai-loading { opacity: 0; visibility: hidden; pointer-events: none; }
+    html[data-kai-site="fallback"] .kai-loading { display: none; }
+    @media (prefers-reduced-motion: reduce) { .kai-loading, .kai-loading__bar::after { transition: none; } }
+    .kai-startup { display: none; }
+    html[data-kai-site="fallback"] .kai-startup {
+      display: flex; position: fixed; inset: 0; z-index: 9999; overflow: auto;
+      flex-direction: column; justify-content: safe center; align-items: center;
+      padding: 40px 24px; background: #f5f6f2; color: #25312d;
+      text-align: center; font-family: "Instrument Sans", sans-serif;
+    }
+    .kai-startup h1 { font-family: "Syne", sans-serif; font-size: clamp(2.5rem, 8vw, 5rem); margin: 24px 0 var(--gap-title); }
+    .kai-startup p { max-width: 42ch; font-size: 1.125rem; line-height: 1.6; }
+    .kai-startup nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 16px; margin-top: 24px; }
+    .kai-startup a { color: inherit; padding: 14px 22px; border: 1px solid #b4c7b9; border-radius: 30px; }
+    .kai-startup a:focus-visible { outline: 3px solid #1c8294; outline-offset: 4px; }
+    .kai-startup small { margin-top: 24px; }
+    html[data-cyan-boot] body > header,
+    html[data-cyan-boot] .hero-stage > * { visibility: hidden; }
+    html[data-cyan-boot] .hero-stage { background: var(--bg-kai); }
+    html[data-cyan-boot] .hero-stage::before,
+    html[data-cyan-boot] .hero-stage::after { display: none; }
+  </style>
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    :root {
+      /* Tekstsystem. Skrifter: Syne (display), Instrument Sans (brød), Geist Mono (etiketter). */
+      --font-display: "Syne", Arial, Helvetica, sans-serif;
+      --font-body: "Instrument Sans", Arial, Helvetica, sans-serif;
+      --font-mono: "Geist Mono", ui-monospace, Menlo, monospace;
+      --w-display: 700;
+      --track-display: -.02em;
+      --lh-display: .98;
+      /* Skala i rem i alle tre ledd: rotstørrelsen (html) styrer alt.
+         To trinn: lite (label, body) og stort (h3, h2, h1). Ingen --t-lead — mellomtrinnet finnes ikke. */
+      --t-label: clamp(.7rem, .64rem + .3vw, .85rem);
+      --t-body:  clamp(1rem, .95rem + .25vw, 1.125rem);
+      --t-h3:    clamp(1.75rem, 1.1rem + 1.6vw, 2.75rem);
+      --t-h2:    clamp(2.5rem, 1.5rem + 3vw, 4.75rem);
+      --t-h1:    clamp(3rem, 1.25rem + 3.75vw, 5.6rem);
+      /* Ett gap mellom tittel og avsnitt på hele flaten (CEO 2026-09-11). Gjelder der de står over hverandre. */
+      --gap-title: 1.25rem;
+      /* Øy-skalaen — husets CTA-system. Høyde og radius hører sammen og skalerer i par:
+         40/12 er grunntrinnet, 48/14 er --lg. Kai-flaten eier tallene (experience.css
+         --island-h/--island-r + .kai-cta--lg); dette er base-flatens speil, på samme måte
+         som --t-*-skalaen. Padding utledes av høyden, aldri satt som eget tall. */
+      --island-h: 40px;
+      --island-r: 12px;
+      /* Flatefarger. Lys er kilden; mørk overstyrer de samme navnene under. */
+      color-scheme: light;
+      --bg: #f8fbfb;            /* grunnflate */
+      --bg-kai: #f8fbfb;        /* Kai-papir (experience.css --kai-paper) */
+      --surface: #ffffff;       /* hvitt kort */
+      --surface-2: #ecf1f2;     /* tonet kort */
+      --surface-3: #dffbff;     /* opplyst kort = cyan-tint, trinn 1 på stigen */
+      --surface-glass: rgba(255, 255, 255, .6);
+      --ink: #161c1d;
+      --muted: #616b6d;
+      --hairline: #d6dcdd;
+      --ink-green: #3a4446;     /* strek og etikett i hero-flyten (navnet er historisk) */
+      --wash-a: #e4ebec; --wash-b: #cdd7d9; --wash-c: #b3c0c3;   /* kjølig vask, h208 */
+      --nav-fill: #151919; --nav-fill-hover: #252a2b; --nav-text: #e8ecec; --nav-accent: #83dcea;   /* øya: cyan bor på sort */
+      --wordmark: #c9d2d3;
+      --hero-a: #fcfdfd; --hero-b: #f3f6f6; --hero-c: #e9eeef;   /* Kai-hero radial */
+      --menu-bg: #151919; --menu-ink: #e8ecec; --menu-muted: #9fa6a7; --dim: #0b0e0e;   /* kontaktvinduet er en øy i begge temaer */
+      --stack-border: #d6dcdd; --stack-back: #c5cdce; --stack-back-1: #dde3e4; --stack-back-3: #b5bec0;
+      --deck-hidden: #ecf1f2; --progress-track: #d6dcdd; --progress-fill: #00798a;
+      --accent: #00798a; --cyan: #83dcea; --eyes: #161c1d;   /* accent = cyanens tekst-tvilling (trinn 6) */
+    }
+
+    /* Mørkt tema: systemvalg uten eksplisitt lyst valg, eller eksplisitt mørkt valg (bryter i header). */
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --bg: #151919;
+      --bg-kai: #171b1b;
+      --surface: #1e2324;
+      --surface-2: #1c2122;
+      --surface-3: #152a2e;
+      --surface-glass: rgba(255, 255, 255, .05);
+      --ink: #e8ecec;
+      --muted: #9fa6a7;
+      --hairline: #313737;
+      --ink-green: #b4bcbd;
+      --wash-a: #232a2b; --wash-b: #1b2122; --wash-c: #151a1b;
+      --nav-fill: #0b0e0e; --nav-fill-hover: #1e2324; --nav-text: #e8ecec; --nav-accent: #83dcea;
+      --wordmark: #262c2d;
+      --hero-a: #1e2324; --hero-b: #181c1d; --hero-c: #121516;
+      --menu-bg: #0b0e0e; --menu-ink: #e8ecec; --menu-muted: #9fa6a7; --dim: #000000;
+      --stack-border: #313737; --stack-back: #222728; --stack-back-1: #2a3031; --stack-back-3: #1c2122;
+      --deck-hidden: #1c2122; --progress-track: #2a3031; --progress-fill: #83dcea;
+      --accent: #83dcea; --cyan: #83dcea; --eyes: #83dcea;
+      }
+    }
+    :root[data-theme="dark"] {
+      color-scheme: dark;
+      --bg: #151919;
+      --bg-kai: #171b1b;
+      --surface: #1e2324;
+      --surface-2: #1c2122;
+      --surface-3: #152a2e;
+      --surface-glass: rgba(255, 255, 255, .05);
+      --ink: #e8ecec;
+      --muted: #9fa6a7;
+      --hairline: #313737;
+      --ink-green: #b4bcbd;
+      --wash-a: #232a2b; --wash-b: #1b2122; --wash-c: #151a1b;
+      --nav-fill: #0b0e0e; --nav-fill-hover: #1e2324; --nav-text: #e8ecec; --nav-accent: #83dcea;
+      --wordmark: #262c2d;
+      --hero-a: #1e2324; --hero-b: #181c1d; --hero-c: #121516;
+      --menu-bg: #0b0e0e; --menu-ink: #e8ecec; --menu-muted: #9fa6a7; --dim: #000000;
+      --stack-border: #313737; --stack-back: #222728; --stack-back-1: #2a3031; --stack-back-3: #1c2122;
+      --deck-hidden: #1c2122; --progress-track: #2a3031; --progress-fill: #83dcea;
+      --accent: #83dcea; --cyan: #83dcea; --eyes: #83dcea;
+    }
+
+    /* Tekstklasser — de samme seks overalt (godkjent på Avtalen 2026-09-11).
+       eyebrow: mono, label, versaler.   h2/h3: Syne.
+       lead: første avsnitt etter tittel, blekk 500.   body: dempet 400.
+       terms: hårlinje over, blekk, tall i 600 tabulært.   note: mono på label-trinn. */
+    .t-eyebrow { font-family: var(--font-mono); font-size: var(--t-label); font-weight: 500; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin: 0; }
+    .t-lead    { font-size: var(--t-body); line-height: 1.5; font-weight: 500; color: var(--ink); margin: 0; }
+    .t-body    { font-size: var(--t-body); line-height: 1.5; font-weight: 400; color: var(--muted); margin: 0; }
+    .t-terms   { font-size: var(--t-body); line-height: 1.5; font-weight: 400; color: var(--ink); padding-top: 1.1em; border-top: 1px solid var(--hairline); margin: 0; }
+    .t-terms strong { font-weight: 600; font-variant-numeric: tabular-nums; }
+    .t-note    { font-family: var(--font-mono); font-size: var(--t-label); line-height: 1.6; letter-spacing: .03em; color: var(--muted); margin: 0; }
+
+    /* Øy-skalaens store trinn. Samme tallpar som experience.css .kai-cta--lg, speilet hit
+       fordi base-flaten ikke laster experience.css. Bærer bare tokens — Primary/Secondary
+       (.kai-cta) er gooey-montert med SVG-flate og eies der; denne klassen er trinnet, ikke
+       komponenten, så den kan settes på en hvilken som helst variant av systemet. */
+    .kai-cta--lg { --island-h: 48px; --island-r: 14px; }
+
+    /* Grunnflaten (uten Kai) mappet på klassene */
+    .hero-copy p:first-of-type, .agreement-copy p:first-of-type, .workflow-card__summary, .method-step p, .method-copy p, .contact-copy p:first-of-type { font-weight: 500; color: var(--ink); }
+    .hero-copy p:not(:first-of-type), .agreement-copy p:not(:first-of-type), .workflow-card__details, .contact-copy p:not(:first-of-type) { font-weight: 400; color: var(--muted); }
+    .agreement-copy strong { font-weight: 600; font-variant-numeric: tabular-nums; }
+    .agreement-promise, .workflow-card__result { border-top: 1px solid var(--hairline); padding-top: 1.1em; color: var(--ink); }
+    .workflow-card__label { display: block; border: 0; border-radius: 0; padding: 0; margin: 0 0 .6em; color: var(--muted); font-size: var(--t-label); }
+    .workflow-card__outcome { font-weight: 400; }
+
+    /* Språk/tema-bryter (assets/prefs.js). Mono på label-trinn, som eyebrow. Ingen pille. */
+    body > header { gap: clamp(.9rem, 2.5vw, 3rem); }
+    /* Blikket — merket (assets/brand/BLIKKET.md): Syne 700 sperret .14em, øynene .62em, blekk på lys, cyan på mørk. */
+    body > header > a:first-child { margin-right: auto; font-family: var(--font-display); font-weight: 700; letter-spacing: .14em; display: inline-flex; align-items: center; gap: .55em; }
+    body > header > a:first-child kai-eyes, .kai-brand kai-eyes { height: .62em; color: var(--eyes); }
+    .site-prefs { display: flex; gap: 1.4em; font-family: var(--font-mono); font-size: var(--t-label); font-weight: 500; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+    .site-prefs button { all: unset; cursor: pointer; display: inline-flex; align-items: center; min-height: 44px; color: inherit; }
+    .site-prefs button:hover, .site-prefs button:focus-visible { color: var(--ink); }
+    .site-prefs button:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; border-radius: 2px; }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      font-family: var(--font-body);
+      font-optical-sizing: auto;
+    }
+
+    section {
+      min-height: 100vh;
+      box-sizing: border-box;
+    }
+
+    body > header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 100;
+      display: flex;
+      box-sizing: border-box;
+      width: 100%;
+      align-items: center;
+      justify-content: space-between;
+      padding: clamp(1rem, 2vw, 2rem);
+      background: color-mix(in srgb, var(--bg) 78%, transparent);
+      -webkit-backdrop-filter: blur(16px) saturate(120%);
+      backdrop-filter: blur(16px) saturate(120%);
+      font-size: var(--t-label);
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      transition: transform .25s ease;
+    }
+
+    body > header.is-scroll-hidden {
+      transform: translateY(-100%);
+    }
+
+    body > header:focus-within {
+      transform: translateY(0);
+      transition: none;
+    }
+
+    body > header a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    body > header nav {
+      display: flex;
+      gap: clamp(.9rem, 2.5vw, 3rem);
+    }
+
+    #topp {
+      --hero-tail: 100px;
+      position: relative;
+      min-height: calc(220vh + var(--hero-tail));
+    }
+
+    .hero-stage {
+      --hero-split: 50vh;
+      position: sticky;
+      top: 0;
+      isolation: isolate;
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      grid-template-rows: 1fr 1fr;
+      column-gap: 2rem;
+      height: calc(100vh + var(--hero-tail));
+      overflow: hidden;
+      padding: clamp(6rem, 10vh, 9rem) clamp(1rem, 2vw, 2rem) clamp(1.25rem, 2.5vw, 3rem);
+      padding-bottom: calc(clamp(1.25rem, 2.5vw, 3rem) + var(--hero-tail));
+      background: var(--bg);
+    }
+
+    .hero-stage::before {
+      content: "";
+      position: absolute;
+      inset: var(--hero-split, 50%) 0 0;
+      z-index: -2;
+      background:
+        radial-gradient(70% 120% at 20% 48%, color-mix(in srgb, var(--wash-a) 28%, transparent), transparent 70%),
+        linear-gradient(110deg, var(--wash-a) 0%, var(--wash-b) 48%, var(--wash-c) 100%);
+    }
+
+    .hero-stage::after {
+      content: "";
+      position: absolute;
+      inset: var(--hero-split, 50%) -12% -12%;
+      z-index: -1;
+      background:
+        radial-gradient(circle at 24% 48%, rgba(234, 240, 229, .22), transparent 27%),
+        radial-gradient(circle at 70% 42%, rgba(119, 148, 124, .16), transparent 32%);
+      filter: blur(48px);
+      animation: hero-color-drift 14s ease-in-out infinite alternate;
+      pointer-events: none;
+    }
+
+    .hero-dot-grid {
+      position: absolute;
+      inset: var(--hero-split) 0 0;
+      z-index: 0;
+      background: radial-gradient(circle, color-mix(in srgb, var(--ink-green) 13%, transparent) .7px, transparent .9px) 0 0 / 20px 20px;
+      -webkit-mask-image: linear-gradient(to bottom, #000 45%, transparent 100%);
+      mask-image: linear-gradient(to bottom, #000 45%, transparent 100%);
+      pointer-events: none;
+    }
+
+    .hero-fade {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 0;
+      height: calc((100% - var(--hero-split) - var(--hero-tail)) * .45 + var(--hero-tail));
+      background: linear-gradient(to bottom, transparent, var(--bg));
+      pointer-events: none;
+    }
+
+    @keyframes hero-color-drift {
+      from {
+        transform: translate3d(-2%, 1%, 0) scale(1);
+      }
+
+      to {
+        transform: translate3d(3%, -2%, 0) scale(1.08);
+      }
+    }
+
+    .hero-intro {
+      grid-column: 1 / 6;
+      grid-row: 1;
+      align-self: end;
+      margin-bottom: clamp(4rem, 8vh, 6rem);
+      transform: translateY(-1.6rem);
+    }
+
+    .hero-kicker {
+      margin: 0;
+      color: color-mix(in srgb, var(--ink) 64%, transparent);
+      text-transform: uppercase;
+      font-family: var(--font-mono);
+      font-size: var(--t-label);
+      font-weight: 500;
+      letter-spacing: .1em;
+    }
+
+    #hero-title {
+      max-width: 9em;
+      margin: .55rem 0 0;
+      color: var(--ink);
+      font-family: var(--font-display);
+      font-size: var(--t-h1);
+      font-weight: var(--w-display);
+      letter-spacing: var(--track-display);
+      line-height: var(--lh-display);
+    }
+
+    .hero-copy {
+      grid-column: 6 / 10;
+      grid-row: 1;
+      align-self: end;
+      margin-bottom: clamp(4rem, 8vh, 6rem);
+      max-width: 38ch;
+      font-size: var(--t-body);
+      line-height: 1.5;
+    }
+
+    .hero-copy p {
+      margin: 0 0 1rem;
+    }
+
+    .hero-copy p:first-of-type {
+      margin-bottom: 1.85rem;
+    }
+
+    .hero-copy p:last-of-type {
+      margin-bottom: 0;
+      color: color-mix(in srgb, var(--ink) 62%, transparent);
+      white-space: nowrap;
+    }
+
+    .hero-cta {
+      grid-column: 10 / 13;
+      grid-row: 1;
+      align-self: end;
+      justify-self: start;
+      margin-left: 0;
+      margin-bottom: clamp(4rem, 8vh, 6rem);
+      color: inherit;
+      font-size: var(--t-label);
+      letter-spacing: .14em;
+      text-decoration: none;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .hero-cta-arrow {
+      display: inline-block;
+      margin-left: .12em;
+      font-size: 1.18em;
+      line-height: 0;
+    }
+
+    #avtalen {
+      --agreement-lift: min(18vh, calc(clamp(4rem, 8vh, 7rem) + 100px));
+      --agreement-tighten: min(24vh, 240px, calc(clamp(4rem, 8vh, 7rem) + var(--agreement-lift) - 2rem));
+      --agreement-extra-tighten: 0px;
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      align-content: center;
+      column-gap: 2rem;
+      min-height: 100vh;
+      margin-bottom: calc(-1 * (var(--agreement-tighten) + var(--agreement-extra-tighten)));
+      padding: clamp(4rem, 8vh, 7rem) clamp(1rem, 2vw, 2rem);
+      background: var(--bg);
+    }
+
+    .agreement-intro,
+    .agreement-copy,
+    .agreement-cta {
+      z-index: 2;
+      margin-bottom: 0;
+      transform: translateY(calc(-1 * var(--agreement-lift)));
+    }
+
+    .agreement-intro {
+      grid-column: 1 / 6;
+      align-self: start;
+    }
+
+    #avtalen-title {
+      max-width: 8.5em;
+      margin: 0;
+      font-family: var(--font-display);
+      font-size: var(--t-h2);
+      font-weight: var(--w-display);
+      letter-spacing: var(--track-display);
+      line-height: var(--lh-display);
+    }
+
+    .agreement-promise {
+      margin: clamp(1.5rem, 3vh, 2.5rem) 0 0;
+      color: color-mix(in srgb, var(--ink) 64%, transparent);
+      font-size: var(--t-body);
+      line-height: 1.5;
+    }
+
+    .agreement-copy {
+      grid-column: 6 / 10;
+      align-self: start;
+      max-width: 38ch;
+      font-size: var(--t-body);
+      line-height: 1.5;
+    }
+
+    .agreement-copy p {
+      margin: 0 0 1.85rem;
+    }
+
+    .agreement-copy p:last-child {
+      margin-bottom: 0;
+    }
+
+
+    #arbeidsflyter {
+      position: relative;
+      isolation: isolate;
+      z-index: 1;
+      display: flex;
+      min-height: 100vh;
+      flex-direction: column;
+      justify-content: center;
+      /* Clip the side edges, but let the left coin cross the section below. */
+      overflow-x: clip;
+      overflow-y: visible;
+      padding: clamp(2rem, 4vw, 4rem) clamp(1rem, 2vw, 2rem);
+      background: var(--bg);
+      color: var(--ink);
+    }
+
+    #arbeidsflyter-title {
+      position: absolute;
+      top: clamp(5.75rem, 7vw, 7rem);
+      left: clamp(1rem, 2vw, 2rem);
+      margin: 0;
+      z-index: 2;
+      width: fit-content;
+      color: var(--ink);
+      text-transform: uppercase;
+      font-family: var(--font-mono);
+      font-size: var(--t-label);
+      font-weight: 500;
+      letter-spacing: .1em;
+    }
+
+    .workflow-cards {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      width: 100%;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      align-items: stretch;
+      gap: clamp(1rem, 1.5vw, 1.5rem);
+    }
+
+    .workflow-card {
+      color: #fff;
+      position: relative;
+      display: grid;
+      grid-template-rows: 7.5rem 5rem 1fr;
+      min-height: 30rem;
+      height: auto;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, .3);
+      border-radius: 1.5rem;
+      background:
+        radial-gradient(120% 85% at 8% 0%, rgba(255, 255, 255, .04), transparent 46%),
+        linear-gradient(145deg, rgba(37, 50, 40, .39), rgba(37, 50, 40, .43));
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, .35),
+        inset 0 -1px 0 rgba(255, 255, 255, .12),
+        inset 1px 0 0 rgba(255, 255, 255, .18),
+        0 1.5rem 4rem rgba(42, 52, 39, .14);
+      -webkit-backdrop-filter: blur(22px) saturate(100%) brightness(1.05);
+      backdrop-filter: blur(22px) saturate(100%) brightness(1.05);
+      transition:
+        transform .45s cubic-bezier(.22, .75, .2, 1),
+        background-color .45s ease,
+        box-shadow .45s ease;
+    }
+
+    .workflow-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      border-radius: inherit;
+      background:
+        linear-gradient(115deg, rgba(255, 255, 255, .025), transparent 22% 74%, rgba(255, 255, 255, .01)),
+        radial-gradient(70% 22% at 50% 0%, rgba(255, 255, 255, .03), transparent 72%);
+      pointer-events: none;
+    }
+
+    .workflow-card > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .workflow-card:hover {
+      transform: translateY(-.45rem);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, .36),
+        0 2rem 5rem rgba(42, 52, 39, .16);
+    }
+
+    .workflow-card__head {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      gap: 1rem;
+      padding: clamp(1.25rem, 2vw, 2rem);
+    }
+
+    .workflow-card__number {
+      margin: 0;
+      color: inherit;
+      font-family: var(--font-mono);
+      font-size: var(--t-label);
+      font-weight: 500;
+      letter-spacing: .1em;
+    }
+
+    .workflow-card h3 {
+      margin: 0;
+      color: inherit;
+      font-family: var(--font-display);
+      font-size: var(--t-h3);
+      font-weight: var(--w-display);
+      letter-spacing: var(--track-display);
+      line-height: var(--lh-display);
+    }
+
+    .workflow-card__summary {
+      display: flex;
+      align-items: flex-start;
+      padding: clamp(1.25rem, 2vw, 2rem);
+      padding-top: 0;
+      font-size: var(--t-body);
+      line-height: 1.5;
+      font-weight: 500;
+    }
+
+    .workflow-card__outcome {
+      margin: 0;
+      font-size: var(--t-body);
+      line-height: 1.5;
+      font-weight: 500;
+    }
+
+    .workflow-card__narrative {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      gap: 1.5rem;
+      padding: clamp(1.25rem, 2vw, 2rem);
+      padding-top: 0;
+    }
+
+    .workflow-card__summary,
+    .workflow-card__details {
+      margin: 0;
+      font-size: var(--t-body);
+      line-height: 1.5;
+    }
+
+    .workflow-card__summary {
+      color: inherit;
+      font-size: var(--t-body);
+      font-weight: 500;
+      line-height: 1.18;
+    }
+
+    .workflow-card__details {
+      color: inherit;
+      font-size: var(--t-body);
+      line-height: 1.5;
+    }
+
+    .workflow-card__result {
+      margin-top: auto;
+    }
+
+    .workflow-card__label {
+      display: inline-flex;
+      margin-bottom: .55rem;
+      padding: .3rem .65rem;
+      border: 1px solid rgba(255, 255, 255, .4);
+      border-radius: 999px;
+      color: inherit;
+      text-transform: uppercase;
+      font-family: var(--font-mono);
+      font-size: calc(var(--t-label) * .85);
+      font-weight: 500;
+      letter-spacing: .1em;
+      line-height: 1;
+    }
+
+    .workflow-shapes {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* Coin geometry is rendered in workflow-coins.js; these wrappers control
+       static placement without changing the shape itself. */
+    .workflow-shape {
+      position: absolute;
+      aspect-ratio: 1;
+      filter: drop-shadow(1.2rem 2rem 2rem rgba(28, 63, 38, .12));
+    }
+    .workflow-shape canvas { display: block; width: 100%; height: 100%; }
+    .workflow-shape--one {
+      width: min(47.685vw, 76.585vh);
+      top: 48px; right: calc(-23% + 48px); z-index: 2;
+      filter: drop-shadow(.7rem 1.2rem 1.6rem rgba(65, 40, 50, .08));
+    }
+    .workflow-shape--two {
+      width: min(49.725vw, 81.09vh);
+      bottom: -9%; left: -19%; z-index: 2;
+    }
+    .workflow-shape--three {
+      width: min(34vw, 55.25vh);
+      top: -13%; left: 25%; z-index: 1;
+    }
+    @media (min-width: 1200px) and (min-height: 800px) {
+      #avtalen {
+        --agreement-extra-tighten: min(12vh, 100px);
+      }
+    }
+
+    @media (max-width: 800px) {
+      .workflow-shape--one { width: 75.8625vw; right: calc(-51% + 24px); top: calc(4% + 24px); }
+      .workflow-shape--two { width: 84.15vw; left: -42%; bottom: calc(10% - 4rem); }
+      .workflow-shape--three { width: 55.25vw; left: 10%; top: -3%; }
+    }
+
+    #metode {
+      position: relative;
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      grid-template-rows: 44% 56%;
+      column-gap: 2rem;
+      min-height: 100vh;
+      padding: clamp(4rem, 8vh, 7rem) clamp(1rem, 2vw, 2rem);
+      background: var(--bg);
+    }
+
+    .method-intro {
+      position: relative;
+      z-index: 2;
+      grid-column: 1 / 6;
+      align-self: end;
+      padding-bottom: clamp(2rem, 5vh, 4rem);
+      transform: translateY(-3.2rem);
+    }
+
+    #metode-title {
+      max-width: 7em;
+      margin: 0;
+      font-family: var(--font-display);
+      font-size: var(--t-h2);
+      font-weight: var(--w-display);
+      letter-spacing: var(--track-display);
+      line-height: var(--lh-display);
+    }
+
+    .method-copy {
+      grid-column: 6 / 10;
+      align-self: end;
+      max-width: 38ch;
+      padding-bottom: clamp(2rem, 5vh, 4rem);
+      font-size: var(--t-body);
+      line-height: 1.5;
+    }
+
+    .method-copy p {
+      margin: 0 0 1.85rem;
+    }
+
+    .method-copy a {
+      color: inherit;
+      font-size: var(--t-label);
+      letter-spacing: .08em;
+      text-underline-offset: .25em;
+    }
+
+    .method-timeline {
+      position: relative;
+      grid-column: 1 / 13;
+      align-self: center;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 2rem;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .method-timeline::before,
+    .method-timeline::after {
+      content: "";
+      position: absolute;
+      top: calc(.45rem - .5px);
+      right: 0;
+      left: .45rem;
+      height: 1px;
+      transform-origin: left;
+    }
+
+    .method-timeline::before {
+      background: color-mix(in srgb, var(--ink) 8%, transparent);
+    }
+
+    .method-timeline::after {
+      background: var(--ink);
+      transform: scaleX(0);
+    }
+
+    .method-timeline.is-visible::after {
+      animation: draw-timeline 4.4s linear .4s forwards;
+    }
+
+    .method-step {
+      position: relative;
+      z-index: 1;
+      padding: 2.2rem 1.5rem 0 0;
+      opacity: 0;
+    }
+
+    .method-step::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: .9rem;
+      height: .9rem;
+      border: 1px solid var(--ink);
+      border-radius: 50%;
+      background: var(--ink);
+      opacity: 0;
+      transform: scale(.5);
+    }
+
+    .method-timeline.is-visible .method-step {
+      animation: reveal-step .65s cubic-bezier(.22, .75, .2, 1) forwards;
+      animation-delay: var(--step-delay);
+    }
+
+    .method-timeline.is-visible .method-step::before {
+      animation: reveal-node .4s cubic-bezier(.22, .75, .2, 1) forwards;
+      animation-delay: var(--step-delay);
+    }
+
+    .method-step__number {
+      margin: 0 0 1rem;
+      color: color-mix(in srgb, var(--ink) 50%, transparent);
+      font-family: var(--font-mono);
+      font-size: var(--t-label);
+      font-weight: 500;
+      letter-spacing: .1em;
+    }
+
+    .method-step h3 {
+      margin: 0 0 var(--gap-title);
+      font-family: var(--font-display);
+      font-size: var(--t-body);
+      font-weight: var(--w-display);
+      letter-spacing: var(--track-display);
+      line-height: 1.15;
+    }
+
+    .method-step p {
+      max-width: 22rem;
+      margin: 0 0 .9rem;
+      color: color-mix(in srgb, var(--ink) 68%, transparent);
+      font-size: var(--t-body);
+      line-height: 1.5;
+    }
+
+    .method-step p:last-child {
+      color: var(--ink);
+    }
+
+    /* To like kolonner (CEO 2026-09-12, referansebilde): rad 1 er tittel venstre og
+       introavsnittet høyre, på samme linje. Rad 2 er to like moduler med identisk hode
+       (↘ + navn + hårlinje): Ring til venstre, Melding-skjemaet til høyre.
+       Ingenting spenner over begge; footer-stripen ligger under. */
+    #kontakt {
+      position: relative;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      /* To innholdsrader. Begge kolonner starter på rad 2, så ingen av dem slutter midt i
+         en rad den ikke fyller — det var kilden til det døde rommet i tre-raders-oppsettet. */
+      grid-template-rows: auto auto;
+      align-content: center;
+      column-gap: clamp(4rem, 6vw, 6rem);
+      row-gap: 40px;
+      min-height: 100vh;
+      padding: clamp(4rem, 8vh, 7rem) clamp(1rem, 2vw, 2rem);
+      background: linear-gradient(110deg, var(--wash-a) 0%, var(--wash-b) 48%, var(--wash-c) 100%);
+      color: var(--ink);
+    }
+
+    /* Begge tekstene i bunn (CEO 2026-09-12): siste grunnlinje mot siste grunnlinje, ikke
+       bokskant mot bokskant. Se experience.css for målingene — dette er samme sannhet, ikke
+       en andre. `align-self: start` står først som fallback for nettlesere uten `last baseline`. */
+    #kontakt-title {
+      grid-column: 1;
+      grid-row: 1;
+      align-self: start;
+      align-self: last baseline;
+      margin: 0;
+      font-family: var(--font-display);
+      font-size: var(--t-h1);
+      font-weight: var(--w-display);
+      letter-spacing: var(--track-display);
+      line-height: var(--lh-display);
+    }
+
+    .contact-copy {
+      /* Referansen: introavsnittet står øverst til høyre, på linje med tittelen — ikke under den. */
+      grid-column: 2;
+      grid-row: 1;
+      align-self: start;
+      align-self: last baseline;
+      /* Måling for én kolonne på 1fr, ikke for et 4-spalters slot (Designer 2026-09-12). */
+      max-width: 46ch;
+      font-size: var(--t-body);
+      line-height: 1.5;
+    }
+
+    .contact-copy p {
+      margin: 0 0 1.85rem;
+    }
+
+    .contact-copy p:last-child {
+      margin-bottom: 0;
+      color: var(--ink);
+    }
+
+    /* Ring-modulen: samme hode som Melding (↘ + navn + hårlinje), så de to kolonnene er
+       formlike. Modulen strekker seg over hele raden og lukker kolonnen nederst med
+       e-postlinjen, i stedet for å slutte høyt oppe og la resten av kolonnen stå tom. */
+    .contact-actions {
+      grid-column: 1;
+      grid-row: 2;
+      align-self: stretch;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .contact-actions__foot {
+      display: grid;
+      /* Venstre rute er notatlinja i referansen, høyre er Ring-knappen. */
+      grid-template-columns: minmax(0, 1fr) auto;
+      column-gap: 2rem;
+      row-gap: .75rem;
+      align-items: center;
+      /* CTA-en ligger UNDER hårlinja, ikke oppå den (CEO 2026-09-12). Før red knappen på
+         streken: foten ble løftet en halv knappehøyde, og streken skar 26 px inn i knappens
+         boks. Det holdt bare så lenge raden var like høy som knappen — da notatlinja brakk
+         til tre linjer ved 801 og 390, gled overlappen til 21,67 og 24,63 px, altså tre
+         forskjellige forhold til samme strek.
+         Nå er avstanden den samme som skjemaets: .kai-form__row legger sine 2.25rem INNE i
+         radboksen, så radens topp står flush med streken og innholdet starter under den.
+         Ring gjør nøyaktig det samme, og første rad under hodet står dermed i samme høyde
+         i begge kolonnene. Tallet skal være identisk med .kai-form__row (låst av test). */
+      padding-top: 2.25rem;
+    }
+
+    /* Notatlinja. Plasseringen er eksplisitt, ikke arvet fra auto-plassering: med bare
+       DOM-rekkefølgen som holder den i rute 1 flytter den seg til neste rad så snart noen
+       setter inn et element foran den. Uttrykket er husets notat (.t-note: mono, --t-label,
+       --muted) — samme som .kai-form__status og menyens .kai-contact-window__note.
+       Bundet til #kontakt: navnet er nytt og deler ingen deklarasjon, så bindingen koster
+       ingenting her, og klone-låsen i fullpage-nav.js dekker bare a-elementer. */
+    #kontakt .contact-actions__note {
+      grid-column: 1;
+    }
+
+    /* Begge lenkene er bundet til #kontakt av samme grunn som .kai-cta-block: fullpage-nav.js
+       kloner dem inn i menyen, der .kai-contact-window__actions eier utseendet. Den gamle
+       regelen var `.contact-actions a` og var derfor scopet av seg selv; flate klassenavn
+       er det ikke, og målt lekkasje var +5 px på begge menylenkene i alle tre språk. */
+    #kontakt .contact-actions__call {
+      grid-column: 2;
+    }
+
+    /* E-post er det sekundære sporet: tekstlenke på hårlinje, forankret i bunnen av kolonnen
+       så venstre og høyre modul slutter på samme grunnlinje. */
+    #kontakt .contact-actions__mail {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-top: auto;
+      padding-top: 1.35rem;
+      border-top: 1px solid color-mix(in srgb, var(--ink) 28%, transparent);
+      color: inherit;
+      text-decoration: none;
+      font-size: var(--t-body);
+      line-height: 1.5;
+    }
+
+    /* Pila. `> span:not([class])` er pila slik den står i markup — den er det eneste
+       span-barnet uten klasse. mail-copy.js legger to nye span-barn inn i lenka (det synlige
+       «Kopiert»-merket og live-regionen), og den gamle regelen `#kontakt .contact-actions__mail
+       span` traff begge. Den er (1,1,1) og slo dermed `.contact-actions__copied:empty
+       {display:none}` (0,2,0) i experience.css. Målt på merket ved 1440 px:
+         bred regel:  display «block» i hvilemodus, transition «transform 0.35s»
+         smal regel:  display «none»  i hvilemodus, transition «all 0s»
+       Altså to konkrete utslag: :empty-vakta ble satt ut av spill, og merket arvet pilas
+       hover-transform (translateX(.4rem)) — «Kopiert» ville glidd 6,4 px ved hover.
+       Selve pila står 686..704 px i alle fire kombinasjonene: lenka er
+       justify-content:space-between med ledig plass i raden, så det siste barnet ligger
+       låst mot høyre kant uansett. Regelen er altså smalnet for merkets skyld, ikke pilas. */
+    #kontakt .contact-actions__mail > span:not([class]) {
+      display: inline-block;
+      transition: transform .35s cubic-bezier(.22, .75, .2, 1);
+    }
+
+    #kontakt .contact-actions__mail:hover > span:not([class]),
+    #kontakt .contact-actions__mail:focus-visible > span:not([class]) {
+      transform: translateX(.4rem);
+    }
+
+    /* Tredje variant av husets CTA-system (CEO 2026-09-12, uttrykkelig tillatt med advarsel).
+       Primary og Secondary er .kai-cta: gooey-montert, med SVG-flate som fyll. De eies i
+       experience.css og er ikke rørt her. Denne er en ren CSS-blokk fordi den står i
+       sideflyten, ikke i et gooey-lag — men den arver systemets tall i stedet for å ha egne:
+         høyde   var(--island-h)                 — trinnet kommer fra .kai-cta--lg i markup
+         radius  var(--island-r)                 — skalerer i par med høyden
+         padding calc(var(--island-h) * .5)      — systemets egen formel, ikke et eget tall
+       Var: radius 0, høyde 52 px, padding .8rem/1.35rem — tre tall uten opphav i systemet.
+       Overstyrt er bare det en fylt blokk må ha: --ink-flate, venstrestilt tekst, pil høyre.
+       Én regel for begge de primære handlingene i seksjonen: Ring og Send.
+       Bevisst bundet til #kontakt: fullpage-nav.js kloner Ring-lenken inn i menyen, og der
+       eier .kai-contact-window__actions utseendet. Uten denne bindingen ville klonen arvet
+       fyll og pil-hover herfra og endret en godkjent flate. */
+    #kontakt .kai-cta-block {
+      display: inline-flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      /* Ingen fallback på noen av de tre: mister knappen øy-skalaen, skal den kollapse
+         synlig i stedet for å lande på et tall som skjuler at arven er borte. */
+      min-height: var(--island-h);
+      padding: 0 calc(var(--island-h) * .5);
+      border-radius: var(--island-r);
+      border: 0;
+      background: var(--ink);
+      color: var(--bg-kai);
+      font: inherit;
+      font-size: var(--t-body);
+      line-height: 1.5;
+      text-align: left;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background .25s ease;
+    }
+
+    #kontakt .kai-cta-block span {
+      display: inline-block;
+      transition: transform .35s cubic-bezier(.22, .75, .2, 1);
+    }
+
+    #kontakt .kai-cta-block:hover,
+    #kontakt .kai-cta-block:focus-visible {
+      background: var(--accent);
+    }
+
+    #kontakt .kai-cta-block:hover span,
+    #kontakt .kai-cta-block:focus-visible span {
+      transform: translateX(.4rem);
+    }
+
+    #kontakt .kai-cta-block[disabled] {
+      opacity: .5;
+      cursor: default;
+    }
+
+    #kontakt .kai-cta-block[disabled]:hover {
+      background: var(--ink);
+    }
+
+    /* Melding-skjemaet: tittel med pil og hårlinje, så rader med etikett (1/3) og felt (2/3) på samme hårlinje som lenkene. */
+    .kai-form {
+      grid-column: 2;
+      grid-row: 2;
+      align-self: start;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      /* Radene under måler seg mot skjemaets egen bredde, ikke mot viewporten:
+         i halv kolonne stables etikett over felt uten å røre 800px-låsen. */
+      container-type: inline-size;
+      color: var(--ink);
+    }
+
+    /* Modulhodet — én deklarasjon for begge kolonnene, så Ring og Melding er bit-identiske.
+       Skjemaets egne klassenavn står urørt: flaten er godkjent og låst av tests/cyan-contact-form.test.mjs. */
+    .kai-form__title,
+    .contact-actions__title {
+      display: flex;
+      align-items: center;
+      gap: .3em;
+      margin: 0;
+      padding-bottom: .45em;
+      border-bottom: 1px solid color-mix(in srgb, var(--ink) 28%, transparent);
+      font-family: var(--font-display);
+      font-size: var(--t-h3);
+      font-weight: var(--w-display);
+      letter-spacing: var(--track-display);
+      line-height: var(--lh-display);
+    }
+
+    .kai-form__arrow,
+    .contact-actions__arrow {
+      flex: none;
+      width: .62em;
+      height: .62em;
+    }
+
+    .kai-form__trap {
+      position: absolute;
+      left: -9999px;
+      width: 1px;
+      height: 1px;
+      opacity: 0;
+    }
+
+    .kai-form__row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+      column-gap: 2rem;
+      align-items: start;
+      padding-top: 2.25rem;
+      font-size: var(--t-body);
+      line-height: 1.5;
+    }
+
+    .kai-form__row > span {
+      padding: .55rem 0;
+      font-weight: 500;
+    }
+
+    .kai-form__row > input,
+    .kai-form__row > textarea {
+      width: 100%;
+      min-width: 0;
+      margin: 0;
+      padding: .55rem 0 .9rem;
+      border: 0;
+      border-bottom: 1px solid color-mix(in srgb, var(--ink) 28%, transparent);
+      border-radius: 0;
+      background: none;
+      color: var(--ink);
+      font: inherit;
+      resize: none;
+      outline: none;
+      transition: border-color .25s ease;
+    }
+
+    .kai-form__row > input::placeholder,
+    .kai-form__row > textarea::placeholder {
+      color: var(--muted);
+      opacity: 1;
+    }
+
+    .kai-form__row > input:focus-visible,
+    .kai-form__row > textarea:focus-visible {
+      border-bottom-color: var(--accent);
+    }
+
+    .kai-form__foot {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+      column-gap: 2rem;
+      row-gap: .75rem;
+      align-items: center;
+      padding-top: 2rem;
+    }
+
+    .kai-form__status {
+      /* Statuslinja er full setning (fallback-teksten er lengst) og får hele skjemabredden. */
+      grid-column: 1 / -1;
+    }
+
+    .kai-form__status:empty {
+      display: none;
+    }
+
+    /* Referansen: Send er en fylt blokk i full bredde av feltkolonnen, ikke en tekstlenke.
+       Fyll, høyde, radius og padding ligger i .kai-cta-block; her står bare plasseringen i skjemaets grid. */
+    .kai-form__send {
+      grid-column: 2;
+      justify-self: stretch;
+    }
+
+    /* Halv kolonne: etikett over felt når skjemaet selv blir smalt. Samme oppsett som under 800 px. */
+    @container (max-width: 400px) {
+      .kai-form__row,
+      .kai-form__foot {
+        grid-template-columns: minmax(0, 1fr);
+        row-gap: .75rem;
+      }
+
+      .kai-form__row > span {
+        padding: 0;
+      }
+
+      .kai-form__send {
+        grid-column: 1;
+      }
+    }
+
+    /* Én rad, space-between (CEO 2026-09-12): tekstlinjen venstre, © helt til høyre.
+       `1fr auto` er den samme sporinndelingen som Kai-flaten bruker (experience.css):
+       venstre spor eier resten av bredden, høyre spor er nøyaktig © sin egen bredde, så
+       © lander på seksjonens høyre kant — og en for lang linje bryter inne i 1fr-en i
+       stedet for å skyve © ut av flaten. Base-flaten har bare ©; tekstlinjen settes inn
+       av Kai-laget (page-copy.js). Base-flaten er usynlig for brukere (visibility:hidden
+       til entry.js setter ready) og er derfor ikke evidens — den står slik utelukkende
+       for at det skal finnes ÉN sannhet om denne footeren. */
+    .site-footer {
+      position: absolute;
+      right: clamp(1rem, 2vw, 2rem);
+      bottom: 0;
+      left: clamp(1rem, 2vw, 2rem);
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      column-gap: 2rem;
+      row-gap: var(--gap-title);
+      padding: 1.5rem 0;
+      color: var(--ink);
+      font-size: var(--t-label);
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .site-footer p {
+      grid-column: 2;
+      margin: 0;
+    }
+
+    @keyframes draw-timeline {
+      to {
+        transform: scaleX(1);
+      }
+    }
+
+    @keyframes reveal-step {
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes reveal-node {
+      to {
+        background: var(--ink);
+        opacity: 1;
+      }
+    }
+
+    .hero-flow {
+      position: absolute;
+      inset: var(--hero-split) 0 var(--hero-tail);
+      z-index: 0;
+      width: 100%;
+      height: calc(100% - var(--hero-split) - var(--hero-tail));
+      overflow: visible;
+      pointer-events: none;
+    }
+
+    .hero-flow path {
+      fill: none;
+      stroke: color-mix(in srgb, var(--ink-green) 52%, transparent);
+      stroke-width: 1.25;
+      stroke-linecap: round;
+      vector-effect: non-scaling-stroke;
+      clip-path: inset(0 100% 0 0);
+      animation: reveal-flow var(--duration, 1.2s) var(--easing, cubic-bezier(.22, .75, .2, 1)) forwards;
+      animation-delay: calc(var(--delay) - var(--hero-time, 0s));
+    }
+
+    .hero-flow path:nth-child(even) {
+      stroke: color-mix(in srgb, var(--ink-green) 34%, transparent);
+    }
+
+    .hero-flow path.flow-connector {
+      stroke: color-mix(in srgb, var(--ink-green) 68%, transparent);
+      stroke-width: 1.4;
+    }
+
+    .hero-flow path.flow-output {
+      --easing: linear;
+    }
+
+    .hero-flow path:first-child,
+    .hero-flow path.flow-output:nth-child(odd) {
+      stroke: var(--bg);
+    }
+
+    .flow-ports {
+      position: absolute;
+      inset: var(--hero-split) 0 var(--hero-tail);
+      z-index: 1;
+      isolation: isolate;
+      pointer-events: none;
+    }
+
+    .flow-port {
+      position: absolute;
+      top: 50%;
+      left: var(--x);
+      z-index: 1;
+      display: grid;
+      justify-items: center;
+      align-content: center;
+      gap: 8px;
+      width: 112px;
+      height: 88px;
+      padding: 10px;
+      border: 1px solid rgba(255, 255, 255, .4);
+      border-radius: 16px;
+      background:
+        radial-gradient(120% 180% at 18% 0%, rgba(255, 255, 255, .36), transparent 46%),
+        linear-gradient(135deg, rgba(255, 255, 255, .36), rgba(255, 255, 255, .22));
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, .3),
+        inset 0 -1px 0 rgba(255, 255, 255, .06),
+        0 .85rem 2.8rem rgba(1, 22, 13, .2),
+        0 0 1.2rem rgba(174, 219, 187, .06);
+      color: var(--ink);
+      text-align: center;
+      transform: translate(-50%, -50%);
+      opacity: 0;
+      -webkit-backdrop-filter: blur(20px) saturate(135%);
+      backdrop-filter: blur(20px) saturate(135%);
+      animation: reveal-port 1s cubic-bezier(.22, .75, .2, 1) forwards;
+      animation-delay: calc(var(--delay) - var(--hero-time, 0s));
+      font-family: var(--font-mono);
+      font-size: var(--t-label);
+      font-weight: 500;
+      letter-spacing: .12em;
+    }
+
+    .flow-port::before,
+    .flow-port::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      width: 8px;
+      height: 8px;
+      border: 1px solid color-mix(in srgb, var(--ink-green) 68%, transparent);
+      border-radius: 50%;
+      background: var(--wash-a);
+      box-shadow: 0 1px 3px rgba(41, 63, 46, .12);
+      transform: translateY(-50%);
+    }
+
+    /* Dock centers match the SVG's existing 3px offset outside each border. */
+    .flow-port::before { left: -8px; }
+    .flow-port::after { right: -8px; }
+
+    .flow-port__icon {
+      width: 24px;
+      height: 24px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      color: var(--ink-green);
+    }
+
+    @keyframes reveal-flow {
+      to {
+        clip-path: inset(0);
+      }
+    }
+
+    @keyframes reveal-port {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+
+    .hero-flow path,
+    .flow-port {
+      animation-play-state: paused;
+    }
+
+    @media (max-width: 800px) {
+      #topp {
+        --hero-tail: 56px;
+      }
+
+      body > header nav {
+        display: none;
+      }
+
+      .hero-stage {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto auto;
+        align-content: start;
+        gap: 1rem;
+        height: calc(var(--mobile-hero-height, 100svh) + var(--hero-tail));
+        padding-top: 5rem;
+      }
+
+      .hero-copy p:first-of-type br { display: none; }
+
+      .flow-port {
+        width: 76px;
+        height: 72px;
+        gap: 6px;
+        padding: 8px 4px;
+        border-radius: 13px;
+        font-size: var(--t-label);
+        letter-spacing: .1em;
+      }
+
+      .flow-port__icon {
+        width: 20px;
+        height: 20px;
+      }
+
+      .flow-port:first-child { left: 20%; }
+      .flow-port:last-child { left: 80%; }
+
+      .hero-intro,
+      .hero-copy,
+      .hero-cta {
+        grid-column: 1;
+        grid-row: auto;
+      }
+
+      .hero-intro,
+      .hero-copy,
+      .hero-cta {
+        align-self: start;
+        justify-self: start;
+        margin-left: 0;
+        margin-bottom: 0;
+      }
+
+      .hero-intro {
+        transform: none;
+      }
+
+      .hero-copy p:last-of-type {
+        white-space: normal;
+      }
+
+      #avtalen {
+        --agreement-lift: 4vh;
+        --agreement-tighten: min(8vh, calc(clamp(4rem, 8vh, 7rem) + var(--agreement-lift) - 2rem));
+        --agreement-extra-tighten: min(2vh, 16px);
+        grid-template-columns: 1fr;
+        align-content: center;
+        gap: 2rem;
+      }
+
+      .agreement-intro,
+      .agreement-copy,
+      .agreement-cta {
+        grid-column: 1;
+        align-self: start;
+        justify-self: start;
+        margin: 0;
+      }
+
+      #avtalen-title {
+        font-size: clamp(2.2rem, 1rem + 6vw, 3.4rem);
+        letter-spacing: var(--track-display);
+      }
+
+      .workflow-cards {
+        grid-template-columns: 1fr;
+      }
+
+      #arbeidsflyter {
+        justify-content: flex-start;
+      }
+
+      #arbeidsflyter-title {
+        position: relative;
+        top: auto;
+        left: auto;
+        margin-bottom: var(--gap-title);
+      }
+
+      .workflow-card {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+        height: auto;
+        min-height: 0;
+      }
+
+      .workflow-card__head {
+        gap: 1.5rem;
+      }
+
+      .workflow-card__narrative {
+        gap: 2rem;
+      }
+
+      #metode {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto 1fr;
+        gap: 1.5rem;
+        padding-top: 7rem;
+      }
+
+      .method-intro,
+      .method-copy,
+      .method-timeline {
+        grid-column: 1;
+        align-self: start;
+        padding-bottom: 0;
+      }
+
+      .method-intro {
+        transform: none;
+      }
+
+      .method-timeline {
+        display: block;
+        padding-left: 1.5rem;
+      }
+
+      .method-timeline::before,
+      .method-timeline::after {
+        top: 0;
+        right: auto;
+        bottom: 0;
+        left: calc(.45rem - .5px);
+        width: 1px;
+        height: auto;
+        transform-origin: top;
+      }
+
+      /* The mobile section is taller than the viewport, so it cannot meet
+         the desktop observer's 75% threshold. Keep its content visible. */
+      .method-timeline::after,
+      .method-timeline.is-visible::after {
+        transform: none;
+        animation: none;
+      }
+
+      .method-timeline .method-step,
+      .method-timeline.is-visible .method-step {
+        padding: 0 0 2.5rem 1rem;
+        opacity: 1;
+        animation: none;
+      }
+
+      .method-timeline .method-step::before,
+      .method-timeline.is-visible .method-step::before {
+        left: -1.5rem;
+        opacity: 1;
+        background: var(--ink);
+        animation: none;
+      }
+
+      .method-step p {
+        font-size: var(--t-body);
+        line-height: 1.5;
+      }
+
+      .method-step .method-step__number {
+        font-size: var(--t-label);
+      }
+
+      #kontakt {
+        grid-template-columns: 1fr;
+        grid-template-rows: none;
+        align-content: center;
+        /* Én kolonne: radgapet er tittel→avsnitt-gapet (CEO 2026-09-11). */
+        gap: var(--gap-title);
+      }
+
+      #kontakt-title,
+      .contact-copy,
+      .contact-actions,
+      .kai-form {
+        grid-column: 1;
+        /* Under 800 px står seksjonen i én kolonne: slipp de faste radene fra to-kolonners-oppsettet. */
+        grid-row: auto;
+      }
+
+      .kai-form__row,
+      .kai-form__foot {
+        grid-template-columns: minmax(0, 1fr);
+        row-gap: .75rem;
+        padding-top: 1.75rem;
+      }
+
+      /* Ring-foten følger skjemaets rader ned på samme trinn, så første rad under hodet
+         står i samme høyde i begge kolonnene også under 800 px. Kun avstanden — foten
+         beholder sine to ruter, notatlinja ved siden av knappen som over. */
+      .contact-actions__foot {
+        padding-top: 1.75rem;
+      }
+
+      .kai-form__row > span {
+        padding: 0;
+      }
+
+      .kai-form__status,
+      .kai-form__send {
+        grid-column: 1;
+      }
+
+      /* Under 800 px: én kolonne, samme som Kai-flaten (experience.css). Var `1fr 1fr`
+         med alt i kolonne 1 — en tom kolonne som ingen skrev i. */
+      .site-footer {
+        position: static;
+        grid-column: 1;
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        margin-top: 2rem;
+      }
+
+      .site-footer p {
+        grid-column: 1;
+      }
+
+      #hero-title {
+        max-width: none;
+        font-size: clamp(2.2rem, 1rem + 6vw, 3.4rem);
+        letter-spacing: var(--track-display);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      body > header {
+        transition: none;
+      }
+
+      .hero-stage::after {
+        animation: none;
+      }
+
+      .hero-flow path,
+      .flow-port {
+        animation: none;
+      }
+
+      .hero-flow path {
+        clip-path: none;
+      }
+
+      .flow-port {
+        opacity: 1;
+      }
+
+      .method-timeline::after {
+        transform: scaleX(1);
+        animation: none;
+      }
+
+      .method-step {
+        opacity: 1;
+        animation: none;
+      }
+
+      .method-step::before {
+        opacity: 1;
+        animation: none;
+      }
+    }
+
+    @keyframes draw-timeline-mobile {
+      to {
+        transform: scaleY(1);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="kai-loading" role="status" aria-busy="true">
+    <span class="kai-loading__mark">KAIZEN <kai-eyes state="vaakner" blink="off"></kai-eyes></span>
+    <span class="kai-loading__bar" aria-hidden="true"></span>
+  </div>
+  <section class="kai-startup" aria-labelledby="kai-startup-title">
+    <span>KAIZEN <kai-eyes></kai-eyes></span>
+    <h1 id="kai-startup-title">Dette er Kai.</h1>
+    <p>Kai er assistenten dere får. Under Kai jobber agenter som skriver tilbud, lager svarutkast og følger opp kunder, i systemene dere bruker.</p>
+    <p>La oss finne deres første oppgave. En uforpliktende samtale — dere bestemmer om vi går videre.</p>
+    <nav aria-label="Kontakt KAIZEN"><a href="tel:41167940">Ring oss →</a><a href="mailto:rune@kaizenstudio.no">Send en e-post →</a></nav>
+    <small>Animasjonen er ikke tilgjengelig akkurat nå. Dere kan fortsatt ta kontakt.</small>
+  </section>
+  <header>
+    <a href="#topp">KAIZEN <kai-eyes></kai-eyes></a>
+    <nav aria-label="Hoved">
+      <a href="#arbeidsflyter">Arbeidsflyter</a>
+      <a href="#metode">Metode</a>
+      <a href="#kontakt">Kontakt</a>
+    </nav>
+  </header>
+
+  <main>
+    <section id="topp" aria-labelledby="hero-title">
+      <div class="hero-stage">
+        <div class="hero-intro">
+          <h1 id="hero-title">Dette er Kai.</h1>
+        </div>
+        <div class="hero-copy">
+    <p>Kai er assistenten dere får. Under Kai jobber agenter som skriver tilbud, lager svarutkast og følger opp kunder, i systemene dere bruker.</p>
+        </div>
+        <div class="hero-dot-grid" aria-hidden="true"></div>
+        <div class="hero-fade" aria-hidden="true"></div>
+        <svg class="hero-flow" viewBox="0 0 1200 500" preserveAspectRatio="none" aria-hidden="true">
+          <path pathLength="1" style="--delay:.05s; --duration:1.35s" d="M-120 150 C90 155 230 242 360 250" />
+          <path pathLength="1" style="--delay:.05s; --duration:1.35s" d="M-120 350 C90 345 230 258 360 250" />
+          <path class="flow-connector" pathLength="1" style="--delay:2.15s; --duration:.65s" d="M420 250 H540" />
+          <path class="flow-connector" pathLength="1" style="--delay:4.55s; --duration:.65s" d="M660 250 H780" />
+          <path class="flow-output" pathLength="1" style="--delay:5.75s; --duration:2.6s" d="M840 250 C970 232 1090 55 1320 40" />
+          <path class="flow-output" pathLength="1" style="--delay:5.75s; --duration:2.6s" d="M840 250 C970 238 1100 120 1320 110" />
+          <path class="flow-output" pathLength="1" style="--delay:5.75s; --duration:2.6s" d="M840 250 C970 244 1110 185 1320 180" />
+          <path class="flow-output" pathLength="1" style="--delay:5.75s; --duration:2.6s" d="M840 250 C970 250 1120 250 1320 250" />
+          <path class="flow-output" pathLength="1" style="--delay:5.75s; --duration:2.6s" d="M840 250 C970 256 1110 315 1320 320" />
+          <path class="flow-output" pathLength="1" style="--delay:5.75s; --duration:2.6s" d="M840 250 C970 262 1100 380 1320 390" />
+          <path class="flow-output" pathLength="1" style="--delay:5.75s; --duration:2.6s" d="M840 250 C970 268 1090 445 1320 460" />
+        </svg>
+        <div class="flow-ports" aria-hidden="true">
+          <span class="flow-port" style="--x:30%; --delay:1.45s">
+            <svg class="flow-port__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 4h6v16h-6M3 12h12M10 7l5 5-5 5" /></svg>
+            <span>INPUT</span>
+          </span>
+          <span class="flow-port" style="--x:50%; --delay:2.65s">
+            <svg class="flow-port__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M10.5 7.5 6 15M13.5 7.5 18 15M8 17h8" /><circle cx="12" cy="5" r="3" /><circle cx="5" cy="18" r="3" /><circle cx="19" cy="18" r="3" /></svg>
+            <span>AGENTS</span>
+          </span>
+          <span class="flow-port" style="--x:70%; --delay:5.05s">
+            <svg class="flow-port__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="4" y="3" width="16" height="6" rx="2" /><rect x="4" y="15" width="16" height="6" rx="2" /><path d="M12 9v6M7 6h.01M7 18h.01M11 6h6M11 18h6" /></svg>
+            <span>SYSTEM</span>
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <section id="avtalen" aria-labelledby="avtalen-title">
+      <div class="agreement-intro">
+        <h2 id="avtalen-title">Vi finner arbeidet<br>som spiser uka deres,<br>og tar det bort.</h2>
+        <p class="agreement-promise">Virker det ikke, betaler dere ikke.</p>
+      </div>
+      <div class="agreement-copy">
+        <p>Vi ser på hvordan dere jobber i dag, og finner ut hva som er verdt å ta først. Det kan være tilbudene som tar for lang tid, eller e-posten ingen rekker å svare på. Hva vi bygger, blir vi enige om sammen.</p>
+        <p>Installasjonen koster <strong>9 900 kroner eks. mva</strong>. Vi bygger så mange agenter som oppgaven krever, og setter dem opp i systemene dere bruker, eller skal ta i bruk. Dere forholder dere til noen få. De koordinerer resten i bakgrunnen.</p>
+      </div>
+    </section>
+
+    <section id="arbeidsflyter" aria-labelledby="arbeidsflyter-title">
+      <h2 id="arbeidsflyter-title">Tre steder å begynne</h2>
+      <div class="workflow-shapes" aria-hidden="true">
+        <span class="workflow-shape workflow-shape--one"><canvas data-coin="right"></canvas></span>
+        <span class="workflow-shape workflow-shape--two"><canvas data-coin="left"></canvas></span>
+        <span class="workflow-shape workflow-shape--three"><canvas data-coin="center"></canvas></span>
+      </div>
+      <div class="workflow-cards">
+        <article class="workflow-card">
+          <header class="workflow-card__head">
+            <p class="workflow-card__number">01</p>
+            <h3>Tilbud</h3>
+          </header>
+          <p class="workflow-card__summary">Forespørselen kom inn.<br>Tilbudet gjorde ikke.</p>
+          <div class="workflow-card__narrative">
+            <p class="workflow-card__details">Agenten henter grunnlaget fra systemene dere bruker, skriver et utkast og sender det til godkjenning. Når dere godkjenner, sender agenten tilbudet og følger opp til kunden svarer.</p>
+            <div class="workflow-card__result">
+              <span class="workflow-card__label">Resultat</span>
+              <p class="workflow-card__outcome">Dere godkjenner.<br>Agenten følger opp.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="workflow-card">
+          <header class="workflow-card__head">
+            <p class="workflow-card__number">02</p>
+            <h3>Margin</h3>
+          </header>
+          <p class="workflow-card__summary">Oppdraget ser lønnsomt ut.<br>Helt til timene telles.</p>
+          <div class="workflow-card__narrative">
+            <p class="workflow-card__details">Agenten kobler tilbudet, timene og fakturaen, og varsler når timebruk eller kostnader endrer seg.</p>
+            <div class="workflow-card__result">
+              <span class="workflow-card__label">Resultat</span>
+              <p class="workflow-card__outcome">Dere ser det tidsnok<br>til å ta en beslutning.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="workflow-card">
+          <header class="workflow-card__head">
+            <p class="workflow-card__number">03</p>
+            <h3>Betaling</h3>
+          </header>
+          <p class="workflow-card__summary">Fakturaen er sendt.<br>Oppfølgingen blir liggende.</p>
+          <div class="workflow-card__narrative">
+            <p class="workflow-card__details">Agenten ser hva som har forfalt, forbereder oppfølgingen og stopper når kunden svarer. Spørsmål og avvik går til dere.</p>
+            <div class="workflow-card__result">
+              <span class="workflow-card__label">Resultat</span>
+              <p class="workflow-card__outcome">Agenten tar rutinen.<br>Dere tar unntakene.</p>
+            </div>
+          </div>
+        </article>
+      </div>
+
+    </section>
+
+    <section id="metode" aria-labelledby="metode-title">
+      <div class="method-intro">
+        <h2 id="metode-title">Fra avtale<br>til drift</h2>
+      </div>
+      <div class="method-copy">
+        <p>Vi starter med oppgaven dere vil løse. Sammen avklarer vi hva agentene skal gjøre, hvilke systemer de skal arbeide i og hva dere skal godkjenne før de settes i drift.</p>
+      </div>
+
+      <ol class="method-timeline">
+        <li class="method-step" style="--step-delay:.4s">
+          <p class="method-step__number">01</p>
+          <h3>Vi blir enige</h3>
+          <p>Vi går gjennom en vanlig arbeidsuke med dere og skriver ned hva agentene skal gjøre.</p>
+          <p>Dere godkjenner listen.</p>
+        </li>
+        <li class="method-step" style="--step-delay:1.5s">
+          <p class="method-step__number">02</p>
+          <h3>Vi bygger</h3>
+          <p>Agentene settes opp i systemene dere allerede bruker, og gjør jobben der.</p>
+          <p>Vi gjør jobben.</p>
+        </li>
+        <li class="method-step" style="--step-delay:2.6s">
+          <p class="method-step__number">03</p>
+          <h3>Vi kjører dem sammen</h3>
+          <p>Vi går gjennom listen med dere mens agentene står i faktisk arbeid.</p>
+          <p>Dere ser dem gå.</p>
+        </li>
+        <li class="method-step" style="--step-delay:3.7s">
+          <p class="method-step__number">04</p>
+          <h3>Jobben er gjort</h3>
+          <p>Står alt på listen, er jobben gjort. Mener dere noe annet, får dere ingen faktura.</p>
+          <p>Dere avgjør.</p>
+        </li>
+      </ol>
+    </section>
+
+    <section id="kontakt" aria-labelledby="kontakt-title">
+      <h2 id="kontakt-title">Bare spør.</h2>
+      <div class="contact-copy">
+        <p>Første steg kan være ett spørsmål. Ring eller send en e-post. Vi svarer på det dere lurer på og sier fra hvis AI ikke er riktig vei.</p>
+        <p>Ser vi noe som er verdt å ta videre, forklarer vi hva neste steg kan være. Vi tar ikke på oss arbeid vi ikke tror vi kan levere.</p>
+      </div>
+      <!-- Ring-modulen (CEO 2026-09-12, referansebilde): samme hode som Melding — ↘, navn, hårlinje.
+           DOM-rekkefølgen tel → mailto er bærende: fullpage-nav.js kloner disse to inn i menyen,
+           der første lenke er den fylte. -->
+      <div class="contact-actions">
+        <h3 class="contact-actions__title"><svg class="contact-actions__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 8v10H8"/></svg><span>Ring</span></h3>
+        <div class="contact-actions__foot">
+          <p class="contact-actions__note t-note">Ingen avtale før dere sier ja.</p>
+          <a class="kai-cta-block kai-cta--lg contact-actions__call" href="tel:41167940" aria-label="Ring oss på 411 67 940">Ring oss <span aria-hidden="true">→</span></a>
+        </div>
+        <a class="contact-actions__mail" href="mailto:rune@kaizenstudio.no">Send en e-post <span aria-hidden="true">→</span></a>
+      </div>
+      <!-- Melding-skjemaet (CEO 2026-09-11, referanse: «↘ Message»-oppsettet): etikett venstre, felt høyre på hårlinje.
+           Sendes til /api/kontakt (Vercel-funksjon). Uten postkasse-nøkkel faller det tilbake på e-postprogrammet. -->
+      <form class="kai-form" id="melding" method="post" action="/api/kontakt" novalidate aria-labelledby="melding-title">
+        <h3 id="melding-title" class="kai-form__title"><svg class="kai-form__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 8v10H8"/></svg><span>Melding</span></h3>
+        <input class="kai-form__trap" name="company" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <label class="kai-form__row"><span>Navn*</span><input name="name" autocomplete="name" required maxlength="120" placeholder="Navn"></label>
+        <label class="kai-form__row"><span>E-post*</span><input name="email" type="email" autocomplete="email" required maxlength="254" placeholder="E-post"></label>
+        <label class="kai-form__row"><span>Telefon</span><input name="phone" type="tel" autocomplete="tel" maxlength="40" placeholder="Telefon"></label>
+        <label class="kai-form__row"><span>Nettside</span><input name="website" type="text" inputmode="url" autocomplete="url" maxlength="200" placeholder="Nettside"></label>
+        <label class="kai-form__row"><span>Melding*</span><textarea name="message" rows="3" required maxlength="4000" placeholder="Melding"></textarea></label>
+        <div class="kai-form__foot">
+          <p class="kai-form__status t-note" role="status" aria-live="polite"></p>
+          <button class="kai-cta-block kai-cta--lg kai-form__send" type="submit">Send melding <span aria-hidden="true">→</span></button>
+        </div>
+      </form>
+      <footer class="site-footer">
+        <p>© 2026 KAIZEN</p>
+      </footer>
+    </section>
+  </main>
+
+  <script src="assets/workflow-coins.js"></script>
+  <script src="assets/prefs.js"></script>
+  <script type="module">
+    // Production rollout approved 2026-09-11. Query strings must never select
+    // the retired layout, including old bookmarks with ?agent=cyan or =legacy.
+    import("./assets/cyan/agent.js?v=kai-production-20261027-mobile-spacing-nb-en").catch(error => {
+      document.documentElement.dataset.kaiSite = 'fallback';
+      clearTimeout(window.kaiBootTimer);
+      console.error(error);
+    });
+  </script>
+  <script>
+    const siteHeader = document.querySelector("body > header");
+    const readHeaderScroll = () => Math.max(0, Math.min(window.scrollY,
+      Math.max(0, document.documentElement.scrollHeight - window.innerHeight)));
+    let headerLastScroll = readHeaderScroll();
+    let headerDirection = 0;
+    let headerTravel = 0;
+
+    const updateHeaderVisibility = () => {
+      const current = readHeaderScroll();
+      const delta = current - headerLastScroll;
+      headerLastScroll = current;
+
+      if (current <= 16 || siteHeader.contains(document.activeElement)) {
+        siteHeader.classList.remove("is-scroll-hidden");
+        headerDirection = 0;
+        headerTravel = 0;
+        return;
+      }
+      if (!delta) return;
+
+      const direction = Math.sign(delta);
+      headerTravel = direction === headerDirection ? headerTravel + Math.abs(delta) : Math.abs(delta);
+      headerDirection = direction;
+      if (headerTravel >= 12) {
+        siteHeader.classList.toggle("is-scroll-hidden", direction > 0);
+        headerTravel = 0;
+      }
+    };
+
+    const resetHeaderScroll = () => {
+      headerLastScroll = readHeaderScroll();
+      headerDirection = 0;
+      headerTravel = 0;
+      if (headerLastScroll <= 16 || siteHeader.contains(document.activeElement)) {
+        siteHeader.classList.remove("is-scroll-hidden");
+      }
+    };
+
+    window.addEventListener("scroll", updateHeaderVisibility, { passive: true });
+    window.addEventListener("resize", resetHeaderScroll);
+    siteHeader.addEventListener("focusin", resetHeaderScroll);
+
+    const heroSection = document.querySelector("#topp");
+    const heroStage = document.querySelector(".hero-stage");
+    const heroDuration = 8.35;
+
+    // Match SVG endpoints to the actual pills, including the wider spacing
+    // on mobile. This keeps lines outside the transparent glass surfaces.
+    const updateFlowGeometry = () => {
+      // Kai's opt-in layout removes the legacy hero CTA/flow. Its responsive
+      // layout is owned by hero-wrapper.js, not this original-page geometry.
+      if (!heroStage || !heroStage.querySelector(".hero-cta")) return;
+      if (window.matchMedia("(max-width: 800px)").matches) {
+        const cta = heroStage.querySelector(".hero-cta");
+        const split = Math.ceil(cta.offsetTop + cta.offsetHeight + 32);
+        heroStage.style.setProperty("--hero-split", `${split}px`);
+        heroStage.style.setProperty("--mobile-hero-height", `${Math.max(window.innerHeight, split + 192)}px`);
+      } else {
+        heroStage.style.removeProperty("--hero-split");
+        heroStage.style.removeProperty("--mobile-hero-height");
+      }
+      const svg = document.querySelector(".hero-flow");
+      const ports = [...document.querySelectorAll(".flow-port")];
+      if (!svg || ports.length !== 3) return;
+      const bounds = svg.getBoundingClientRect();
+      if (!bounds.width) return;
+      const unit = 1200 / bounds.width;
+      const edge = ports.map(port => {
+        const rect = port.getBoundingClientRect();
+        return { left: (rect.left - bounds.left - 3) * unit,
+          right: (rect.right - bounds.left + 3) * unit };
+      });
+      const paths = svg.querySelectorAll("path");
+      paths[0].setAttribute("d", `M-120 150 C90 155 ${edge[0].left - 100} 242 ${edge[0].left} 250`);
+      paths[1].setAttribute("d", `M-120 350 C90 345 ${edge[0].left - 100} 258 ${edge[0].left} 250`);
+      svg.querySelectorAll(".flow-connector").forEach((path, i) => {
+        path.setAttribute("d", `M${edge[i].right} 250 H${edge[i + 1].left}`);
+      });
+      svg.querySelectorAll(".flow-output").forEach((path, i) => {
+        const endY = 40 + i * 70;
+        const startX = edge[2].right;
+        path.setAttribute("d", `M${startX} 250 C${startX + 70} ${232 + i * 6} 1150 ${endY} 1320 ${endY}`);
+      });
+    };
+
+    const updateHeroFlow = () => {
+      if (!heroSection || !heroStage) return;
+
+      const scrollDistance = heroSection.offsetHeight - heroStage.offsetHeight;
+      const progress = scrollDistance > 0
+        ? Math.min(1, Math.max(0, -heroSection.getBoundingClientRect().top / scrollDistance))
+        : 1;
+
+      heroStage.style.setProperty("--hero-time", `${progress * heroDuration}s`);
+    };
+
+    updateFlowGeometry();
+    updateHeroFlow();
+    window.addEventListener("scroll", updateHeroFlow, { passive: true });
+    window.addEventListener("resize", () => {
+      updateFlowGeometry();
+      updateHeroFlow();
+    });
+
+    const methodTimeline = document.querySelector(".method-timeline");
+
+    if (methodTimeline) {
+      const timelineObserver = new IntersectionObserver(([entry]) => {
+        if (!entry.isIntersecting || entry.intersectionRatio < .01) return;
+        methodTimeline.classList.add("is-visible");
+        timelineObserver.disconnect();
+      }, { threshold: .01 });
+
+      timelineObserver.observe(methodTimeline);
+    }
+  </script>
+</body>
+</html>
