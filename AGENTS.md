@@ -41,7 +41,7 @@ Pages:
 Styles and scripts:
 
 - `nav-system.css` — shared navigation styles, loaded after each page's own CSS.
-- `cta-system.css` — shared call-to-action typography.
+- `cta-system.css` — shared call-to-action typography and desktop components: `hero-cta` for internal content destinations, `site-cta` for outbound/download actions. Mobile presentation is preserved.
 - `favicon.ico` — site icon.
 
 Config:
